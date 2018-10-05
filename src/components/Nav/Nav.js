@@ -21,6 +21,23 @@ const Nav = () => (
           </Link>
         </li>
         <li>
+          <Link to="/admin_page">
+            Administrative Overlord Access Portal
+          </Link>
+        </li>
+        <li>
+          <Link to="/admin_coach_list">
+            admins very own coach list
+          </Link>
+        </li>
+        <li>
+          <Link to="/suspend_page">
+            suspend and delete
+          </Link>
+        </li>
+        
+
+        <li>
           <Link to="/terms">
             Terms
           </Link>

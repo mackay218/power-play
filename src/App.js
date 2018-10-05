@@ -14,6 +14,9 @@ import TermsPage from './components/TermsPage/TermsPage';
 import HomePage from './components/HomePage/HomePage';
 import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage';
 import CoachPage from './components/CoachPage/CoachPage';
+import AdminPage from './components/AdminPage/AdminPage';
+import CoachListPage from './components/AdminPage/CoachListPage';
+import SuspendPage from './components/PlayerProfilePage/SuspendPage';
 
 import './styles/main.css';
 
@@ -50,9 +53,22 @@ const App = () => (
         component={PlayerProfilePage}
         />
         <Route
+        path="/suspend_page"
+        component={SuspendPage}
+        />
+        <Route
         path="/coach_page"
         component={CoachPage}
         />
+        <Route
+        path="/admin_page"
+        component={AdminPage}
+        />
+        <Route
+        path="/admin_coach_list_page"
+        component={CoachListPage}
+        />
+        
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
 
