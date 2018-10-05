@@ -9,8 +9,8 @@ import {
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import LandingPage from './components/UserPage/UserPage';
-import InfoPage from './components/InfoPage/InfoPage';
+import LandingPage from './components/LandingPage/LandingPage';
+import TermsPage from './components/TermsPage/TermsPage';
 
 import './styles/main.css';
 
@@ -32,9 +32,10 @@ const App = () => (
           path="/home"
           component={LandingPage}
         />
+        {/* static legal terms page */}
         <Route
-          path="/info"
-          component={InfoPage}
+          path="/terms"
+          component={TermsPage}
         />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
