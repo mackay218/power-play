@@ -36,6 +36,7 @@ const Nav = () => (
           </Link>
         </li>
         
+        
 
         <li>
           <Link to="/terms">
