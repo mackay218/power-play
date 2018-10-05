@@ -9,7 +9,7 @@ import {
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import UserPage from './components/UserPage/UserPage';
+import LandingPage from './components/UserPage/UserPage';
 import InfoPage from './components/InfoPage/InfoPage';
 
 import './styles/main.css';
@@ -21,7 +21,7 @@ const App = () => (
       <Switch>
         <Redirect exact from="/" to="/home" />
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
         />
         <Route
@@ -29,8 +29,8 @@ const App = () => (
           component={RegisterPage}
         />
         <Route
-          path="/user"
-          component={UserPage}
+          path="/home"
+          component={LandingPage}
         />
         <Route
           path="/info"
