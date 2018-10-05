@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LandingPage from './components/LandingPage/LandingPage';
 import TermsPage from './components/TermsPage/TermsPage';
+import HomePage from './components/HomePage/HomePage';
 
 import './styles/main.css';
 
@@ -19,7 +20,7 @@ const App = () => (
     <Header title="Project Base" />
     <Router>
       <Switch>
-        <Redirect exact from="/" to="/home" />
+        <Redirect exact from="/" to="/landing_page" />
         <Route
           path="/login"
           component={LoginPage}
@@ -30,12 +31,16 @@ const App = () => (
         />
         <Route
           path="/home"
-          component={LandingPage}
+          component={HomePage}
         />
         {/* static legal terms page */}
         <Route
           path="/terms"
           component={TermsPage}
+        />
+        <Route
+          path="/landing_page"
+          component={LandingPage}
         />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
