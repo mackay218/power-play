@@ -11,6 +11,16 @@ const Nav = () => (
           </Link>
         </li>
         <li>
+          <Link to="/player_profile_page">
+            Player Profile
+          </Link>
+        </li>
+        <li>
+          <Link to="/coach_page">
+            Coaches Page
+          </Link>
+        </li>
+        <li>
           <Link to="/terms">
             Terms
           </Link>

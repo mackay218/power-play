@@ -12,6 +12,8 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import LandingPage from './components/LandingPage/LandingPage';
 import TermsPage from './components/TermsPage/TermsPage';
 import HomePage from './components/HomePage/HomePage';
+import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage';
+import CoachPage from './components/CoachPage/CoachPage';
 
 import './styles/main.css';
 
@@ -41,6 +43,15 @@ const App = () => (
         <Route
           path="/landing_page"
           component={LandingPage}
+        />
+        {/* page that will be displayed when user with "player" role logs in */}
+        <Route
+        path="/player_profile_page"
+        component={PlayerProfilePage}
+        />
+        <Route
+        path="/coach_page"
+        component={CoachPage}
         />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
