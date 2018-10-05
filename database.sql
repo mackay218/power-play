@@ -1,5 +1,73 @@
-CREATE TABLE person (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR (80) UNIQUE NOT NULL,
-    password VARCHAR (1000) NOT NULL
+CREATE TABLE "activity_log" (
+	"id" SERIAL PRIMARY KEY,
+	"time" TIMESTAMP DEFAULT NOW(),
+	"activity_type" VARCHAR(200)
+);
+
+CREATE TABLE "account_status" (
+	"id" SERIAL PRIMARY KEY,
+	"status_type" VARCHAR(100),
+	"reason" VARCHAR(1000)
+);
+
+CREATE TABLE "person" (
+	"id" SERIAL PRIMARY KEY,
+	"email" VARCHAR(200),
+	"password" VARCHAR(1080),
+	"role" VARCHAR(15),
+	"invite" VARCHAR(2000),
+	"status_id" INTEGER REFERENCES "account_status"(id),
+	"activity_log_id" INTEGER REFERENCES "activity_log"(id)
+);
+
+CREATE TABLE "league" (
+	"id" SERIAL PRIMARY KEY,
+	"league_name" VARCHAR(200)
+);
+
+CREATE TABLE "team" (
+	"id" SERIAL PRIMARY KEY,
+	"team_name" VARCHAR(200)
+);
+
+CREATE TABLE "school" (
+	"id" SERIAL PRIMARY KEY,
+	"school_name" VARCHAR(200)
+);
+
+CREATE TABLE "position" (
+	"id" SERIAL PRIMARY KEY,
+	"position_name" VARCHAR(200)
+);
+
+CREATE TABLE "player_stats" (
+	"id" SERIAL PRIMARY KEY,
+	"person_id" INTEGER REFERENCES "person"(id),
+	"league_id" INTEGER REFERENCES "league"(id),
+	"team_id" INTEGER REFERENCES "team"(id),
+	"school_id" INTEGER REFERENCES "school"(id),
+	"position_id" INTEGER REFERENCES "position"(id),
+	"first_name" VARCHAR(100),
+	"last_name" VARCHAR(100),
+	"phone_number" VARCHAR(150),
+	"birth_date" DATE,
+	"height" VARCHAR(150),
+	"weight" VARCHAR(150),
+	"gpa" FLOAT,
+	"act_score" INTEGER,
+	"school_year" INTEGER,
+	"video_link" VARCHAR(1080),
+	"goals" INTEGER,
+	"assists" INTEGER,
+	"points" INTEGER,
+	"games_played" INTEGER,
+	"wins" INTEGER,
+	"losses" INTEGER,
+	"ties" INTEGER,
+	"save_percent" VARCHAR(10),
+	"shutouts" INTEGER,
+	"goals_against"INTEGER,
+	"gaurdian" BOOLEAN,
+	"created_on" DATE DEFAULT NOW(),
+	"player_info" VARCHAR(200)
 );

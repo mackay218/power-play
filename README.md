@@ -1,7 +1,5 @@
-# Express/Passport with React
-This version uses React to control the login requests and redirection in coordination with client-side routing.
-
-We **STONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+# Power Play Recruiting
+This project is a website and system for parents of youth hockey players and young adult hockey players under the age of 21 to showcase themselves to schools, coaches, and other recruiters.  Player accounts will not be able to view or initiate contact with coaches or teams and they will not be able to view other player accounts. Coaches/recruiters will be invited by the Admin user (Mike Bowman, Logan Sharp, Austin Hill). Coaches/recruiters can view active player profiles.
 
 ## Prerequisites
 
@@ -13,32 +11,20 @@ Before you get started, make sure you have the following software installed on y
 
 ## Create database and table
 
-Create a new database called `prime_app` and create a `person` table:
+Download the repository.
 
-```SQL
-CREATE TABLE person (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR (80) UNIQUE NOT NULL,
-    password VARCHAR (1000) NOT NULL
-);
-```
+Create a new database called `ppr_hockey` and run the SQL queries in the database.sql file
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`
-
-## Download (Don't Clone) This Repository
-
-* Don't Fork or Clone. Instead, click the `Clone or Download` button and select `Download Zip`.
-* Unzip the project and start with the code in that folder.
-* Create a new GitHub project and push this code to the new repository.
+If you would like to name your database something else, you will need to change `ppr_hockey` to the name of your new database name in `server/modules/pool.js`
 
 ## Development Setup Instructions
 
 * Run `npm install`
 * Create a `.env` file at the root of the project and paste this line into the file:
     ```
-    SERVER_SESSION_SECRET=superDuperSecret
+    SERVER_SESSION_SECRET=**secret goes here**
     ```
-    While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
+    While you're in the `.env` file, replace `**secret goes here**` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
 * Start postgres if not running already by using `brew services start postgresql`
 * Run `npm run server`
 * Run `npm run client`
@@ -57,7 +43,7 @@ Then make sure `Launch Program` is selected from the dropdown, then click the gr
 
 ## Production Build
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
+Before pushing to your hosting site, run `npm run build` in terminal. This will create a build folder that contains the code your hosting site will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
 
 * Start postgres if not running already by using `brew services start postgresql`
 * Run `npm start`
@@ -69,13 +55,3 @@ Before pushing to Heroku, run `npm run build` in terminal. This will create a bu
 * `public/` contains static assets for the client-side
 * `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
 * `server/` contains the Express App
-
-## Deployment
-
-1. Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Herkoku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
