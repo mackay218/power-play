@@ -9,13 +9,13 @@ import { triggerLogout } from '../../redux/actions/loginActions';
 
 const mapStateToProps = state => ({
   user: state.user,
-  player: state.player
+  coach: state.coach,
 });
 
 class LandingPage extends Component {
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    this.props.dispatch({type: 'GET_ALL_PLAYERS'});
+    this.props.dispatch({type: 'GET_ALL_COACHES'});
   }
 
   componentDidUpdate() {
