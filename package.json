@@ -17,7 +17,10 @@
     "express": "^4.16.3",
     "faker": "^4.1.0",
     "moment": "^2.22.2",
+<<<<<<< HEAD
+=======
     "nodemailer": "^4.6.8",
+>>>>>>> ccc49d2d1bf64ec4a6fd9873ae33beaf6cfc0a8d
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.4.1",
