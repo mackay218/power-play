@@ -69,8 +69,8 @@ class SuspendPage extends Component {
             <option value="Commited">Commited</option>
             <option value="No longer looking to be recruited">No longer looking to be recruited</option>
             <option value="Other">Other</option>
-          </select>
-          <label>If other, explain:</label>
+          </select><br />
+          <label>If other, explain:</label><br />
           <input type="text" onChange={this.handleChange}></input>
         </form>
         <div className="center-text">

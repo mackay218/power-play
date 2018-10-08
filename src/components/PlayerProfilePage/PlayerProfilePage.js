@@ -24,6 +24,11 @@ const mapStateToProps = state => ({
     logout = () => {
       this.props.dispatch(triggerLogout());
     }
+
+    submitPlayerProfile = (event) => {
+      event.preventDefault();
+      console.log('Player profile submitted.');
+    }
   
     render() {
       let content = null;
@@ -31,7 +36,24 @@ const mapStateToProps = state => ({
       if (this.props.user.email) {
         content = (
           <div>
-            player profile
+            <h1>Enter Information</h1>
+            <form onSubmit={this.submitPlayerProfile}>
+              <div>
+                <input></input>
+                <input></input>
+                <input></input>
+              </div>
+              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            </form>
           </div>
         );
       }
