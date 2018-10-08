@@ -26,8 +26,14 @@ class LoginPage extends Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.email !== null) {
-      this.props.history.push('home');
+    if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'player') {
+      this.props.history.push('player_profile_page');
+    }
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'coach') {
+      this.props.history.push('players_page');
+    }
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'admin') {
+      this.props.history.push('admin_page');
     }
   }
 
