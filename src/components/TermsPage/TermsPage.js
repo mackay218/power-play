@@ -17,9 +17,9 @@ class TermsPage extends Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.email === null) {
-      this.props.history.push('home');
-    }
+    // if (!this.props.user.isLoading && this.props.user.email === null) {
+    //   this.props.history.push('home');
+    // }
   }
 
   // post routes for calling mock data generator
@@ -50,7 +50,7 @@ class TermsPage extends Component {
   render() {
     let content = null;
 
-    if (this.props.user.email) {
+    // if (this.props.user.email) {
       content = (
         <div>
           <p>
@@ -64,7 +64,7 @@ class TermsPage extends Component {
 
         </div>
       );
-    }
+    
 
     return (
       <div>
