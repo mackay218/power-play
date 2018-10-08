@@ -4,23 +4,43 @@ import { Link } from 'react-router-dom';
 // styling imports
 import '../LandingPage/LandingPage.css';
 
+const logo = 'images/logo_edited.png'
+
 class LandingPage extends Component {
 
     toLogin = () => {
         this.props.history.push('login');
     }
 
+    toRegister = () => {
+        this.props.history.push('register');
+    }
+
+    constructor(props) {
+        super(props)
+
+    }
+
     render() {
         return (
             <div className="landingPageContainer">
                 <div className="nav">
-                
+                    <img className="logo" src={logo}></img>
+
                     <Link to="/register">
                         Register
                 </Link>
+
                     <Link to="/login">
                         Log In
                 </Link>
+
+                    <Link to="/terms">
+                        Terms
+                </Link>
+
+                    <a href="#aboutNavigate">About</a>
+
                 </div>
 
                 <p>Landing Page</p>
@@ -54,30 +74,37 @@ class LandingPage extends Component {
                     </div>
                 </div>
 
-                <div className="aboutContainer">
+                <div className="aboutContainer" id="#aboutNavigate">
 
                     <div className="bioSections">
                         {/* material avatars go here */}
                         <img></img>
-                        <p>A bio. An personal epic of Olympian scale.</p>
+                        <p>A bio. A personal epic of Olympian scale.
+                        <br></br>Avatars go right above this.
+                        </p>
 
                     </div>
 
                     <div className="bioSections">
                         {/* material avatars go here */}
                         <img></img>
-                        <p>A bio. An personal epic of Olympian scale.</p>
+                        <p>A bio. A personal epic of Olympian scale.
+                        <br></br>Avatars go right above this.
+                        </p>
+                     
+                        
                     </div>
 
                     <div className="bioSections">
                         {/* material avatars go here */}
                         <img></img>
-                        <p>A bio. An personal epic of Olympian scale.</p>
+                        <p>A bio. A personal epic of Olympian scale.<br>
+                        </br>Avatars go right above this.</p>
                     </div>
 
                 </div>
-
-                <button onClick={this.toLogin}>Log In</button>
+                <button className="getStarted" onClick={this.toRegister}>Get started!</button>
+                {/* <button onClick={this.toLogin}>Log In</button> */}
             </div >
         );
     };
