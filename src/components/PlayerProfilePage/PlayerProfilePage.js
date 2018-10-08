@@ -5,45 +5,192 @@ import Nav from '../Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import './PlayerProfilePage.css';
 
 const mapStateToProps = state => ({
-    user: state.user,
-  });
-  
-  class PlayerProfilePage extends Component {
-    componentDidMount() {
-      this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  user: state.user,
+});
+
+class PlayerProfilePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      person_id: this.props.user.id,
+      league_id: '',
+      team_id: '',
+      school: '',
+      position_id: '',
+      first_name: '',
+      last_name: '',
+      phone_number: '',
+      birth_date: '',
+      height: '',
+      weight: '',
+      gpa: '',
+      act_score: '',
+      school_year: '',
+      video_link: '',
+      goals: '',
+      assists: '',
+      points: '',
+      games_played: '',
+      wins: '',
+      losses: '',
+      ties: '',
+      save_percent: '',
+      shutouts: '',
+      goals_against: '',
+      guardian: false,
+      player_info: '',
     }
-  
-    componentDidUpdate() {
-      if (!this.props.user.isLoading && this.props.user.email === null) {
-        this.props.history.push('landing_page');
-      }
+  }
+  componentDidMount() {
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  }
+
+  componentDidUpdate() {
+    if (!this.props.user.isLoading && this.props.user.email === null) {
+      this.props.history.push('landing_page');
     }
-  
-    logout = () => {
-      this.props.dispatch(triggerLogout());
-    }
-  
-    render() {
-      let content = null;
-  
-      if (this.props.user.email) {
-        content = (
-          <div>
-            player profile
-          </div>
-        );
-      }
-  
-      return (
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    })
+  }
+
+  logout = () => {
+    this.props.dispatch(triggerLogout());
+  }
+
+  submitPlayerProfile = (event) => {
+    event.preventDefault();
+    console.log('Player profile submitted.');
+  }
+
+  render() {
+    let content = null;
+    let positionalContent = null;
+    if (this.state.position_id === '3') {
+      positionalContent = (
         <div>
-          <Nav />
-          { content }
+          <div>
+            <label>Goalie Options:</label>
+            <input type="number" placeholder="Wins"></input>
+            <input type="number" placeholder="Losses"></input>
+            <input type="number" placeholder="Ties"></input>
+          </div>
+          <div>
+            <input type="number" placeholder="Save %"></input>
+            <input type="number" placeholder="Shutouts"></input>
+            <input type="number" placeholder="Goals Against"></input>
+            <input type="number" placeholder="Games Played"></input>
+          </div>
+        </div>
+      )
+    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+      positionalContent = (
+        <div>
+          <div>
+            <label>Skater Options:</label>
+            <input type="number" placeholder="Goals"></input>
+            <input type="number" placeholder="Assists"></input>
+            <input type="number" placeholder="Points"></input>
+          </div>
+          <div>
+            <input type="number" placeholder="Games Played"></input>
+          </div>
+        </div>
+      )
+    }
+    if (this.props.user.email) {
+      content = (
+        <div>
+          <h1 className="center-text">Enter Information</h1>
+          <form className="playerForm" onSubmit={this.submitPlayerProfile}>
+            <div>
+              <input type="text" placeholder="First Name"></input>
+              <input type="text" placeholder="Last Name"></input>
+              <input type="text" placeholder="School"></input>
+            </div>
+            <div>
+              <input type="text" placeholder="Email"></input>
+              <input type="number" placeholder="Phone Number"></input>
+              <select>
+                <option value="Grade">Grade</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="Graduate">Graduate</option>
+              </select>
+            </div>
+            <div>
+              <input type="number" placeholder="GPA"></input>
+              <input type="text" placeholder="Weight"></input>
+              <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
+                <option value="">Position</option>
+                <option value="1">Forward</option>
+                <option value="2">Defence</option>
+                <option value="3">Goalie</option>
+              </select>
+            </div>
+            <div>
+              <input placeholder="Video URL"></input>
+              <select value={this.state.league_id} onChange={this.handleChange} name="league_id">
+                <option value="">League</option>
+                <option value="1">1A</option>
+                <option value="2">2A</option>
+                <option value="3">3A</option>
+                <option value="4">4A</option>
+                <option value="5">5A</option>
+                <option value="6">6A</option>
+                <option value="7">7A</option>
+                <option value="8">8A</option>
+                <option value="9">1AA</option>
+                <option value="10">2AA</option>
+                <option value="11">3AA</option>
+                <option value="12">4AA</option>
+                <option value="13">5AA</option>
+                <option value="14">6AA</option>
+                <option value="15">7AA</option>
+                <option value="16">8AA</option>
+              </select>
+              <label>Date Of Birth:</label>
+              {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
+              <select>
+                <option value="">DOB</option>
+                <option value="1">Jan, 1956</option>
+                <option value="2">Feb, 1776</option>
+                <option value="3">March, 2012</option>
+              </select>
+            </div>
+            <div>
+              <label>Notes:</label>
+              <input></input>
+            </div>
+            {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
+            <div>
+              <img src="https://media.istockphoto.com/videos/hockey-player-skates-video-id483200277?s=640x640" alt="hockey puck" height="100" width="100" /><br />
+              <button>Add a pic</button>
+            </div>
+            <div>
+              {positionalContent}
+            </div>
+          </form>
         </div>
       );
     }
+
+    return (
+      <div>
+        <Nav />
+        {content}
+      </div>
+    );
   }
-  
-  // this allows us to use <App /> in index.js
-  export default connect(mapStateToProps)(PlayerProfilePage);
+}
+
+// this allows us to use <App /> in index.js
+export default connect(mapStateToProps)(PlayerProfilePage);
