@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-//function to add new coach and send invite email
+//function to add new coach to database
 //only called by Admin
 router.post('/coachInvite', (req, res) => {
     console.log(req.body);
@@ -83,7 +83,7 @@ router.post('/coachInvite', (req, res) => {
 
             //if creating a coach works call function to send invite
             if(personId.length > 0){    
-                this.sendInviteCode(inviteCode);
+                this.sendInviteCode(coachInfo);
             }
 
             res.sendStatus(201);
@@ -102,33 +102,92 @@ router.post('/coachInvite', (req, res) => {
     });
 });
 
-sendInviteCode = (inviteCode) => {
+//function to send invite email
+sendInviteCode = (coachInfo) => {
 
-    console.log(inviteCode);
+    console.log('in sendInviteCode');
 
-    // const mail = {
-    //     from: "Polaris Hockey <polarishockey@gmail.com>",
-    //     to: req.body.emailAddress,
-    //     subject: "testing nodemailer eh",
-    //     text: 'we invite you so join us' + req.body.emailAddress,
-    //     html: `<p>testing again eh ${req.body.emailAddress}</p>`
-    // }
+    console.log(coachInfo);
 
-    // transporter.sendMail(mail, function (error, info) {
-    //     if (error) {
-    //         console.log('error sending mail:', error);
-    //     }
-    //     else {
-    //         //see https://nodemailer.com/usage
-    //         console.log("info.messageId: " + info.messageId);
-    //         console.log("info.envelope: " + info.envelope);
-    //         console.log("info.accepted: " + info.accepted);
-    //         console.log("info.rejected: " + info.rejected);
-    //         console.log("info.pending: " + info.pending);
-    //         console.log("info.response: " + info.response);
-    //     }
-    //     transporter.close();
-    // });
+    //create url string for page for link to 
+    //where person can set or reset password
+
+    // e.g. https://www.pprhockey.com/setPassword/[invite code here] 
+
+    const mail = {
+        from: "Polaris Hockey <polarishockey@gmail.com>",
+        to: req.body.emailAddress,
+        subject: "testing nodemailer eh",
+        text: 'we invite you so join us' + req.body.emailAddress,
+        html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                    <title>PPR Hockey Invite</title>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
+                    <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+                    <style>
+                        *{
+                            box-sizing: border-box;
+                        }
+                        body{
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        header{
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #F0133E;
+                            color: #fff;
+                            width: 100vw;
+                            padding: 20px;
+                            font-family: 'Audiowide', sans-serif;
+                        }
+                        img{
+                            width: 200px;
+                            height: 200px;
+                        }
+
+                        main{
+                            font-family: 'Roboto', sans-serif;
+                            font-size: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <header>
+                        <img src="https://drive.google.com/uc?export=view&id=1w_MFiI3Y8M3hDV2nKx_2XyDr8olDI18y" alt="ppr hockey logo"/>
+                        <h1>YOU'VE BEEN INVITED!</h1>
+                    </header>
+                    <main>
+                        <div>
+                            <p>You've been invited to try Power Play Recruiting! Click the link below to join.</p>
+                            <a>Link goes here.</a>
+                        </div>
+                    </main>
+                </body>
+            </html>`
+    }
+
+    transporter.sendMail(mail, function (error, info) {
+        if (error) {
+            console.log('error sending mail:', error);
+        }
+        else {
+            //see https://nodemailer.com/usage
+            console.log("info.messageId: " + info.messageId);
+            console.log("info.envelope: " + info.envelope);
+            console.log("info.accepted: " + info.accepted);
+            console.log("info.rejected: " + info.rejected);
+            console.log("info.pending: " + info.pending);
+            console.log("info.response: " + info.response);
+        }
+        transporter.close();
+    });
 }
 
 module.exports = router;
