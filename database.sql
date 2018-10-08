@@ -1,3 +1,32 @@
+/* before running mock data generator 
+hard code in position table:
+id     position_name
+1       fwd
+2       def
+3       gol
+
+hard code in leage table: 
+id    league_name
+1     1A
+2     2A
+3     3A
+4     4A
+5     5A
+6     6A
+7     7A
+8     8A
+9     1AA
+10    2AA
+11    3AA
+12    4AA
+13    5AA
+14    6AA
+15    7AA
+16    8AA
+*/
+
+
+
 CREATE TABLE "activity_log" (
 	"id" SERIAL PRIMARY KEY,
 	"time" TIMESTAMP DEFAULT NOW(),
@@ -15,6 +44,7 @@ CREATE TABLE "person" (
 	"email" VARCHAR(200),
 	"password" VARCHAR(1080),
 	"role" VARCHAR(15),
+	"coach_name" VARCHAR(200),
 	"invite" VARCHAR(2000),
 	"status_id" INTEGER REFERENCES "account_status"(id),
 	"activity_log_id" INTEGER REFERENCES "activity_log"(id)
@@ -56,6 +86,7 @@ CREATE TABLE "player_stats" (
 	"gpa" FLOAT,
 	"act_score" INTEGER,
 	"school_year" INTEGER,
+	"image_path" VARCHAR(1080),
 	"video_link" VARCHAR(1080),
 	"goals" INTEGER,
 	"assists" INTEGER,
@@ -67,7 +98,10 @@ CREATE TABLE "player_stats" (
 	"save_percent" VARCHAR(10),
 	"shutouts" INTEGER,
 	"goals_against"INTEGER,
-	"gaurdian" BOOLEAN,
+	"guardian" BOOLEAN,
 	"created_on" DATE DEFAULT NOW(),
 	"player_info" VARCHAR(200)
 );
+
+
+
