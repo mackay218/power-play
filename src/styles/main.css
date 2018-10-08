@@ -27,6 +27,15 @@ input {
     margin-bottom: 10px;
 }
 
+.center-text {
+    text-align: center;
+}
+
+.center-element {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 input[type="submit"] {
     margin: 10px;
 }

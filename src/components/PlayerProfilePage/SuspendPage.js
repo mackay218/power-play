@@ -40,6 +40,7 @@ const mapStateToProps = state => ({
         <div>
           <Nav />
           { content }
+          
         </div>
       );
     }
