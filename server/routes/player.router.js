@@ -6,7 +6,12 @@ const router = express.Router();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT * FROM "player_stats" ORDER BY "created_on" DESC;`;
+    const query = `SELECT * FROM "player_stats" 
+                    JOIN "position" ON "position_id" = "position"."id"
+                    JOIN "league" ON "league_id" = "league"."id"
+                    JOIN "team" ON "team_id" = "team"."id"
+                    JOIN "school" ON "school_id" = "school"."id"
+                    ORDER BY "created_on" DESC;`;
     pool.query(query).then((result) => {
         console.log(result.rows);
         res.send(result.rows);

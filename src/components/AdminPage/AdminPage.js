@@ -68,9 +68,9 @@ class AdminPage extends Component {
             <label>Email:</label>
             <input type="text" onChange={this.handleChange} value={this.state.email} name="email"></input>
             <br />
-            <button className="center" type="submit">Add Coach</button>
+            <button type="submit">Add Coach</button>
           </form>
-          <div className="center">
+          <div className="center-text">
             <button onClick={this.sendToPlayers}>Player list</button>
             <button onClick={this.sendToCoaches}>Coach List</button>
           </div>

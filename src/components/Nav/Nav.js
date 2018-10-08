@@ -16,8 +16,8 @@ const Nav = () => (
           </Link>
         </li>
         <li>
-          <Link to="/coach_page">
-            Coaches Page
+          <Link to="/players_page">
+            Players Listed Page
           </Link>
         </li>
         <li>
@@ -26,7 +26,7 @@ const Nav = () => (
           </Link>
         </li>
         <li>
-          <Link to="/admin_coach_list">
+          <Link to="/admin_coach_list_page">
             admins very own coach list
           </Link>
         </li>

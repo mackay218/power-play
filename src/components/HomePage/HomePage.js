@@ -9,13 +9,13 @@ import { triggerLogout } from '../../redux/actions/loginActions';
 
 const mapStateToProps = state => ({
   user: state.user,
-  coach: state.coach,
+  player: state.player,
 });
 
 class LandingPage extends Component {
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    this.props.dispatch({type: 'GET_ALL_COACHES'});
+    this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
   }
 
   componentDidUpdate() {
@@ -31,13 +31,13 @@ class LandingPage extends Component {
   render() {
     let content = null;
 
-    if (this.props.user.email) {
+    if (this.props.user.email && this.props.player) {
       content = (
         <div>
           <h1
             id="welcome"
           >
-            Welcome, { this.props.user.email }!
+            Welcome, {this.props.user.email}!
           </h1>
           <p>Your ID is: {this.props.user.id}</p>
           <button
@@ -52,7 +52,7 @@ class LandingPage extends Component {
     return (
       <div>
         <Nav />
-        { content }
+        {content}
       </div>
     );
   }
