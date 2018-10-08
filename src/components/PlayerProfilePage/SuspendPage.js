@@ -11,6 +11,9 @@ const mapStateToProps = state => ({
 });
 
 class SuspendPage extends Component {
+  
+  
+  
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
@@ -23,6 +26,13 @@ class SuspendPage extends Component {
 
   logout = () => {
     this.props.dispatch(triggerLogout());
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    })
   }
 
   submitReasonSuspend = (event) => {
