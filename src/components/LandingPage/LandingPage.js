@@ -25,7 +25,8 @@ class LandingPage extends Component {
         return (
             <div className="landingPageContainer">
                 <div className="nav">
-                    <img className="logo" src={logo}></img>
+                    <img className="logo" 
+                    src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"></img>
 
                     <Link to="/register">
                         Register
@@ -53,6 +54,10 @@ class LandingPage extends Component {
                         We do the things. All the things. All the time.
                         We do the things. All the things. All the time.
                     We do the things. All the things. All the time.</h3>
+                    <br></br>
+                    <h3 className="missionDetail">
+                        And we do them well. We do them with gusto. We accomplish them with gravitas.
+                    </h3>
                 </div>
                 <div className="guideContainer">
 
@@ -91,8 +96,8 @@ class LandingPage extends Component {
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
-                     
-                        
+
+
                     </div>
 
                     <div className="bioSections">
