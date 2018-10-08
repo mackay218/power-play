@@ -13,6 +13,11 @@ const userRouter = require('./routes/user.router');
 const playerRouter = require('./routes/player.router');
 const coachRouter = require('./routes/coach.router');
 
+//DATABASE MOCK DATA ROUTE - DELETE BEFORE FINAL BUILD
+const databaseFaker = require('./routes/databaseFaker.router');
+app.use('/api/databaseFaker', databaseFaker);
+/********************************************/
+
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
