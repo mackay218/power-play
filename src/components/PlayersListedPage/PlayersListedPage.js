@@ -71,7 +71,7 @@ class PlayersListedPage extends Component {
                                 </tr>
                   return tableContent
                 }
-                else if (player.position_name = "gol") {
+                else if (player.position_name === "gol") {
                   tableContent = null;
                   return tableContent
                 }
@@ -111,7 +111,7 @@ class PlayersListedPage extends Component {
                                 </tr>
                   return tableContent
                 }
-                else if (player.position_name = "fwd" || player.position_name === "def") {
+                else if (player.position_name === "fwd" || player.position_name === "def") {
                   tableContent = null;
                   return tableContent
                 }
