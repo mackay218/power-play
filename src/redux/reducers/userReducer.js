@@ -23,6 +23,18 @@ const email = (state = null, action) => {
   }
 };
 
+const role = (state = null, action) => {
+  switch (action.type) {
+    case USER_ACTIONS.SET_USER:
+      return action.user.role || state;
+    case USER_ACTIONS.UNSET_USER:
+      return null;
+    default:
+      return state;
+  }
+};
+
+
 const isLoading = (state = false, action) => {
   switch (action.type) {
     case USER_ACTIONS.REQUEST_START:
@@ -36,6 +48,7 @@ const isLoading = (state = false, action) => {
 
 export default combineReducers({
   id,
+  role,
   email,
   isLoading,
 });
