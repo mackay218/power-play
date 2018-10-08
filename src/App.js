@@ -13,7 +13,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import TermsPage from './components/TermsPage/TermsPage';
 import HomePage from './components/HomePage/HomePage';
 import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage';
-import CoachPage from './components/CoachPage/CoachPage';
+import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
 import SuspendPage from './components/PlayerProfilePage/SuspendPage';
@@ -57,8 +57,8 @@ const App = () => (
         component={SuspendPage}
         />
         <Route
-        path="/coach_page"
-        component={CoachPage}
+        path="/players_page"
+        component={PlayersListedPage}
         />
         <Route
         path="/admin_page"
