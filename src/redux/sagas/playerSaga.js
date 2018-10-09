@@ -17,9 +17,19 @@ function* playerError(action) {
     console.log('Player Error:', action.payload);
 }
 
+function* playerProfileById() {
+    try {
+        const playerProfile = yield call(axios.get, '/api/players/profileById');
+        yield put({type: 'SET_PLAYERS_BY_ID', payload: playerProfile.data});
+    } catch (error) {
+        yield put({type: 'PLAYER_ERROR', payload: error});
+    }
+}
+
 function* playerSaga() {
     yield takeLatest('GET_ALL_PLAYERS', getAllPlayers);
     yield takeLatest('PLAYER_ERROR', playerError);
+    yield takeLatest('GET_THIS_PLAYER', playerProfileById);
 }
 
 export default playerSaga;
