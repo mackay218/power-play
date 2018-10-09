@@ -9,35 +9,31 @@ const moment = require('moment');
 
 const nodemailer = require("nodemailer");
 
+
 const Chance = require('chance');
 const chance = new Chance();
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', //do I need to change this line?
-    port: 465,
-    secure: true,
-    auth: {
-        type: 'OAuth2',
-        user: process.env.my_gmail_email,
-        clientId: process.env.my_oauth_client_id,
-        clientSecret: process.env.my_oauth_client_secret,
-        refreshToken: process.env.my_oauth_refresh_token,
-        accessToken: process.env.my_oauth_access_token
-    }
-});
+
 
 //function to add new coach to database
 //only called by Admin
 router.post('/coachInvite', (req, res) => {
+    console.log('in coachInvite post');
     console.log(req.body);
 
     const coachInfo = req.body;
     
-    const coachName = coachInfo.firstName; // this may change depending on client side route
+    const coachName = coachInfo.name; // this may change depending on client side route
 
-    const emailAddress = coachInfo.emailAddress; //this may change depending on client side route
+    const emailAddress = coachInfo.email; //this may change depending on client side route
 
     const inviteCode = chance.string();
+
+    const infoForEmail = {
+        name: coachName,
+        email: emailAddress,
+        inviteCode: inviteCode
+    };
 
     const role = 'coach'; 
 
@@ -71,7 +67,7 @@ router.post('/coachInvite', (req, res) => {
             let activityLogId = activityLogResult.rows[0].id;
 
             queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, activity_log_id)
-                            VALUES ($1, $2, $3, $4, $5, $6,) RETURNING "id";`;
+                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id";`;
             
             values = [emailAddress, role, coachName, inviteCode, accountStatusId, activityLogId];
 
@@ -79,12 +75,9 @@ router.post('/coachInvite', (req, res) => {
 
             let personId = personResult.rows[0].id;
 
+            await sendInviteCode(infoForEmail);
+                
             await client.query('COMMIT');
-
-            //if creating a coach works call function to send invite
-            if(personId.length > 0){    
-                this.sendInviteCode(coachInfo);
-            }
 
             res.sendStatus(201);
         }
@@ -93,6 +86,8 @@ router.post('/coachInvite', (req, res) => {
             await client.query('ROLLBACK');
             throw error;
         } finally {
+            //if creating a coach works call function to send invite
+            
             client.release();
         }
 
@@ -103,23 +98,42 @@ router.post('/coachInvite', (req, res) => {
 });
 
 //function to send invite email
-sendInviteCode = (coachInfo) => {
+sendInviteCode = (infoForEmail) => {
 
     console.log('in sendInviteCode');
 
-    console.log(coachInfo);
+    console.log(infoForEmail);
 
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com', //do I need to change this line?
+        port: 465,
+        secure: true,
+        auth: {
+            type: 'OAuth2',
+            user: process.env.my_gmail_email,
+            clientId: process.env.my_oauth_client_id,
+            clientSecret: process.env.my_oauth_client_secret,
+            refreshToken: process.env.my_oauth_refresh_token,
+            accessToken: process.env.my_oauth_access_token,
+            expires: 1527200298318 + 3600 
+        }
+    });
+    
+    // console.log('my_gmail_email', process.env.my_gmail_email);
+    // console.log('my_oauth_client_id', process.env.my_oauth_client_id);
+    // console.log('my_oauth_client_secret', process.env.my_oauth_client_secret);
+    // console.log('my_oauth_refresh_token', process.env.my_oauth_refresh_token);
+    // console.log('my_oauth_access_token', process.env.my_oauth_access_token);
+
+    const inviteCode = infoForEmail.inviteCode;
+
+    const name = infoForEmail.name;
     //create url string for page for link to 
     //where person can set or reset password
 
-    // e.g. https://www.pprhockey.com/setPassword/[invite code here] 
+    const inviteUrl = `https://www.pprhockey.com/setPassword/${inviteCode}`; 
 
-    const mail = {
-        from: "Polaris Hockey <polarishockey@gmail.com>",
-        to: req.body.emailAddress,
-        subject: "testing nodemailer eh",
-        text: 'we invite you so join us' + req.body.emailAddress,
-        html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>PPR Hockey Invite</title>
@@ -136,7 +150,7 @@ sendInviteCode = (coachInfo) => {
                             flex-direction: column;
                             align-items: center;
                         }
-                        header{
+                         header{
                             display: flex;
                             flex-direction: row;
                             align-items: center;
@@ -147,6 +161,12 @@ sendInviteCode = (coachInfo) => {
                             padding: 20px;
                             font-family: 'Audiowide', sans-serif;
                         }
+        
+                        h1{
+                            height: 100%;
+                            padding-top: 40px;
+                        }
+
                         img{
                             width: 200px;
                             height: 200px;
@@ -165,13 +185,26 @@ sendInviteCode = (coachInfo) => {
                     </header>
                     <main>
                         <div>
-                            <p>You've been invited to try Power Play Recruiting! Click the link below to join.</p>
-                            <a>Link goes here.</a>
+                            <p>Hi! ${name},
+                                 You've been invited to try Power Play Recruiting! 
+                                 Click the link below to join.
+                            </p>
+                            <a>${inviteUrl}</a>
                         </div>
                     </main>
                 </body>
-            </html>`
+            </html>`;
+
+
+    const mail = {
+        from: "polarishockey@gmail.com",
+        to: infoForEmail.email,
+        subject: "testing nodemailer eh",
+        text: 'we invite you so join us' + infoForEmail.name,
+        html: emailHtml
     }
+
+    //console.log('mail', mail);
 
     transporter.sendMail(mail, function (error, info) {
         if (error) {
