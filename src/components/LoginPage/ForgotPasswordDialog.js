@@ -47,7 +47,14 @@ const mapStateToProps = state => ({
 
       axios.get('/api/password/' + this.state.email)
         .then((response) => {
-          console.log('response finding email:', response);
+          if (response.status === 404) {
+            alert('Sorry we can\'t find that email in our database.');
+            console.log('response finding email:', response);
+          }
+          else{
+            console.log('response finding email:', response);
+          }
+          
         })
         .catch((error) => {
           if(error.status === 404){
@@ -60,7 +67,7 @@ const mapStateToProps = state => ({
           console.log('error finding email in database:', error);
 
         });
-
+        this.handleClose();
     }
 
     render() {

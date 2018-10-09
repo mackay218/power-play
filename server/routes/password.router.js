@@ -229,13 +229,18 @@ router.get('/:emailAddress',(req, res) => {
 
     pool.query(queryText, [email])
         .then((results) => {
-            if(results.rows.length >= 1){
-                //call function to send email
+            console.log(results.rows.length);
+             if(results.rows.length >= 1){
+                 //call function to send email
                 resetPersonInviteCode(email);
-            }
                 res.sendStatus(200);
+            }
+            else{
+                res.sendStatus(404);
+            }
         })
         .catch((error) => {
+            console.log('error finding email:', error);
             res.sendStatus(404);
         });
 });
@@ -434,23 +439,171 @@ sendPasswordResetEmail = (infoForEmail) => {
 
 //post route for new password / resetting password
 router.put('/setPassword', (req, res) => {
+    console.log('in set setPassword put route');
     console.log('password info:', req.body);
-
     const passwordInfo = req.body;
     const inviteCode = passwordInfo.inviteCode;
     const password = encryptLib.encryptPassword(passwordInfo.password);
 
-    const queryText = `UPDATE person SET "password" = $1 WHERE "invite" = $2;`;
+    (async () => {
 
-    pool.query(queryText, [password, inviteCode])
-        .then(() => {
-            res.sendStatus(201);
-        })
-        .catch((error) => {
-            console.log('error resetting password in server:', error);
-            res.sendStatus(500);
-        });
+        const client = await pool.connect();
+
+        try{
+            let queryText = `UPDATE person SET "password" = $1 WHERE "invite" = $2 RETURNING "status_id";`;
+
+            let values = [password, inviteCode];
+
+            let statusIdResult = await client.query(queryText, values);
+
+            let statusId = statusIdResult.rows[0].status_id;
+            console.log('statusId', statusId);
+
+            queryText = `SELECT "id" FROM person WHERE "invite" = $1;`;
+
+            values = [inviteCode];
+
+            let personIdResult = await client.query(queryText, values);
+
+            let personId = personIdResult.rows[0].id;
+
+            console.log('personId', personId);
+
+            queryText = `SELECT "status_type" FROM account_status WHERE "id" = $1;`;
+
+            values = [statusId];
+
+            let getStatusResult = await client.query(queryText, values);
+
+            let statusType = getStatusResult.rows[0].status_type;
+
+            console.log('statusType', statusType);
+
+            let statusObject = {
+                personId: personId,
+                statusType: statusType
+            }
+
+            //call function to check/change status type if its pending
+            await checkStatusType(statusObject);
+
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+
+    })().catch((error) => {
+        console.log('CATCH', error);
+        res.sendStatus(500);
+    });
+
+
 
 });
+
+
+//function to change account_status
+checkStatusType = (statusObject) => {
+    console.log('in checkStatusType');
+    console.log(statusObject);
+
+    let personId = statusObject.personId;
+
+    if(statusObject.statusType === 'pending'){
+
+        let newStatusType = 'active';
+        let reason = 'activated account';
+
+        const activityType = 'password set or reset';
+        const activityTime = new Date();
+
+        (async () => {
+
+            const client = await pool.connect();
+
+            try{
+                //change account status
+                let queryText = `INSERT INTO account_status(status_type, reason) 
+                                VALUES ($1, $2) RETURNING "id";`;
+                let values = [newStatusType, reason];
+
+                const accountStatusResult = await client.query(queryText, values);
+
+                let accountStatusId = accountStatusResult.rows[0].id;
+
+                //log activity
+                queryText = `INSERT INTO activity_log(time, activity_type)
+                            VALUES ($1, $2) RETURNING "id";`;
+
+                values = [activityTime, activityType];
+
+                const activityLogResult = await client.query(queryText, values);
+
+                let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `UPDATE person SET "status_id" = $1, activity_log_id = $2 WHERE "id" = $3;`;
+
+                values = [accountStatusId, activityLogId, personId];
+
+                await client.query(queryText, values);
+
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+
+        })().catch((error) => {
+            console.log('CATCH', error);
+            res.sendStatus(500);
+        });
+    }
+    else{
+
+        const activityType = 'password set or reset';
+        const activityTime = new Date();
+
+        (async () => {
+
+            const client = await pool.connect();
+
+            try {
+                //log activity
+                let queryText = `INSERT INTO activity_log(time, activity_type)
+                            VALUES ($1, $2) RETURNING "id";`;
+
+                values = [activityTime, activityType];
+
+                const activityLogResult = await client.query(queryText, values);
+
+                let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `UPDATE person SET "activity_log_id = $1 WHERE "id" = $2;`;
+
+                values = [activityLogId, personId];
+
+                await client.query(queryText, values);
+
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+        })().catch((error) => {
+                console.log('CATCH', error);
+                res.sendStatus(500);
+            });
+    }
+}
 
 module.exports = router;
