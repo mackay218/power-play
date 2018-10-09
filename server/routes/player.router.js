@@ -6,7 +6,7 @@ const router = express.Router();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    
+
     const query = `SELECT * FROM "player_stats" 
                     JOIN "position" ON "position_id" = "position"."id"
                     JOIN "league" ON "league_id" = "league"."id"
@@ -23,7 +23,7 @@ router.get('/all', (req, res) => {
 });
 
 router.get('/profileById', (req, res) => {
-    
+
     id = req.user.id;
     const query = `SELECT "player_stats".*, "person"."id" FROM "player_stats"
                     JOIN "position" ON "position_id" = "position"."id"
@@ -34,12 +34,82 @@ router.get('/profileById', (req, res) => {
                     WHERE "person"."id" = $1;`;
     pool.query(query, [id]).then((result) => {
         res.send(result.rows[0])
-        console.log('by id results',id, result.rows[0]);
+        console.log('by id results', id, result.rows[0]);
     }).catch((error) => {
         console.log('ERROR getting players:', error);
         res.sendStatus(500);
     })
 
+});
+
+router.put('/updateProfile/:id', (req, res) => {
+    const userId = req.user.id;
+    const profile = req.body;
+    console.log('update privacy setting to: ', req.body);
+    const profileQuery = `UPDATE player_stats 
+                            SET team_id=$1, 
+                            school_id=$2,
+                            position_id=$3,
+                            first_name=$4,
+                            last_name=$5,
+                            phone_number=$6,
+                            birth_date=$7,
+                            height=$8,
+                            weight=$9,
+                            gpa=$10,
+                            act_score=$11,
+                            school_year=$12,
+                            video_link=$13,
+                            goals=$14,
+                            assists=$15,
+                            points=$16,
+                            games_played=$17,
+                            wins=$18,
+                            losses=$19,
+                            ties=$20,
+                            save_percent=$21,
+                            shutouts=$22,
+                            goals_against=$23,
+                            guardian=$24,
+                            player_info=$25,
+                            league_id=$26
+                            WHERE person_id=$27;`;
+    pool.query(profileQuery, 
+        [profile.team_id,
+        profile.school,
+        profile.position_id,
+        profile.first_name,
+        profile.last_name,
+        profile.phone_number,
+        profile.birth_date,
+        profile.height,
+        profile.weight,
+        profile.gpa,
+        profile.act_score,
+        profile.school_year,
+        profile.video_link,
+        profile.goals,
+        profile.assists,
+        profile.points,
+        profile.games_played,
+        profile.wins,
+        profile.losses,
+        profile.ties,
+        profile.save_percent,
+        profile.shutouts,
+        profile.goals_against,
+        profile.guardian,
+        profile.player_info,
+        profile.league_id,
+         userId])
+        .then((result) => {
+            console.log('update result: ', result);
+            res.sendStatus(200);
+        })
+        .catch((error) => {
+            console.log('error updating profile: ', error);
+            res.sendStatus(500);
+        })
 });
 
 

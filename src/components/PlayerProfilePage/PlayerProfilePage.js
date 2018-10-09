@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const mapStateToProps = state => ({
   user: state.user,
-  player: state.player,
+  player: state.player.player,
 });
 
 
@@ -20,37 +20,37 @@ class PlayerProfilePage extends Component {
     super(props);
     this.state = {
 
-      profile :
-       {
-      person_id: this.props.user.id,
-      league_id: '',
-      team_id: '',
-      school: '',
-      position_id: '',
-      first_name: '',
-      last_name: '',
-      phone_number: '',
-      birth_date: '',
-      height: '',
-      weight: '',
-      gpa: '',
-      act_score: '',
-      school_year: '',
-      video_link: '',
-      goals: '',
-      assists: '',
-      points: '',
-      games_played: '',
-      wins: '',
-      losses: '',
-      ties: '',
-      save_percent: '',
-      shutouts: '',
-      goals_against: '',
-      guardian: false,
-      player_info: '',
+      profile:
+      {
+        person_id: this.props.user.id,
+        league_id: null,
+        team_id: null,
+        school: null,
+        position_id: null,
+        first_name: null,
+        last_name: null,
+        phone_number: null,
+        birth_date: null,
+        height: null,
+        weight: null,
+        gpa: null,
+        act_score: null,
+        school_year: null,
+        video_link: null,
+        goals: null,
+        assists: null,
+        points: null,
+        games_played: null,
+        wins: null,
+        losses: null,
+        ties: null,
+        save_percent: null,
+        shutouts: null,
+        goals_against: null,
+        guardian: false,
+        player_info: null,
       },
-      
+
       toggleView: false,
     }
   }
@@ -69,11 +69,11 @@ class PlayerProfilePage extends Component {
     this.setState({
       ...this.state,
 
-      profile:{
+      profile: {
         ...this.state.profile,
-      [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value,
       }
-      
+
     })
     console.log('this.state.profile:', this.state.profile)
   }
@@ -87,16 +87,16 @@ class PlayerProfilePage extends Component {
     console.log('Player profile submitted.');
     this.toggleDisplay();
     console.log('this.state.profile:', this.state.profile)
- 
-      // axios({
-      //     method: 'PUT',
-      //     url: '/api/players/updateProfile' + userId,
-      //     data: this.state.profile,
-      //     success: function (response) {
-      //         console.log('update avatar response: ', response)
-      //     }
-      // });
-    
+
+    axios({
+      method: 'PUT',
+      url: '/api/players/updateProfile/' + this.props.user.id,
+      data: this.state.profile,
+      success: function (response) {
+        console.log('update profile response: ', response)
+      }
+    });
+
   }
 
   toggleDisplay = () => {
@@ -104,7 +104,7 @@ class PlayerProfilePage extends Component {
       ...this.state,
       toggleView: !this.state.toggleView
     })
-   console.log(this.state.toggleView);
+    console.log(this.state.toggleView);
 
   }
 
@@ -112,19 +112,20 @@ class PlayerProfilePage extends Component {
     let content = null;
     let positionalContent = null;
     let playerScreenContent = null;
-    
-     {
+
+    {
       playerScreenContent = (
         <div className="playerProfileContainer">
-        <div>
-          {JSON.stringify(this.props.player)}
-          <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
-        </div>
           <div>
-            <button onClick={this.toggleDisplay}>shit</button>
+            {JSON.stringify(this.props.player)}
+            <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+          </div>
+          <div>
+            <button onClick={this.toggleDisplay}>test</button>
           </div>
         </div>
-      )}
+      )
+    }
 
     if (this.state.position_id === '3') {
       positionalContent = (
@@ -137,9 +138,9 @@ class PlayerProfilePage extends Component {
           </div>
           <div>
             <input type="number" placeholder="Save %" value={this.state.profile.save_percent} onChange={this.handleProfileChange} name="save_percent"></input>
-            <input type="number" placeholder="Shutouts"></input>
-            <input type="number" placeholder="Goals Against"></input>
-            <input type="number" placeholder="Games Played"></input>
+            <input type="number" placeholder="Shutouts" value={this.state.profile.shutouts} onChange={this.handleProfileChange} name="shutouts"></input>
+            <input type="number" placeholder="Goals Against" value={this.state.profile.goals_against} onChange={this.handleProfileChange} name="goals_against"></input>
+            <input type="number" placeholder="Games Played" value={this.state.profile.games_played} onChange={this.handleProfileChange} name="games_played"></input>
           </div>
         </div>
       )
@@ -148,12 +149,12 @@ class PlayerProfilePage extends Component {
         <div>
           <div>
             <label>Skater Options:</label>
-            <input type="number" placeholder="Goals"></input>
-            <input type="number" placeholder="Assists"></input>
-            <input type="number" placeholder="Points"></input>
+            <input type="number" placeholder="Goals" value={this.state.profile.goals} onChange={this.handleProfileChange} name="goals"></input>
+            <input type="number" placeholder="Assists" value={this.state.profile.assists} onChange={this.handleProfileChange} name="assists"></input>
+            <input type="number" placeholder="Points" value={this.state.profile.points} onChange={this.handleProfileChange} name="points"></input>
           </div>
           <div>
-            <input type="number" placeholder="Games Played"></input>
+            <input type="number" placeholder="Games Played" value={this.state.profile.games_played} onChange={this.handleProfileChange} name="games_played"></input>
           </div>
         </div>
       )
@@ -171,7 +172,7 @@ class PlayerProfilePage extends Component {
             <div>
               <input type="text" placeholder="Email"></input>
               <input type="number" placeholder="Phone Number" value={this.state.profile.phone_number} onChange={this.handleProfileChange} name="phone_number"></input>
-              
+
               <select value={this.state.profile.grade} onChange={this.handleProfileChange} name="grade">
                 <option value="Grade">Grade</option>
                 <option value="10">10</option>
@@ -183,7 +184,7 @@ class PlayerProfilePage extends Component {
             <div>
               <input type="number" placeholder="GPA" value={this.state.profile.gpa} onChange={this.handleProfileChange} name="gpa"></input>
               <input type="text" placeholder="Weight" value={this.state.profile.weight} onChange={this.handleProfileChange} name="weight"></input>
-              
+
               <select value={this.state.profile.position_id} onChange={this.handleProfileChange} name="position_id">
                 <option value="">Position</option>
                 <option value="1">Forward</option>
@@ -238,32 +239,40 @@ class PlayerProfilePage extends Component {
               {positionalContent}
             </div>
           </form>
-        {/* <div>
+          {/* <div>
           {playerScreenContent}
         </div> */}
         </div>
       );
     }
 
-    if (this.state.toggleView === false) {
-      return (
-        <div>
-          {playerScreenContent}
-        </div>
-      )
-    }else {
+    // if (this.props.player.length > 0) {
 
-    return (
-      <div>
-        <Nav />
-        {content}
-      </div>
-    );
+      if (this.state.toggleView === false) {
+        return (
+          <div>
+            {playerScreenContent}
+          </div>
+        )
+      } else {
+
+        return (
+          <div>
+            <Nav />
+            {content}
+          </div>
+        );
+      }
     }
-  }
-  
+  //   else {
+  //     return (<div>loading</div>)
+  //   }
+  // }
 
-  
+
+
+
+
 }
 
 // this allows us to use <App /> in index.js
