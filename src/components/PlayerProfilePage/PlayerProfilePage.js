@@ -65,10 +65,15 @@ class PlayerProfilePage extends Component {
     }
   }
 
-  handleChange = (event) => {
+  handleProfileChange = (event) => {
     this.setState({
-      ...this.state.profile,
+      ...this.state,
+
+      profile:{
+        ...this.state.profile,
       [event.target.name]: event.target.value,
+      }
+      
     })
     console.log('this.state.profile:', this.state.profile)
   }
@@ -126,12 +131,12 @@ class PlayerProfilePage extends Component {
         <div>
           <div>
             <label>Goalie Options:</label>
-            <input type="number" placeholder="Wins"></input>
-            <input type="number" placeholder="Losses"></input>
-            <input type="number" placeholder="Ties"></input>
+            <input type="number" placeholder="Wins" value={this.state.profile.wins} onChange={this.handleProfileChange} name="wins"></input>
+            <input type="number" placeholder="Losses" value={this.state.profile.losses} onChange={this.handleProfileChange} name="losses"></input>
+            <input type="number" placeholder="Ties" value={this.state.profile.ties} onChange={this.handleProfileChange} name="ties"></input>
           </div>
           <div>
-            <input type="number" placeholder="Save %"></input>
+            <input type="number" placeholder="Save %" value={this.state.profile.save_percent} onChange={this.handleProfileChange} name="save_percent"></input>
             <input type="number" placeholder="Shutouts"></input>
             <input type="number" placeholder="Goals Against"></input>
             <input type="number" placeholder="Games Played"></input>
@@ -157,16 +162,17 @@ class PlayerProfilePage extends Component {
       content = (
         <div>
           <h1 className="center-text">Enter Information</h1>
-          <form className="playerForm" onSubmit={this.submitPlayerProfile}>
+          <form className="playerForm" onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange}>
             <div>
-              <input type="text" placeholder="First Name"></input>
-              <input type="text" placeholder="Last Name"></input>
-              <input type="text" placeholder="School"></input>
+              <input type="text" placeholder="First Name" value={this.state.profile.first_name} onChange={this.handleProfileChange} name="first_name"></input>
+              <input type="text" placeholder="Last Name" value={this.state.profile.last_name} onChange={this.handleProfileChange} name="last_name"></input>
+              <input type="text" placeholder="School" value={this.state.profile.school} onChange={this.handleProfileChange} name="school"></input>
             </div>
             <div>
               <input type="text" placeholder="Email"></input>
-              <input type="number" placeholder="Phone Number"></input>
-              <select>
+              <input type="number" placeholder="Phone Number" value={this.state.profile.phone_number} onChange={this.handleProfileChange} name="phone_number"></input>
+              
+              <select value={this.state.profile.grade} onChange={this.handleProfileChange} name="grade">
                 <option value="Grade">Grade</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
@@ -175,18 +181,20 @@ class PlayerProfilePage extends Component {
               </select>
             </div>
             <div>
-              <input type="number" placeholder="GPA"></input>
-              <input type="text" placeholder="Weight"></input>
-              <select value={this.state.profile.position_id} onChange={this.handleChange} name="position_id">
+              <input type="number" placeholder="GPA" value={this.state.profile.gpa} onChange={this.handleProfileChange} name="gpa"></input>
+              <input type="text" placeholder="Weight" value={this.state.profile.weight} onChange={this.handleProfileChange} name="weight"></input>
+              
+              <select value={this.state.profile.position_id} onChange={this.handleProfileChange} name="position_id">
                 <option value="">Position</option>
                 <option value="1">Forward</option>
                 <option value="2">Defence</option>
                 <option value="3">Goalie</option>
               </select>
+              {JSON.stringify(this.state.profile.position_id)}
             </div>
             <div>
-              <input placeholder="Video URL"></input>
-              <select value={this.state.profile.league_id} onChange={this.handleChange} name="league_id">
+              <input placeholder="Video URL" value={this.state.profile.video_link} onChange={this.handleProfileChange} name="video_link"></input>
+              <select value={this.state.profile.league_id} onChange={this.handleProfileChange} name="league_id">
                 <option value="">League</option>
                 <option value="1">1A</option>
                 <option value="2">2A</option>
@@ -207,7 +215,7 @@ class PlayerProfilePage extends Component {
               </select>
               <label>Date Of Birth:</label>
               {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
-              <select>
+              <select value={this.state.profile.birth_date} onChange={this.handleProfileChange} name="birth_date">
                 <option value="">DOB</option>
                 <option value="1">Jan, 1956</option>
                 <option value="2">Feb, 1776</option>
@@ -216,7 +224,7 @@ class PlayerProfilePage extends Component {
             </div>
             <div>
               <label>Notes:</label>
-              <input></input>
+              <input value={this.state.profile.player_info} onChange={this.handleProfileChange} name="player_info"></input>
             </div>
             {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
             <div>
