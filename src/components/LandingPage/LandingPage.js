@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import ReactDOM from 'react-dom';
+
 // styling imports
 import '../LandingPage/LandingPage.css';
 
-const logo = 'images/logo_edited.png'
 
 class LandingPage extends Component {
 
@@ -18,15 +19,24 @@ class LandingPage extends Component {
 
     constructor(props) {
         super(props)
-
+        this.aboutRef = React.createRef();
     }
+
+
+    // scrollToAbout = () => {
+    //      console.log('in scroll click');
+    //     const aboutDomNode = ReactDOM.findDOMNode(this.aboutRef.current);
+    //     aboutDomNode.scrollIntoView();
+
+    //      window.scrollTo(0, this.aboutRef.current);
+    // }
 
     render() {
         return (
             <div className="landingPageContainer">
                 <div className="nav">
-                    <img className="logo" 
-                    src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"></img>
+                    <img className="logo"
+                        src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"></img>
 
                     <Link to="/register">
                         Register
@@ -40,7 +50,7 @@ class LandingPage extends Component {
                         Terms
                 </Link>
 
-                    <a href="#aboutNavigate">About</a>
+                    <a>About</a>
 
                 </div>
 
@@ -79,7 +89,8 @@ class LandingPage extends Component {
                     </div>
                 </div>
 
-                <div className="aboutContainer" id="#aboutNavigate">
+                <div className="aboutContainer" id="#aboutNavigate" 
+                ref={aboutRef => this.aboutRef = aboutRef}>
 
                     <div className="bioSections">
                         {/* material avatars go here */}
