@@ -6,6 +6,17 @@ import Nav from '../Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import moment from 'moment';
+import './PlayersListedPage.css';
+
 const mapStateToProps = state => ({
   user: state.user,
   player: state.player.player,
@@ -54,6 +65,11 @@ class PlayersListedPage extends Component {
     console.log('Sent sort info to server', this.state);
   }
 
+  toPlayerProfile = (id) => {
+    //this.props.history.push('admin_page')
+    console.log(id);
+  }
+
   render() {
     let content = null;
     let formContent = null;
@@ -61,10 +77,10 @@ class PlayersListedPage extends Component {
       formContent = (
         <div>
           <h4 className="center-text">Skater Options</h4>
-          <input type="number" onChange={this.handleChange} placeholder="Points Min" name="pointsMin" />
-          <input type="number" onChange={this.handleChange} placeholder="Points Max" name="pointsMax" />
-          <input type="text" onChange={this.handleChange} placeholder="Birth Year Min" name="birthDayMin" />
-          <input type="text" onChange={this.handleChange} placeholder="Birth Year max" name="birthDayMax" />
+          <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
+          <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Year Min" name="birthDayMin" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Year max" name="birthDayMax" />
         </div>
       )
     }
@@ -72,10 +88,10 @@ class PlayersListedPage extends Component {
       formContent = (
         <div>
           <h4 className="center-text">Goalie Options</h4>
-          <input type="number" onChange={this.handleChange} placeholder="Wins Min" name="winsMin" />
-          <input type="number" onChange={this.handleChange} placeholder="Wins Max" name="winsMax" />
-          <input type="text" onChange={this.handleChange} placeholder="Birth Year Min" name="birthDayMin" />
-          <input type="text" onChange={this.handleChange} placeholder="Birth Year max" name="birthDayMax" />
+          <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
+          <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Year Min" name="birthDayMin" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Year max" name="birthDayMax" />
         </div>
       )
     }
@@ -83,57 +99,48 @@ class PlayersListedPage extends Component {
     if (this.props.user.email && this.props.player) {
       content = (
         <div>
-          <button onClick={this.logout}>Log Out</button>
-          <form onSubmit={this.sendSortBy}>
+          <Button variant="contained" color="primary" onClick={this.logout}>Log Out</Button>
+          <form className="search-form" onSubmit={this.sendSortBy}>
             <h3 className="center-text">Search Players By:</h3>
-            <input type="text" onChange={this.handleChange} placeholder="Player Name..." name="playerName" />
-            <span>or </span>
-            <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
-              <option value="">Position</option>
-              <option value="1">Forward</option>
-              <option value="2">Defense</option>
-              <option value="3">Goalies</option>
-            </select>
+                <TextField type="text" label="Player Name" onChange={this.handleChange} name="playerName" />
+                <span>or </span>
+                <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
+                  <option value="">Position</option>
+                  <option value="1">Forward</option>
+                  <option value="2">Defense</option>
+                  <option value="3">Goalies</option>
+                </select>
             <br />
             {formContent}
-            <button type="submit">Sort</button>
+            <Button variant="contained" type="submit">Sort</Button>
           </form>
           <h2 className="center-text">Players</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>League</th>
-                <th>Team</th>
-                <th>Birthdate</th>
-                <th>Height</th>
-                <th>Weight</th>
-                <th>GPA</th>
-                <th>Goals</th>
-                <th>Assists</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.player.map((player, i) => {
-                return (<tr key={i}>
-                  <td>{player.first_name} {player.last_name}</td>
-                  <td>{player.position_name}</td>
-                  <td>{player.league_name}</td>
-                  <td>{player.team_name}</td>
-                  <td>{player.birth_date}</td>
-                  <td>{player.height}</td>
-                  <td>{player.weight}</td>
-                  <td>{player.gpa}</td>
-                  <td>{player.goals}</td>
-                  <td>{player.assists}</td>
-                  <td>{player.points}</td>
-                </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <Paper>
+            <Table>
+              <TableHead className="table-head">
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Position</TableCell>
+                  <TableCell>Birthdate</TableCell>
+                  <TableCell>Points</TableCell>
+                  <TableCell>Wins</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.props.player.map((player, i) => {
+                  return (
+                    <TableRow key={i} onClick={() => this.toPlayerProfile(player.id)}>
+                    <TableCell>{player.first_name} {player.last_name}</TableCell>
+                    <TableCell>{player.position_name}</TableCell>
+                    <TableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</TableCell>
+                    <TableCell>{player.points}</TableCell>
+                    <TableCell>{player.wins}</TableCell>
+                  </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </Paper>
         </div>
       );
     }
