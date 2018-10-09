@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
 });
 
 
-
 class PlayerProfilePage extends Component {
   constructor(props) {
     super(props);
@@ -81,6 +80,7 @@ class PlayerProfilePage extends Component {
       toggleView: !this.state.toggleView
     })
    console.log(this.state.toggleView);
+
   }
 
   render() {
@@ -101,6 +101,28 @@ class PlayerProfilePage extends Component {
       )}
 
      
+    if (this.state.position_id === '3') {
+      positionalContent = (
+        <div>
+          <div>
+            <label>Goalie Options:</label>
+            <input type="number" placeholder="Wins"></input>
+            <input type="number" placeholder="Losses"></input>
+            <input type="number" placeholder="Ties"></input>
+          </div>
+          <div>
+            <input type="number" placeholder="Save %"></input>
+            <input type="number" placeholder="Shutouts"></input>
+            <input type="number" placeholder="Goals Against"></input>
+            <input type="number" placeholder="Games Played"></input>
+          </div>
+        </div>
+      )
+    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+      positionalContent = (
+        <div>
+          <div>
+
     if (this.state.position_id === '3') {
       positionalContent = (
         <div>
@@ -213,6 +235,10 @@ class PlayerProfilePage extends Component {
         {/* <div>
           {playerScreenContent}
         </div> */}
+
+              {positionalContent}
+            </div>
+          </form>
         </div>
       );
     }
@@ -224,6 +250,7 @@ class PlayerProfilePage extends Component {
         </div>
       )
     }else {
+
     return (
       <div>
         <Nav />
@@ -233,6 +260,8 @@ class PlayerProfilePage extends Component {
     }
   }
   
+
+  }
 }
 
 // this allows us to use <App /> in index.js
