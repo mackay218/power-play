@@ -31,6 +31,11 @@
     
 }
 
+.testimonialSections{
+    display: inline-block;
+    margin: 20px;
+    width: 20%;
+}
 .bioSections{
     /* will be replaced with material grid */
     display: inline-block;

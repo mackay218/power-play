@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import ReactDOM from 'react-dom';
+
 // styling imports
 import '../LandingPage/LandingPage.css';
 
-const logo = 'images/logo_edited.png'
 
 class LandingPage extends Component {
 
@@ -16,12 +17,28 @@ class LandingPage extends Component {
         this.props.history.push('register');
     }
 
+    constructor(props) {
+        super(props)
+        this.aboutRef = React.createRef();
+    }
+
+
+    // scrollToAbout = () => {
+    //      console.log('in scroll click');
+    //     const aboutDomNode = ReactDOM.findDOMNode(this.aboutRef.current);
+    //     aboutDomNode.scrollIntoView();
+
+    //      window.scrollTo(0, this.aboutRef.current);
+    // }
+
     render() {
         return (
             <div className="landingPageContainer">
                 <div className="nav">
-                    <img className="logo" 
-                    src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ" alt="pic1"></img>
+                    <img className="logo"
+                        src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                        alt="logo"></img>
+
 
                     <Link to="/register">
                         Register
@@ -35,7 +52,7 @@ class LandingPage extends Component {
                         Terms
                 </Link>
 
-                    <a href="#aboutNavigate">About</a>
+                    <a>About</a>
 
                 </div>
 
@@ -74,11 +91,34 @@ class LandingPage extends Component {
                     </div>
                 </div>
 
-                <div className="aboutContainer" id="#aboutNavigate">
+                <div className="testimonialContainer">
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                </div>
+
+                <div className="aboutContainer" id="#aboutNavigate"
+                    ref={aboutRef => this.aboutRef = aboutRef}>
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img  alt="pic2"></img>
+                        <img></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -87,7 +127,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img alt="pic3"></img>
+                        <img></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -97,7 +137,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img alt="pic4"></img>
+                        <img></img>
                         <p>A bio. A personal epic of Olympian scale.<br>
                         </br>Avatars go right above this.</p>
                     </div>
