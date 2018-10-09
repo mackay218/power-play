@@ -443,6 +443,10 @@ router.put('/setPassword', (req, res) => {
     console.log('password info:', req.body);
     const passwordInfo = req.body;
     const inviteCode = passwordInfo.inviteCode;
+    
+    const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+
+
     const password = encryptLib.encryptPassword(passwordInfo.password);
 
     (async () => {
@@ -450,9 +454,9 @@ router.put('/setPassword', (req, res) => {
         const client = await pool.connect();
 
         try{
-            let queryText = `UPDATE person SET "password" = $1 WHERE "invite" = $2 RETURNING "status_id";`;
+            let queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3 RETURNING "status_id";`;
 
-            let values = [password, inviteCode];
+            let values = [password, newInviteCode, inviteCode];
 
             let statusIdResult = await client.query(queryText, values);
 
@@ -461,7 +465,7 @@ router.put('/setPassword', (req, res) => {
 
             queryText = `SELECT "id" FROM person WHERE "invite" = $1;`;
 
-            values = [inviteCode];
+            values = [newInviteCode];
 
             let personIdResult = await client.query(queryText, values);
 
@@ -486,7 +490,7 @@ router.put('/setPassword', (req, res) => {
 
             //call function to check/change status type if its pending
             await checkStatusType(statusObject);
-
+            res.sendStatus(201);
         }
         catch (error) {
             console.log('ROLLBACK', error);
@@ -504,7 +508,6 @@ router.put('/setPassword', (req, res) => {
 
 
 });
-
 
 //function to change account_status
 checkStatusType = (statusObject) => {
@@ -604,6 +607,7 @@ checkStatusType = (statusObject) => {
                 res.sendStatus(500);
             });
     }
+   
 }
 
 module.exports = router;
