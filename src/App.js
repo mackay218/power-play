@@ -16,6 +16,7 @@ import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage'
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
 import SuspendPage from './components/PlayerProfilePage/SuspendPage';
+import SetPasswordPage from './components/SetPasswordPage/SetPasswordPage';
 
 import './styles/main.css';
 
@@ -63,7 +64,10 @@ const App = () => (
         path="/admin_coach_list_page"
         component={CoachListPage}
         />
-        
+        <Route
+        path="/set_password/:inviteCode"
+        component={SetPasswordPage}
+        />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
 

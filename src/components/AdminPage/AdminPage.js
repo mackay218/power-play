@@ -50,7 +50,7 @@ class AdminPage extends Component {
     axios.post('/api/password/coachInvite', this.state)
       .then((response) => {
         console.log('email invite sent to: ', this.state.email);
-        alert('email invite sent to: ', this.state.email);
+        alert('email invite sent');
       })
       .catch((error) => {
         console.log('error sending invite: ', error);

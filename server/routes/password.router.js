@@ -1,6 +1,6 @@
 const express = require('express');
 // const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-// const encryptLib = require('../modules/encryption');
+const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 
 const router = express.Router();
@@ -9,11 +9,8 @@ const moment = require('moment');
 
 const nodemailer = require("nodemailer");
 
-
 const Chance = require('chance');
 const chance = new Chance();
-
-
 
 //function to add new coach to database
 //only called by Admin
@@ -27,7 +24,8 @@ router.post('/coachInvite', (req, res) => {
 
     const emailAddress = coachInfo.email; //this may change depending on client side route
 
-    const inviteCode = chance.string();
+    //limit inivite code to alphanumeric to avoid url problems
+    const inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
 
     const infoForEmail = {
         name: coachName,
@@ -131,7 +129,7 @@ sendInviteCode = (infoForEmail) => {
     //create url string for page for link to 
     //where person can set or reset password
 
-    const inviteUrl = `https://www.pprhockey.com/setPassword/${inviteCode}`; 
+    const inviteUrl = `localhost:3000/#/set_password/${inviteCode}`; 
 
     const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -189,7 +187,7 @@ sendInviteCode = (infoForEmail) => {
                                  You've been invited to try Power Play Recruiting! 
                                  Click the link below to join.
                             </p>
-                            <a>${inviteUrl}</a>
+                            <p>${inviteUrl}</p>
                         </div>
                     </main>
                 </body>
@@ -222,5 +220,26 @@ sendInviteCode = (infoForEmail) => {
         transporter.close();
     });
 }
+
+//post route for new password / resetting password
+router.put('/setPassword', (req, res) => {
+    console.log('password info:', req.body);
+
+    const passwordInfo = req.body;
+    const inviteCode = passwordInfo.inviteCode;
+    const password = encryptLib.encryptPassword(passwordInfo.password);
+
+    const queryText = `UPDATE person SET "password" = $1 WHERE "invite" = $2;`;
+
+    pool.query(queryText, [password, inviteCode])
+        .then(() => {
+            res.sendStatus(201);
+        })
+        .catch((error) => {
+            console.log('error resetting password in server:', error);
+            res.sendStatus(500);
+        });
+
+});
 
 module.exports = router;
