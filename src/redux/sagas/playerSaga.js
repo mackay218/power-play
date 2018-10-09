@@ -14,7 +14,7 @@ function* getAllPlayers() {
 
 function* createPlayer(action) {
     try {
-        yield call(axios.post, '/api/players/create', action.payload);
+        yield call(axios.post, '/api/players/create', { id: action.payload});
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
