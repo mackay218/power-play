@@ -11,7 +11,6 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LandingPage from './components/LandingPage/LandingPage';
 import TermsPage from './components/TermsPage/TermsPage';
-import HomePage from './components/HomePage/HomePage';
 import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage';
 import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage';
 import AdminPage from './components/AdminPage/AdminPage';
@@ -33,10 +32,6 @@ const App = () => (
         <Route
           path="/register"
           component={RegisterPage}
-        />
-        <Route
-          path="/home"
-          component={HomePage}
         />
         {/* static legal terms page */}
         <Route
