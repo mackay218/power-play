@@ -17,8 +17,7 @@ class PlayersListedPage extends Component {
     super();
     this.state = {
       playerName: '',
-      position: '',
-      skaterPosition: '',
+      position_id: '',
       pointsMin: '',
       pointsMax: '',
       winsMin: '',
@@ -57,17 +56,11 @@ class PlayersListedPage extends Component {
 
   render() {
     let content = null;
-    let tableContent = null;
     let formContent = null;
-    if (this.state.position === "skater") {
+    if (this.state.position_id === "1" || this.state.position_id === "2") {
       formContent = (
         <div>
-          <select onChange={this.handleChange} name="skaterPosition">
-            <option>Position...</option>
-            <option>Forward</option>
-            <option>Defense</option>
-          </select>
-          <br />
+          <h4 className="center-text">Skater Options</h4>
           <input type="number" onChange={this.handleChange} placeholder="Points Min" name="pointsMin" />
           <input type="number" onChange={this.handleChange} placeholder="Points Max" name="pointsMax" />
           <input type="text" onChange={this.handleChange} placeholder="Birth Year Min" name="birthDayMin" />
@@ -75,9 +68,10 @@ class PlayersListedPage extends Component {
         </div>
       )
     }
-    else if (this.state.position === "goalie") {
+    else if (this.state.position_id === "3") {
       formContent = (
         <div>
+          <h4 className="center-text">Goalie Options</h4>
           <input type="number" onChange={this.handleChange} placeholder="Wins Min" name="winsMin" />
           <input type="number" onChange={this.handleChange} placeholder="Wins Max" name="winsMax" />
           <input type="text" onChange={this.handleChange} placeholder="Birth Year Min" name="birthDayMin" />
@@ -89,24 +83,27 @@ class PlayersListedPage extends Component {
     if (this.props.user.email && this.props.player) {
       content = (
         <div>
-          <h1 className="center-text">Players</h1>
+          <button onClick={this.logout}>Log Out</button>
           <form onSubmit={this.sendSortBy}>
-            <h3 className="center-text">Search</h3>
-            <select value={this.state.position} onChange={this.handleChange} name="position">
-              <option value="">All</option>
-              <option value="skater">Skaters</option>
-              <option value="goalie">Goalies</option>
+            <h3 className="center-text">Search Players By:</h3>
+            <input type="text" onChange={this.handleChange} placeholder="Player Name..." name="playerName" />
+            <span>or </span>
+            <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
+              <option value="">Position</option>
+              <option value="1">Forward</option>
+              <option value="2">Defense</option>
+              <option value="3">Goalies</option>
             </select>
-            <input type="text" onChange={this.handleChange} placeholder="Player Name..." name="playerName"/>
             <br />
-            {formContent} 
+            {formContent}
             <button type="submit">Sort</button>
           </form>
-          <h3>Skater Results</h3>
+          <h2 className="center-text">Players</h2>
           <table>
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Position</th>
                 <th>League</th>
                 <th>Team</th>
                 <th>Birthdate</th>
@@ -120,70 +117,30 @@ class PlayersListedPage extends Component {
             </thead>
             <tbody>
               {this.props.player.map((player, i) => {
-                if (player.position_name === "fwd" || player.position_name === "def") {
-                  tableContent = <tr key={i}>
-                    <td>{player.first_name} {player.last_name}</td>
-                    <td>{player.league_name}</td>
-                    <td>{player.team_name}</td>
-                    <td>{player.birth_date}</td>
-                    <td>{player.height}</td>
-                    <td>{player.weight}</td>
-                    <td>{player.gpa}</td>
-                    <td>{player.goals}</td>
-                    <td>{player.assists}</td>
-                    <td>{player.points}</td>
-                  </tr>
-                  return tableContent
-                }
-                else if (player.position_name === "gol") {
-                  tableContent = null;
-                  return tableContent;
-                }
-              })}
-            </tbody>
-          </table>
-          <h3>Goalie Results</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>League</th>
-                <th>Team</th>
-                <th>Birthdate</th>
-                <th>Height</th>
-                <th>Weight</th>
-                <th>GPA</th>
-                <th>Wins</th>
-                <th>Save %</th>
-                <th>Shutouts</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.player.map((player, i) => {
-                if (player.position_name === "gol") {
-                  tableContent = <tr key={i}>
-                    <td>{player.first_name} {player.last_name}</td>
-                    <td>{player.league_name}</td>
-                    <td>{player.team_name}</td>
-                    <td>{player.birth_date}</td>
-                    <td>{player.height}</td>
-                    <td>{player.weight}</td>
-                    <td>{player.gpa}</td>
-                    <td>{player.wins}</td>
-                    <td>{player.save_percent}</td>
-                    <td>{player.shutouts}</td>
-                  </tr>
-                  return tableContent
-                }
-                else if (player.position_name === "fwd" || player.position_name === "def") {
-                  tableContent = null;
-                  return tableContent
-                }
+                return (<tr key={i}>
+                  <td>{player.first_name} {player.last_name}</td>
+                  <td>{player.position_name}</td>
+                  <td>{player.league_name}</td>
+                  <td>{player.team_name}</td>
+                  <td>{player.birth_date}</td>
+                  <td>{player.height}</td>
+                  <td>{player.weight}</td>
+                  <td>{player.gpa}</td>
+                  <td>{player.goals}</td>
+                  <td>{player.assists}</td>
+                  <td>{player.points}</td>
+                </tr>
+                )
               })}
             </tbody>
           </table>
         </div>
       );
+    }
+    else {
+      content = (
+        <p>Loading...</p>
+      )
     }
 
     return (
