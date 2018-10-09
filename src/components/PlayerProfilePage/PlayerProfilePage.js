@@ -7,9 +7,11 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
 
+import axios from 'axios';
+
 const mapStateToProps = state => ({
   user: state.user,
-  player: state.player.player,
+  player: state.player,
 });
 
 
@@ -17,6 +19,9 @@ class PlayerProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+
+      profile :
+       {
       person_id: this.props.user.id,
       league_id: '',
       team_id: '',
@@ -44,6 +49,8 @@ class PlayerProfilePage extends Component {
       goals_against: '',
       guardian: false,
       player_info: '',
+      },
+      
       toggleView: false,
     }
   }
@@ -60,9 +67,10 @@ class PlayerProfilePage extends Component {
 
   handleChange = (event) => {
     this.setState({
-      ...this.state,
+      ...this.state.profile,
       [event.target.name]: event.target.value,
     })
+    console.log('this.state.profile:', this.state.profile)
   }
 
   logout = () => {
@@ -73,6 +81,17 @@ class PlayerProfilePage extends Component {
     event.preventDefault();
     console.log('Player profile submitted.');
     this.toggleDisplay();
+    console.log('this.state.profile:', this.state.profile)
+ 
+      // axios({
+      //     method: 'PUT',
+      //     url: '/api/players/updateProfile' + userId,
+      //     data: this.state.profile,
+      //     success: function (response) {
+      //         console.log('update avatar response: ', response)
+      //     }
+      // });
+    
   }
 
   toggleDisplay = () => {
@@ -119,7 +138,7 @@ class PlayerProfilePage extends Component {
           </div>
         </div>
       )
-    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+    } else if (this.state.profile.position_id === '2' || this.state.profile.position_id === '1') {
       positionalContent = (
         <div>
           <div>
@@ -158,7 +177,7 @@ class PlayerProfilePage extends Component {
             <div>
               <input type="number" placeholder="GPA"></input>
               <input type="text" placeholder="Weight"></input>
-              <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
+              <select value={this.state.profile.position_id} onChange={this.handleChange} name="position_id">
                 <option value="">Position</option>
                 <option value="1">Forward</option>
                 <option value="2">Defence</option>
@@ -167,7 +186,7 @@ class PlayerProfilePage extends Component {
             </div>
             <div>
               <input placeholder="Video URL"></input>
-              <select value={this.state.league_id} onChange={this.handleChange} name="league_id">
+              <select value={this.state.profile.league_id} onChange={this.handleChange} name="league_id">
                 <option value="">League</option>
                 <option value="1">1A</option>
                 <option value="2">2A</option>

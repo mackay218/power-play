@@ -129,7 +129,11 @@ sendInviteCode = (infoForEmail) => {
     //create url string for page for link to 
     //where person can set or reset password
 
-    const inviteUrl = `localhost:3000/#/set_password/${inviteCode}`; 
+    const websiteUrl = process.env.set_password_page;
+
+    const inviteUrlAnchor = `<a target="_blank" href="${websiteUrl}${inviteCode}">Confirm Registration</a>`; 
+
+    const homePageAnchor = process.env.set_home_page;
 
     const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -165,7 +169,7 @@ sendInviteCode = (infoForEmail) => {
                             padding-top: 40px;
                         }
 
-                        img{
+                        a img{
                             width: 200px;
                             height: 200px;
                         }
@@ -178,7 +182,9 @@ sendInviteCode = (infoForEmail) => {
                 </head>
                 <body>
                     <header>
-                        <img src="https://drive.google.com/uc?export=view&id=1w_MFiI3Y8M3hDV2nKx_2XyDr8olDI18y" alt="ppr hockey logo"/>
+                        <a href="${homePageAnchor}">
+                            <img src="https://drive.google.com/uc?export=view&id=1w_MFiI3Y8M3hDV2nKx_2XyDr8olDI18y" alt="ppr hockey logo"/>
+                        </a>
                         <h1>YOU'VE BEEN INVITED!</h1>
                     </header>
                     <main>
@@ -187,7 +193,7 @@ sendInviteCode = (infoForEmail) => {
                                  You've been invited to try Power Play Recruiting! 
                                  Click the link below to join.
                             </p>
-                            <p>${inviteUrl}</p>
+                            ${inviteUrlAnchor}
                         </div>
                     </main>
                 </body>

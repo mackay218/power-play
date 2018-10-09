@@ -6,9 +6,7 @@ const router = express.Router();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    skaters = null;
-    goalies = null;
-    players = {};
+    
     const query = `SELECT * FROM "player_stats" 
                     JOIN "position" ON "position_id" = "position"."id"
                     JOIN "league" ON "league_id" = "league"."id"
@@ -25,9 +23,8 @@ router.get('/all', (req, res) => {
 });
 
 router.get('/profileById', (req, res) => {
-    skaters = null;
-    goalies = null;
-    players = {};
+    
+    id = req.user.id;
     const query = `SELECT "player_stats".*, "person"."id" FROM "player_stats"
                     JOIN "position" ON "position_id" = "position"."id"
                     JOIN "league" ON "league_id" = "league"."id"
@@ -35,8 +32,9 @@ router.get('/profileById', (req, res) => {
                     JOIN "school" ON "school_id" = "school"."id"
                     JOIN "person" ON "person_id" = "person"."id"
                     WHERE "person"."id" = $1;`;
-    pool.query(query, [req.user.id]).then((result) => {
-        res.send(result.rows)
+    pool.query(query, [id]).then((result) => {
+        res.send(result.rows[0])
+        console.log('by id results',id, result.rows[0]);
     }).catch((error) => {
         console.log('ERROR getting players:', error);
         res.sendStatus(500);
