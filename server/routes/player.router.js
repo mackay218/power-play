@@ -48,8 +48,14 @@ router.get('/profileById', (req, res) => {
 /**
  * POST route template
  */
-router.post('/', (req, res) => {
-
+router.post('/create', (req, res) => {
+    const query = `INSERT INTO "player_stats" ("person_id") VALUES ($1);`;
+    pool.query(query, [req.body.id]).then((result) => {
+        res.sendStatus(201);
+    }).catch((error) => {
+        console.log('ERROR adding player:', error);
+        res.sendStatus(500);
+    })
 });
 
 module.exports = router;
