@@ -16,17 +16,12 @@ class LandingPage extends Component {
         this.props.history.push('register');
     }
 
-    constructor(props) {
-        super(props)
-
-    }
-
     render() {
         return (
             <div className="landingPageContainer">
                 <div className="nav">
                     <img className="logo" 
-                    src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"></img>
+                    src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ" alt="pic1"></img>
 
                     <Link to="/register">
                         Register
@@ -83,7 +78,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img  alt="pic2"></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -92,7 +87,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img alt="pic3"></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -102,7 +97,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img alt="pic4"></img>
                         <p>A bio. A personal epic of Olympian scale.<br>
                         </br>Avatars go right above this.</p>
                     </div>
