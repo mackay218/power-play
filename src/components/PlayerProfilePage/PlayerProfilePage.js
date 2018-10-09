@@ -9,6 +9,7 @@ import './PlayerProfilePage.css';
 
 const mapStateToProps = state => ({
   user: state.user,
+  player: state.player.player,
 });
 
 
@@ -92,6 +93,7 @@ class PlayerProfilePage extends Component {
       playerScreenContent = (
         <div className="playerProfileContainer">
         <div>
+          {JSON.stringify(this.props.player)}
           <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
         </div>
           <div>
@@ -99,29 +101,6 @@ class PlayerProfilePage extends Component {
           </div>
         </div>
       )}
-
-     
-    if (this.state.position_id === '3') {
-      positionalContent = (
-        <div>
-          <div>
-            <label>Goalie Options:</label>
-            <input type="number" placeholder="Wins"></input>
-            <input type="number" placeholder="Losses"></input>
-            <input type="number" placeholder="Ties"></input>
-          </div>
-          <div>
-            <input type="number" placeholder="Save %"></input>
-            <input type="number" placeholder="Shutouts"></input>
-            <input type="number" placeholder="Goals Against"></input>
-            <input type="number" placeholder="Games Played"></input>
-          </div>
-        </div>
-      )
-    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
-      positionalContent = (
-        <div>
-          <div>
 
     if (this.state.position_id === '3') {
       positionalContent = (
@@ -235,10 +214,6 @@ class PlayerProfilePage extends Component {
         {/* <div>
           {playerScreenContent}
         </div> */}
-
-              {positionalContent}
-            </div>
-          </form>
         </div>
       );
     }
@@ -261,7 +236,7 @@ class PlayerProfilePage extends Component {
   }
   
 
-  }
+  
 }
 
 // this allows us to use <App /> in index.js
