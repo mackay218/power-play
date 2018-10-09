@@ -36,7 +36,9 @@ class LandingPage extends Component {
             <div className="landingPageContainer">
                 <div className="nav">
                     <img className="logo"
-                        src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"></img>
+                        src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                        alt="logo"></img>
+
 
                     <Link to="/register">
                         Register
@@ -88,9 +90,31 @@ class LandingPage extends Component {
                         <p>Your profile will be accessible to coaches across the country.</p>
                     </div>
                 </div>
-<div></div>
-                <div className="aboutContainer" id="#aboutNavigate" 
-                ref={aboutRef => this.aboutRef = aboutRef}>
+
+                <div className="testimonialContainer">
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                    <div className="testimonialSections">
+                    A testimonial of the greatness achieved by usage of this service.
+                    <br></br>
+                    An image of a fancy lad will appear above this.
+                    </div>
+
+                </div>
+
+                <div className="aboutContainer" id="#aboutNavigate"
+                    ref={aboutRef => this.aboutRef = aboutRef}>
 
                     <div className="bioSections">
                         {/* material avatars go here */}
