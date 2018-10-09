@@ -107,6 +107,7 @@ class PlayersListedPage extends Component {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Position</th>
                 <th>League</th>
                 <th>Team</th>
                 <th>Birthdate</th>
@@ -123,6 +124,7 @@ class PlayersListedPage extends Component {
                 if (player.position_name === "fwd" || player.position_name === "def") {
                   tableContent = <tr key={i}>
                     <td>{player.first_name} {player.last_name}</td>
+                    <td>{player.position_name}</td>
                     <td>{player.league_name}</td>
                     <td>{player.team_name}</td>
                     <td>{player.birth_date}</td>

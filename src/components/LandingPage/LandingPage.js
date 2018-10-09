@@ -88,7 +88,7 @@ class LandingPage extends Component {
                         <p>Your profile will be accessible to coaches across the country.</p>
                     </div>
                 </div>
-
+<div></div>
                 <div className="aboutContainer" id="#aboutNavigate" 
                 ref={aboutRef => this.aboutRef = aboutRef}>
 
