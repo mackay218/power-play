@@ -6,6 +6,8 @@ import Nav from '../Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
+import axios from 'axios';
+
 const mapStateToProps = state => ({
   user: state.user,
 });
@@ -44,6 +46,16 @@ class AdminPage extends Component {
   submitCoach = (event) => {
     event.preventDefault();
     console.log('Coach submitted');
+
+    axios.post('/api/password/coachInvite', this.state)
+      .then((response) => {
+        console.log('email invite sent to: ', this.state.email);
+        alert('email invite sent to: ', this.state.email);
+      })
+      .catch((error) => {
+        console.log('error sending invite: ', error);
+        alert('error sending invite email');
+      });
   }
 
   sendToCoaches = () => {

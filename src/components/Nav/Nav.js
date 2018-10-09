@@ -6,7 +6,7 @@ const Nav = () => (
     <div>
       <ul>
         <li>
-          <Link to="/home">
+          <Link to="/landing_page">
             Landing Page
           </Link>
         </li>
@@ -35,9 +35,6 @@ const Nav = () => (
             suspend and delete
           </Link>
         </li>
-        
-        
-
         <li>
           <Link to="/terms">
             Terms
