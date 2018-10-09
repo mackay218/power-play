@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
+
 class PlayerProfilePage extends Component {
   constructor(props) {
     super(props);
@@ -42,10 +43,12 @@ class PlayerProfilePage extends Component {
       goals_against: '',
       guardian: false,
       player_info: '',
+      toggleView: false,
     }
   }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    this.props.dispatch({ type: 'GET_THIS_PLAYER' });
   }
 
   componentDidUpdate() {
@@ -68,11 +71,58 @@ class PlayerProfilePage extends Component {
   submitPlayerProfile = (event) => {
     event.preventDefault();
     console.log('Player profile submitted.');
+    this.toggleDisplay();
+  }
+
+  toggleDisplay = () => {
+    this.setState({
+      ...this.state,
+      toggleView: !this.state.toggleView
+    })
+   console.log(this.state.toggleView);
+
   }
 
   render() {
     let content = null;
     let positionalContent = null;
+    let playerScreenContent = null;
+    
+     {
+      playerScreenContent = (
+        <div className="playerProfileContainer">
+        <div>
+          <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+        </div>
+          <div>
+            <button onClick={this.toggleDisplay}>shit</button>
+          </div>
+        </div>
+      )}
+
+     
+    if (this.state.position_id === '3') {
+      positionalContent = (
+        <div>
+          <div>
+            <label>Goalie Options:</label>
+            <input type="number" placeholder="Wins"></input>
+            <input type="number" placeholder="Losses"></input>
+            <input type="number" placeholder="Ties"></input>
+          </div>
+          <div>
+            <input type="number" placeholder="Save %"></input>
+            <input type="number" placeholder="Shutouts"></input>
+            <input type="number" placeholder="Goals Against"></input>
+            <input type="number" placeholder="Games Played"></input>
+          </div>
+        </div>
+      )
+    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+      positionalContent = (
+        <div>
+          <div>
+
     if (this.state.position_id === '3') {
       positionalContent = (
         <div>
@@ -176,6 +226,16 @@ class PlayerProfilePage extends Component {
               <button>Add a pic</button>
             </div>
             <div>
+              <button type="submit">Submit</button>
+            </div>
+            <div>
+              {positionalContent}
+            </div>
+          </form>
+        {/* <div>
+          {playerScreenContent}
+        </div> */}
+
               {positionalContent}
             </div>
           </form>
@@ -183,12 +243,24 @@ class PlayerProfilePage extends Component {
       );
     }
 
+    if (this.state.toggleView === false) {
+      return (
+        <div>
+          {playerScreenContent}
+        </div>
+      )
+    }else {
+
     return (
       <div>
         <Nav />
         {content}
       </div>
     );
+    }
+  }
+  
+
   }
 }
 
