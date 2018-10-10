@@ -23,20 +23,21 @@ id    league_name
 14    6AA
 15    7AA
 16    8AA
+
+hard code in account_status table
+id   status_type
+1    active
+2    suspended
+3    banned
+4    pending
+
+
 */
 
 
-
-CREATE TABLE "activity_log" (
-	"id" SERIAL PRIMARY KEY,
-	"time" TIMESTAMP DEFAULT NOW(),
-	"activity_type" VARCHAR(200)
-);
-
 CREATE TABLE "account_status" (
 	"id" SERIAL PRIMARY KEY,
-	"status_type" VARCHAR(100),
-	"reason" VARCHAR(1000)
+	"status_type" VARCHAR(100)f
 );
 
 CREATE TABLE "person" (
@@ -47,7 +48,14 @@ CREATE TABLE "person" (
 	"coach_name" VARCHAR(200),
 	"invite" VARCHAR(2000),
 	"status_id" INTEGER REFERENCES "account_status"(id),
-	"activity_log_id" INTEGER REFERENCES "activity_log"(id)
+	"status_reason" VARCHAR(1000)
+);
+
+CREATE TABLE "activity_log" (
+	"id" SERIAL PRIMARY KEY,
+	"person_id" INTEGER REFERENCES "person"(id),
+	"time" TIMESTAMP DEFAULT NOW(),
+	"activity_type" VARCHAR(200)
 );
 
 CREATE TABLE "league" (
