@@ -149,7 +149,7 @@ class PlayersListedPage extends Component {
                     <TableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</TableCell>
                     <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</TableCell>
                     <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</TableCell>
-                    {deleteButton(player.id)}
+                    {deleteButton(player.person_id)}
                   </TableRow>
                   )
                 })}
