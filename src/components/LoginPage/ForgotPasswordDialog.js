@@ -48,6 +48,7 @@ const mapStateToProps = state => ({
       axios.get('/api/password/' + this.state.email)
         .then((response) => {
           console.log('response finding email:', response);
+          this.handleClose();
         })
         .catch((error) => {
           if(error.status === 404){

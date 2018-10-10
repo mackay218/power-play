@@ -21,7 +21,7 @@ id    league_name
 12    4AA
 13    5AA
 14    6AA
-15    7AA
+15    7AAs
 16    8AA
 
 hard code in account_status table
@@ -44,7 +44,7 @@ CREATE TABLE "person" (
 	"id" SERIAL PRIMARY KEY,
 	"email" VARCHAR(200),
 	"password" VARCHAR(1080),
-	"role" VARCHAR(15),
+	"role" VARCHAR(15) DEFAULT 'player',
 	"coach_name" VARCHAR(200),
 	"invite" VARCHAR(2000),
 	"status_id" INTEGER REFERENCES "account_status"(id),
