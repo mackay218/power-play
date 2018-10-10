@@ -272,33 +272,66 @@ resetPersonInviteCode = (email) => {
         const client = await pool.connect();
 
         try {
-            //insert status for coach in account_status
-            let queryText = `INSERT INTO account_status(status_type, reason) 
+
+            //check if coach or player
+            let queryText = `SELECT "role" FROM person WHERE "email" = $1;`;
+
+            let values = [email];
+
+            let roleResult = await client.query(queryText, values);
+
+            let role = roleResult.rows[0].id;
+
+            if(role === 'coach'){
+                //insert status for coach in account_status
+                queryText = `INSERT INTO account_status(status_type, reason) 
                                 VALUES ($1, $2) RETURNING "id";`;
-            let values = [statusType, reason];
+                values = [statusType, reason];
 
-            const accountStatusResult = await client.query(queryText, values);
+                const accountStatusResult = await client.query(queryText, values);
 
-            let accountStatusId = accountStatusResult.rows[0].id;
+                let accountStatusId = accountStatusResult.rows[0].id;
 
-            queryText = `INSERT INTO activity_log(time, activity_type)
+                queryText = `INSERT INTO activity_log(time, activity_type)
                             VALUES ($1, $2) RETURNING "id";`;
 
-            values = [activityTime, activityType];
+                values = [activityTime, activityType];
 
-            const activityLogResult = await client.query(queryText, values);
+                const activityLogResult = await client.query(queryText, values);
 
-            let activityLogId = activityLogResult.rows[0].id;
+                let activityLogId = activityLogResult.rows[0].id;
 
-            queryText = `UPDATE person SET "status_id" = $1, "activity_log_id" = $2,
-                            "invite" = $3 RETURNING "id";`;
+                queryText = `UPDATE person SET "status_id" = $1, "activity_log_id" = $2,
+                            "invite" = $3 WHERE "email" = $4 RETURNING "id";`;
 
-            values = [accountStatusId, activityLogId, resetPasswordCode]
+                values = [accountStatusId, activityLogId, resetPasswordCode, email];
 
-            const personResult = await client.query(queryText, values);
+                const personResult = await client.query(queryText, values);
 
-            let personId = personResult.rows[0].id;
+                let personId = personResult.rows[0].id;
 
+            }
+
+            else{
+                queryText = `INSERT INTO activity_log(time, activity_type)
+                            VALUES ($1, $2) RETURNING "id";`;
+
+                values = [activityTime, activityType];
+
+                const activityLogResult = await client.query(queryText, values);
+
+                let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `UPDATE person SET "activity_log_id" = $1,
+                            "invite" = $2 WHERE "email" = $3 RETURNING "id";`;
+
+                values = [activityLogId, resetPasswordCode, email];
+
+                const personResult = await client.query(queryText, values);
+
+                let personId = personResult.rows[0].id;
+            }
+           
             //send reset password code in an email
             await sendPasswordResetEmail(infoForEmail);
 
@@ -446,7 +479,6 @@ router.put('/setPassword', (req, res) => {
     
     const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
-
     const password = encryptLib.encryptPassword(passwordInfo.password);
 
     (async () => {
@@ -454,6 +486,7 @@ router.put('/setPassword', (req, res) => {
         const client = await pool.connect();
 
         try{
+            //reset password
             let queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3 RETURNING "status_id";`;
 
             let values = [password, newInviteCode, inviteCode];
@@ -463,16 +496,20 @@ router.put('/setPassword', (req, res) => {
             let statusId = statusIdResult.rows[0].status_id;
             console.log('statusId', statusId);
 
-            queryText = `SELECT "id" FROM person WHERE "invite" = $1;`;
+            //get person id and role to check status 
+            queryText = `SELECT "id", "role" FROM person WHERE "invite" = $1;`;
 
             values = [newInviteCode];
 
-            let personIdResult = await client.query(queryText, values);
+            let personInfoResult = await client.query(queryText, values);
 
-            let personId = personIdResult.rows[0].id;
+            let personId = personInfoResult.rows[0].id;
+
+            let personRole = personInfoResult.rows[0].role;
 
             console.log('personId', personId);
 
+            //get status type
             queryText = `SELECT "status_type" FROM account_status WHERE "id" = $1;`;
 
             values = [statusId];
@@ -485,6 +522,7 @@ router.put('/setPassword', (req, res) => {
 
             let statusObject = {
                 personId: personId,
+                personRole: personRole,
                 statusType: statusType
             }
 
@@ -516,7 +554,13 @@ checkStatusType = (statusObject) => {
 
     let personId = statusObject.personId;
 
-    if(statusObject.statusType === 'pending'){
+    let personRole = statusObject.personRole;
+
+    let currentStatusType = statusObject.statusType;
+
+    //CHECK ROLE IF PLAYER OR COACH
+
+    if(currentStatusType === 'pending' && personRole === 'coach'){
 
         let newStatusType = 'active';
         let reason = 'activated account';
@@ -568,6 +612,7 @@ checkStatusType = (statusObject) => {
             res.sendStatus(500);
         });
     }
+    //else if personRole === 'player' || personRole === 'admin'
     else{
 
         const activityType = 'password set or reset';
