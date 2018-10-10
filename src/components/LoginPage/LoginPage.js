@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { triggerLogin, formError, clearError } from '../../redux/actions/loginActions';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
+import ForgotPasswordDialog from './ForgotPasswordDialog';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -103,7 +104,9 @@ class LoginPage extends Component {
             />
             <Link to="/register">Register</Link>
           </div>
+          <ForgotPasswordDialog />
         </form>
+        
       </div>
     );
   }

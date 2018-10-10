@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {connect} from 'react-redux';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -29,7 +30,9 @@ class RegisterPage extends Component {
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
         .then((response) => {
-          if (response.status === 201) {
+          console.log(response);
+          if (response.data.status === 201) {
+            this.props.dispatch({type: 'CREATE_PLAYER', payload: response.data.id});
             this.props.history.push('/login');
           } else {
             this.setState({
@@ -107,5 +110,5 @@ class RegisterPage extends Component {
   }
 }
 
-export default RegisterPage;
+export default connect()(RegisterPage);
 
