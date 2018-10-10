@@ -43,7 +43,7 @@ CREATE TABLE "person" (
 	"id" SERIAL PRIMARY KEY,
 	"email" VARCHAR(200),
 	"password" VARCHAR(1080),
-	"role" VARCHAR(15),
+	"role" VARCHAR(15) DEFAULT 'player',
 	"coach_name" VARCHAR(200),
 	"invite" VARCHAR(2000),
 	"status_id" INTEGER REFERENCES "account_status"(id),
