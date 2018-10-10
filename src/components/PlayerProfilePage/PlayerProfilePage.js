@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import Nav from '../Nav/Nav';
-
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
-
-import axios from 'axios';
+import axios from 'axios'
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -115,15 +112,25 @@ class PlayerProfilePage extends Component {
 
     {
       playerScreenContent = (
-        <div className="playerProfileContainer">
-          <div>
-            {JSON.stringify(this.props.player)}
-            <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+        <div>
+          <div className="card">
+            <img className="img" src="https://media.istockphoto.com/videos/hockey-player-skates-video-id483200277?s=640x640" alt="Avatar" />
+            <div className="container">
+              <h4>{this.props.player}</h4> 
+              <p>Architect Engineer</p> 
+            </div>
           </div>
-          <div>
-            <button onClick={this.toggleDisplay}>test</button>
+          <div className="playerProfileContainer">
+            <div>
+              {JSON.stringify(this.props.player)}
+              <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+            </div>
+            <div>
+              <button onClick={this.toggleDisplay}>test</button>
+            </div>
           </div>
         </div>
+
       )
     }
 
