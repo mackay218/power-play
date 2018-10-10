@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Checkout from '../../frontend/Checkout/Checkout';
+
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -100,6 +102,12 @@ class RegisterPage extends Component {
               value="Register"
             />
             <Link to="/login">Cancel</Link>
+            
+            <Checkout
+            name={'Power Play rrrr-Recruiting'}
+            description={'Subscription'}
+            amount={29.95}
+          />
           </div>
         </form>
       </div>
