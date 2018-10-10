@@ -37,7 +37,7 @@ id   status_type
 
 CREATE TABLE "account_status" (
 	"id" SERIAL PRIMARY KEY,
-	"status_type" VARCHAR(100)
+	"status_type" VARCHAR(100)f
 );
 
 CREATE TABLE "person" (
