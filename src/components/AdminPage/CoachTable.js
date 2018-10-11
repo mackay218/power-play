@@ -58,11 +58,14 @@ class CustomizedTable extends Component {
             if (willDelete) {
                 this.props.dispatch({ type: 'DELETE_COACH', payload: id });
                 swal('The coach was deleted', {
-                    icon: 'success'
+                    icon: 'success',
+                    dangerMode: true,
                 });
             }
             else {
-                swal('The coach was not deleted');
+                swal('The coach was not deleted', {
+                    dangerMode: true,
+                  });
             }
         })
     }
