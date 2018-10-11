@@ -50,19 +50,59 @@ class CustomizedTable extends Component {
         //TODO: set up delete
         swal({
             title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
+            text: "Once deleted, you will not be able undo this action!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
                 this.props.dispatch({ type: 'DELETE_COACH', payload: id });
-                swal('The player was deleted', {
+                swal('The coach was deleted', {
                     icon: 'success'
                 });
             }
             else {
-                swal('The player was not deleted');
+                swal('The coach was not deleted');
+            }
+        })
+    }
+    suspendCoach = (id) => {
+        //TODO: set up delete
+        swal({
+            title: "Are you sure you want to suspend this coach?",
+            text: "Once suspended, they will not be able view players!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                this.props.dispatch({ type: 'SUSPEND_COACH', payload: id });
+                swal('The coach was suspended', {
+                    icon: 'success'
+                });
+            }
+            else {
+                swal('The coach was not suspended');
+            }
+        })
+    }
+    banCoach = (id) => {
+        //TODO: set up delete
+        swal({
+            title: "Are you sure?",
+            text: "Once banned, they will not be able to log in!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                this.props.dispatch({ type: 'BAN_COACH', payload: id });
+                swal('The coach was banned', {
+                    icon: 'success'
+                });
+            }
+            else {
+                swal('The coach was not banned');
             }
         })
     }
@@ -79,6 +119,8 @@ class CustomizedTable extends Component {
                             <CustomTableCell>Email</CustomTableCell>
                             <CustomTableCell>Status</CustomTableCell>
                             <CustomTableCell>Delete</CustomTableCell>
+                            <CustomTableCell>Suspend</CustomTableCell>
+                            <CustomTableCell>Ban</CustomTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -90,7 +132,9 @@ class CustomizedTable extends Component {
                                     </CustomTableCell>
                                     <CustomTableCell>{coach.email}</CustomTableCell>
                                     <CustomTableCell>{coach.status_type}</CustomTableCell>
-                                    <CustomTableCell> <Button variant="contained" color="secondary" onClick={() => this.deleteCoach(coach.id)}><DeleteIcon />Delete</Button></CustomTableCell>
+                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.deleteCoach(coach.id)}><DeleteIcon />Delete</Button></CustomTableCell>
+                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.suspendCoach(coach.id)}><DeleteIcon />Suspend</Button></CustomTableCell>
+                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.banCoach(coach.id)}><DeleteIcon />Ban</Button></CustomTableCell>
                                 </TableRow>
                             );
                         })}
