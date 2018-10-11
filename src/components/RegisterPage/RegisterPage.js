@@ -109,15 +109,19 @@ class RegisterPage extends Component {
             <Link to="/login">Cancel</Link>
           </div>
         </form>
-{/*Checkout form for stripe*/}
-        <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
-          <div className="example">
-            <h4>Payment Form</h4>
+
+
+
+        {/*Checkout form for stripe*/}
+
+        <div className="element-checkout">
+          <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
             <Elements>
               <CheckoutForm />
             </Elements>
-          </div>
-        </StripeProvider>
+          </StripeProvider>
+        </div>
+
 
       </div>
     );
