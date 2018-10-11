@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Checkout from '../../stripe_frontend/Checkout/Checkout';
+import { Elements, StripeProvider } from 'react-stripe-elements';
+import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
 
 
 class RegisterPage extends Component {
@@ -28,6 +29,9 @@ class RegisterPage extends Component {
         password: this.state.password,
       };
 
+
+
+
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
         .then((response) => {
@@ -46,6 +50,7 @@ class RegisterPage extends Component {
         });
     }
   } // end registerUser
+
 
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
@@ -102,28 +107,18 @@ class RegisterPage extends Component {
               value="Register"
             />
             <Link to="/login">Cancel</Link>
-
-            <Checkout
-              name={'Power Play Recruiting'}
-              description={'Subscription'}
-              amount={29.95}
-            />
-
-            <form action="api/charges" method="POST">
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_dUQIFPQY2uUrRFrCBqQkufhY"
-                data-amount="2995"
-                data-name="Power Play Recruiting"
-                data-description="Monthly Subscription"
-                data-label="Register"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto">
-              </script>
-            </form>
-
           </div>
         </form>
+{/*Checkout form for stripe*/}
+        <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
+          <div className="example">
+            <h4>Payment Form</h4>
+            <Elements>
+              <CheckoutForm />
+            </Elements>
+          </div>
+        </StripeProvider>
+
       </div>
     );
   }
