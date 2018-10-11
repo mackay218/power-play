@@ -151,3 +151,30 @@ li a:hover {
     text-decoration: underline;
     color: #eee;
 }
+
+
+h4 {
+    text-align: center;
+}
+
+.checkout {
+    background-color: #dbd5d5;
+    width: 30%;
+    height: 250px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.payButton {
+    background-color: skyblue;
+    height: 40px;
+    width: 100px;
+    font-family: bold;
+}
+
+.payButton:hover {
+    background-color: blue;
+}
+
+
