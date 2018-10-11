@@ -2,6 +2,12 @@ body{
     --red: #f01e3c;
 }
 
+.landingPageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .missionContainer{
     width: 100vw;
     height: 300px;
