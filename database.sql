@@ -1,9 +1,9 @@
 /* before running mock data generator 
 hard code in position table:
 id     position_name
-1       fwd
-2       def
-3       gol
+1       forward
+2       defense
+3       goalie
 
 hard code in leage table: 
 id    league_name

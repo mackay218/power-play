@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { USER_ACTIONS } from '../../redux/actions/userActions';
 import Nav from '../Nav/Nav';
 
-import { USER_ACTIONS } from '../../redux/actions/userActions';
-import { triggerLogout } from '../../redux/actions/loginActions';
+
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -76,9 +75,7 @@ class PlayersListedPage extends Component {
     }
   }
 
-  logout = () => {
-    this.props.dispatch(triggerLogout());
-  }
+ 
 
   handleChange = (event) => {
     this.setState({
@@ -139,7 +136,6 @@ class PlayersListedPage extends Component {
     if (this.props.user.email && this.props.player) {
       content = (
         <div>
-          <Button variant="contained" color="primary" onClick={this.logout}>Log Out</Button>
           <form className="search-form" onSubmit={this.sendSortBy}>
             <h3 className="center-text">Search Players By:</h3>
                 <TextField type="text" label="Player Name" onChange={this.handleChange} name="playerName" />
@@ -193,9 +189,11 @@ class PlayersListedPage extends Component {
     }
 
     return (
-      <div>
+      <div className="mainContainer">
         <Nav />
-        {content}
+        <div className="pageContainer">
+          {content}
+        </div>
       </div>
     );
   }

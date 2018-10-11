@@ -38,10 +38,12 @@ class Nav extends Component {
     if (this.props.user.role === "player") {
       content = (
         <div className="nav">
-          <img className="logo"
-            src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-            alt="logo">
-          </img>
+          <Link to="/landing_page">
+            <img className="logo"
+              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+              alt="logo">
+            </img>
+          </Link>
           <div className="navLinkWrapper">
             <Link to="/player_profile_page">
               Player Profile
@@ -60,10 +62,12 @@ class Nav extends Component {
     else if (this.props.user.role === "coach") {
       content = (
         <div className="nav">
-          <img className="logo"
-            src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-            alt="logo">
-          </img>
+          <Link to="/landing_page">
+            <img className="logo"
+              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+              alt="logo">
+            </img>
+          </Link>
           <div className="navLinkWrapper">
             <Link to="/players_page">
               Players Listed Page
@@ -81,10 +85,12 @@ class Nav extends Component {
     else if (this.props.user.role === "admin") {
       content = (
         <div className="nav">
-          <img className="logo"
-            src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-            alt="logo">
-          </img>
+          <Link to="/landing_page">
+            <img className="logo"
+              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+              alt="logo">
+            </img>
+          </Link>
           <div className="navLinkWrapper">
             <Link to="players_page">
               Player List
@@ -106,23 +112,25 @@ class Nav extends Component {
     else {
       content = (
         <div className="nav">
-            <img className="logo"
-              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-              alt="logo">
-            </img>
+            <Link to="/landing_page">
+              <img className="logo"
+                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                alt="logo">
+              </img>
+            </Link>
             <div className="navLinkWrapper">
               <Link to="/landing_page">
                 Home
-            </Link>
+              </Link>
               <Link to="/login">
                 Log In
-            </Link>
+              </Link>
               <Link to="/register">
                 Register
-            </Link>
+              </Link>
               <Link to="/terms">
                 Terms
-            </Link>
+              </Link>
             </div>
         </div>
       )

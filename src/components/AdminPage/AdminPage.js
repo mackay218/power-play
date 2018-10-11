@@ -104,7 +104,7 @@ class AdminPage extends Component {
 
     if (this.props.user.email) {
       content = (
-        <div>
+        <div className="adminPageContainer">
           <h1 className="center-text">Add Coaches</h1>
           <form className="center-text coach-form" onSubmit={this.submitCoach}>
             <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
@@ -118,9 +118,11 @@ class AdminPage extends Component {
     }
 
     return (
-      <div>
+      <div className="mainContainer">
         <Nav />
-        {content}
+        <div className="pageContainer">
+          {content}
+        </div>
       </div>
     );
   }
