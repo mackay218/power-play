@@ -32,7 +32,7 @@ class CheckoutForm extends Component {
                     
 
 
-                    
+
                     // if no errors, move on
                     console.log('Sent successfully', response)
                     this.setState({ complete: true });
