@@ -29,7 +29,10 @@ class CheckoutForm extends Component {
                     data: {stripeToken: token.token.id}
                 }).then((response) => {
                     // check for errors in the response
+                    
 
+
+                    
                     // if no errors, move on
                     console.log('Sent successfully', response)
                     this.setState({ complete: true });
