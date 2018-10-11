@@ -64,11 +64,11 @@ input[type="submit"] {
 
 .navbar {
   background-color: #00acb0;
-  width: 100%;
+  width: 100vw;
 }
 
 .nav{
-    width: 100%;
+    width: 100vw;
     height: 100px;
     background-color: #eb1b3b;
     text-align: right;

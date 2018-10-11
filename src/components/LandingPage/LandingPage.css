@@ -1,31 +1,75 @@
+body{
+    --red: #f01e3c;
+}
 
+
+.landingPageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
 
 .missionContainer{
-    width: 600px;
-    height: 400px;
+    width: 100vw;
+    height: 300px;
     margin:auto;
     max-width:100%;
     max-height:100%;
     text-align: center;
     margin-bottom: 100px;
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .guideContainer{
-    margin-bottom: 150px;
+    display: flex;
+    flex-direction: row;
 }
-.guideSections{
-    /* will be replaced with material grid */
+.guideSection{
     display: inline-block;
     margin: 20px;
-    
+    width: 25vw;
+    border: 1px solid var(--red);
+    padding: 10px;
+    border-radius: 10px;
 }
 
-.testimonialSections{
-    display: inline-block;
-    margin: 20px;
-    width: 20%;
+.guideSection h3{
+    font-size: 20px;
+    text-align: center;
 }
+
+.guideSection p{
+    text-align: center;
+}
+
+.testimonialContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width:  100vw;
+}
+
+.testimonialSection{
+    margin: 20px;
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--red);
+}
+
+.testimonialSection p{
+    width: 100%;
+    padding: 5px;
+}
+
 .bioSections{
     /* will be replaced with material grid */
     display: inline-block;
