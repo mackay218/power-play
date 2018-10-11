@@ -7,6 +7,8 @@ import PAYMENT_SERVER_URL from '../constants/server';
 
 const CURRENCY = 'USD';
 
+const label = 'Register';
+
 const fromDollarToCent = amount => amount * 100;
 
 const successPayment = data => {
@@ -23,7 +25,7 @@ const onToken = (amount, description) => token =>
       description,
       source: token.id,
       currency: CURRENCY,
-      amount: fromDollarToCent(amount)
+      amount: fromDollarToCent(amount),
     })
     .then(successPayment)
     .catch(errorPayment);
@@ -36,6 +38,7 @@ const Checkout = ({ name, description, amount }) =>
     token={onToken(amount, description)}
     currency={CURRENCY}
     stripeKey={STRIPE_PUBLISHABLE}
+    
   />
 
 export default Checkout;

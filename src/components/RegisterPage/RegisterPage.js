@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Checkout from '../../frontend/Checkout/Checkout';
+import Checkout from '../../stripe_frontend/Checkout/Checkout';
 
 
 class RegisterPage extends Component {
@@ -102,12 +102,26 @@ class RegisterPage extends Component {
               value="Register"
             />
             <Link to="/login">Cancel</Link>
-            
+
             <Checkout
-            name={'Power Play rrrr-Recruiting'}
-            description={'Subscription'}
-            amount={29.95}
-          />
+              name={'Power Play Recruiting'}
+              description={'Subscription'}
+              amount={29.95}
+            />
+
+            <form action="api/charges" method="POST">
+              <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_dUQIFPQY2uUrRFrCBqQkufhY"
+                data-amount="2995"
+                data-name="Power Play Recruiting"
+                data-description="Monthly Subscription"
+                data-label="Register"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+              </script>
+            </form>
+
           </div>
         </form>
       </div>

@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const CORS_WHITELIST = require('./constants/frontend');
 
-const cors = {
+const corsOptions = {
   origin: (origin, callback) =>
     (CORS_WHITELIST.indexOf(origin) !== -1)
       ? callback(null, true)
