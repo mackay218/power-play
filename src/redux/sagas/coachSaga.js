@@ -17,9 +17,19 @@ function* coachError(action) {
     console.log('Coach Error:', action.payload);
 }
 
+function* deleteCoach(action) {
+    try {
+        yield call(axios.delete, `api/coaches/delete/${action.payload}`);
+        yield put({type: 'GET_ALL_COACHES'});
+    } catch (error) {
+        yield put({type: 'COACH_ERROR', payload: error});
+    }
+}
+
 function* coachSaga() {
     yield takeLatest('GET_ALL_COACHES', getAllCoaches);
     yield takeLatest('COACH_ERROR', coachError);
+    yield takeLatest('DELETE_COACH', deleteCoach);
 }
 
 export default coachSaga;
