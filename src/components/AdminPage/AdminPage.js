@@ -54,10 +54,16 @@ class AdminPage extends Component {
       .then((response) => {
         console.log('email invite sent to: ', this.state.email);
         alert('email invite sent');
+
       })
       .catch((error) => {
         console.log('error sending invite: ', error);
         alert('error sending invite email');
+      });
+
+      this.setState({
+        name: '',
+        email: ''
       });
   }
 
