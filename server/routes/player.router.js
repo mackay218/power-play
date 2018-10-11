@@ -4,7 +4,9 @@ const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
 
-    const query = `SELECT * FROM "player_stats" 
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."id" 
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."id"
                     JOIN "position" ON "position_id" = "position"."id"
                     JOIN "league" ON "league_id" = "league"."id"
                     JOIN "team" ON "team_id" = "team"."id"
@@ -120,12 +122,24 @@ router.post('/create', (req, res) => {
 });
 // DELETE route for removing players
 router.delete('/delete/:id', (req, res) => {
-    const query = `DELETE FROM "person" WHERE "id" = $1;`;
-    pool.query(query, [req.params.id]).then((result) => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR deleting user:', error);
-        res.sendStatus(500);
+    (async () => {
+        const client = await pool.connect();
+        try {
+            let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
+            await client.query(queryText, [req.params.id]);
+            queryText = `DELETE FROM "person" WHERE "id" = $1 ;`;
+            await client.query(queryText, [req.params.id]);
+            await client.query('COMMIT');
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    })().catch((error) => {
+        console.log('CATCH', error);
     });
 });
 module.exports = router;
