@@ -5,6 +5,7 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
 import axios from 'axios'
+import Button from '@material-ui/core/Button'
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -112,24 +113,48 @@ class PlayerProfilePage extends Component {
 
     {
       playerScreenContent = (
-        <div>
           <div className="card">
             <img className="img" src="https://media.istockphoto.com/videos/hockey-player-skates-video-id483200277?s=640x640" alt="Avatar" />
             <div className="container">
-              <h4>{this.props.player}</h4> 
-              <p>Architect Engineer</p> 
-            </div>
-          </div>
-          <div className="playerProfileContainer">
-            <div>
-              {JSON.stringify(this.props.player)}
-              <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+              <h4>{this.state.profile.first_name}<span> </span>{this.state.profile.last_name}</h4> 
             </div>
             <div>
-              <button onClick={this.toggleDisplay}>test</button>
+              <p>{this.state.position_id}<span> </span>{this.state.profile.school}<span> </span>{this.state.league_id}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.team_id}<span> </span>{this.state.phone_number}<span> </span>{this.state.birth_date}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.height}<span> </span>{this.state.profile.weight}<span> </span>{this.state.profile.gpa}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.act_score}<span> </span>{this.state.profile.school_year}<span> </span>{this.state.profile.games_played}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.wins}<span> </span>{this.state.profile.losses}<span> </span>{this.state.profile.ties}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.save_percent}<span> </span>{this.state.profile.shutouts}<span> </span>{this.state.profile.goals_against}</p>
+            </div>
+            <div>
+              <p>{this.state.profile.goals}<span> </span>{this.state.profile.assists}<span> </span>{this.state.profile.points}</p>
+            </div>
+              <p>{this.state.profile.player_info}</p>
+            <div>
+            <div className="videoContainer">
+
+            </div>
+              <Button onClick={this.toggleDisplay} variant="contained" color="primary">test</Button>
+              {/* {JSON.stringify(this.props.player)} */}
             </div>
           </div>
-        </div>
+          video_link: null,
+          save_percent: null,
+          shutouts: null,
+          goals_against: null,
+          guardian: false,
+          player_info: null,
+        
 
       )
     }
