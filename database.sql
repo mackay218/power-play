@@ -21,7 +21,7 @@ id    league_name
 12    4AA
 13    5AA
 14    6AA
-15    7AA
+15    7AAs
 16    8AA
 
 hard code in account_status table
