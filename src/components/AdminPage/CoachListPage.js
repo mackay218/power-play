@@ -5,74 +5,51 @@ import Nav from '../Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import './AdminPage.css';
+import CoachTable from './CoachTable';
 
 const mapStateToProps = state => ({
-    user: state.user,
-    coach: state.coach.coach,
-  });
-  
-  class CoachListPage extends Component {
-    componentDidMount() {
-      this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-      this.props.dispatch({ type: 'GET_ALL_COACHES'});
-    }
-  
-    componentDidUpdate() {
-      if (!this.props.user.isLoading && this.props.user.email === null) {
-        this.props.history.push('landing_page');
-      }
-    }
-  
-    logout = () => {
-      this.props.dispatch(triggerLogout());
-    }
+  user: state.user,
+  coach: state.coach.coach,
+});
 
-    deleteCoach = (id) => {
-      //TODO: set up delete
-      console.log('Coach deleted:', id);
+
+class CoachListPage extends Component {
+  componentDidMount() {
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    this.props.dispatch({ type: 'GET_ALL_COACHES' });
+  }
+
+  componentDidUpdate() {
+    if (!this.props.user.isLoading && this.props.user.email === null) {
+      this.props.history.push('landing_page');
     }
-  
-    render() {
-      let content = null;
-  
-      if (this.props.user.email) {
-        content = (
-          <div className="center-text">
-            <h1>Coaches</h1>
-            <table className="center-element">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.coach.map((coach, i) => {
-                    return (
-                    <tr key={i}>
-                      <td>{coach.coach_name}</td>
-                      <td>{coach.email}</td>
-                      <td>{coach.status_type}</td>
-                      <td><button onClick={() => this.deleteCoach(coach.id)}>Delete</button></td>
-                    </tr>
-                    );
-                })}
-              </tbody>
-            </table>
-          </div>
-        );
-      }
-  
-      return (
-        <div>
-          <Nav />
-          { content }
+  }
+
+  logout = () => {
+    this.props.dispatch(triggerLogout());
+  }
+
+  render() {
+    let content = null;
+
+    if (this.props.user.email) {
+      content = (
+        <div className="center-text">
+          <h1>Coaches</h1>
+          <CoachTable/>
         </div>
       );
     }
+
+    return (
+      <div>
+        <Nav />
+        {content}
+      </div>
+    );
   }
-  
-  // this allows us to use <App /> in index.js
-  export default connect(mapStateToProps)(CoachListPage);
+}
+
+// this allows us to use <App /> in index.js
+export default connect(mapStateToProps)(CoachListPage);

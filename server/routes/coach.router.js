@@ -12,7 +12,7 @@ const chance = new Chance();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach';`;
+    const query = `SELECT "person"."id", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach';`;
     pool.query(query).then((result) => {
         console.log(result.rows);
         res.send(result.rows);
@@ -23,6 +23,21 @@ router.get('/all', (req, res) => {
 
 });
 
+router.delete('/delete/:id', (req, res) => {
+    const query = `DELETE FROM "person" WHERE "id" = $1;`;
+    pool.query(query, [req.params.id]).then(() => {
+        res.sendStatus(200);
+    }).catch((error) => {
+        console.log('ERROR deleting the coach', error);
+        res.sendStatus(500);
+    });
+})
+
+/**
+ * POST route template
+ */
+router.post('/', (req, res) => {
+})
 
 //function to check if coach's email already in database
 router.post('/checkCoach', (req, res) => {
@@ -253,7 +268,7 @@ sendInviteCode = (infoForEmail) => {
             console.log("info.response: " + info.response);
         }
         transporter.close();
-    });
+    })
 }
 
 module.exports = router;

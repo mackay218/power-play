@@ -17,10 +17,36 @@ import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 import './PlayersListedPage.css';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {withStyles} from '@material-ui/core/styles';
 
 const mapStateToProps = state => ({
   user: state.user,
   player: state.player.player,
+});
+
+const CustomTableCell = withStyles(theme => ({
+  head: {
+      fontSize: 20,
+  },
+  body: {
+      fontSize: 14,
+  },
+}))(TableCell);
+
+const styles = theme => ({
+  root: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+  },
+  table: {
+      minWidth: 700,
+  },
+  row: {
+      '&:nth-of-type(odd)': {
+          backgroundColor: theme.palette.background.default,
+      },
+  },
 });
 
 class PlayersListedPage extends Component {
@@ -82,9 +108,9 @@ class PlayersListedPage extends Component {
     let deleteButton = null;
 
     if (this.props.user.role === "admin") {
-      deleteHeader = <TableCell>Delete</TableCell>;
+      deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
       deleteButton = (id) => {
-        return (<TableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></TableCell>);
+        return (<CustomTableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></CustomTableCell>);
       }
     }
     if (this.state.position_id === "1" || this.state.position_id === "2") {
@@ -133,11 +159,11 @@ class PlayersListedPage extends Component {
             <Table>
               <TableHead className="table-head">
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Position</TableCell>
-                  <TableCell>Birthdate</TableCell>
-                  <TableCell>Points</TableCell>
-                  <TableCell>Wins</TableCell>
+                  <CustomTableCell>Name</CustomTableCell>
+                  <CustomTableCell>Position</CustomTableCell>
+                  <CustomTableCell>Birthdate</CustomTableCell>
+                  <CustomTableCell>Points</CustomTableCell>
+                  <CustomTableCell>Wins</CustomTableCell>
                   {deleteHeader}
                 </TableRow>
               </TableHead>
@@ -145,11 +171,11 @@ class PlayersListedPage extends Component {
                 {this.props.player.map((player, i) => {
                   return (
                     <TableRow key={i}>
-                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</TableCell>
-                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</TableCell>
-                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</TableCell>
-                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</TableCell>
-                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</TableCell>
+                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</CustomTableCell>
+                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</CustomTableCell>
+                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</CustomTableCell>
+                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</CustomTableCell>
                     {deleteButton(player.person_id)}
                   </TableRow>
                   )
@@ -176,4 +202,4 @@ class PlayersListedPage extends Component {
 }
 
 // this allows us to use <App /> in index.js
-export default connect(mapStateToProps)(PlayersListedPage);
+export default connect(mapStateToProps)(withStyles(styles)(PlayersListedPage));
