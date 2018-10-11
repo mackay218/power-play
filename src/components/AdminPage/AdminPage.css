@@ -1,6 +1,14 @@
+.adminPageContainer{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .coach-form {
     width: 25%;
-    height: 150px;
+    height: auto;
     margin: 20px auto;
     padding: 25px;
     border-radius: 2px;
@@ -8,4 +16,7 @@
     border: 5px solid #eb1b3b;
     background-color: white;
     border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

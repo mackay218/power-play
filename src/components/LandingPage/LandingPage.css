@@ -2,27 +2,42 @@ body{
     --red: #f01e3c;
 }
 
-
-.landingPageContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-}
-
 .missionContainer{
     width: 100vw;
     height: 300px;
     margin:auto;
     max-width:100%;
     max-height:100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.missionContainer img{
+    height: 120%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+.missionStatement{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
     text-align: center;
-    margin-bottom: 100px;
-    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    background: linear-gradient( to bottom, rgba(240, 30, 60, 1) 2.5%,
+                                            rgba(240, 30, 60, 0.9) 2.5%, 
+                                            rgba(240, 30, 60, 0.7) 90%
+                                                                        );
+    color: #fff;
 }
 
 .guideContainer{
@@ -63,6 +78,10 @@ body{
     justify-content: center;
     align-items: center;
     border: 1px solid var(--red);
+}
+
+.testimonialSection img{
+    border-radius: 50%;
 }
 
 .testimonialSection p{
