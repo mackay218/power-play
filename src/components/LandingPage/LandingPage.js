@@ -30,9 +30,9 @@ class LandingPage extends Component {
 
     render() {
         return (
-            <div className="pageContainer">
+            <div className="mainContainer">
                 <Nav />
-                <div className="landingPageContainer">
+                <div className="pageContainer">
                     <div className="missionContainer">
                         <img src="images/hockeyGif.gif" alt="hockeyGif" />
                         <div className="missionStatement">
@@ -51,14 +51,17 @@ class LandingPage extends Component {
                     <div className="guideContainer">
                         <div className="guideSection">
                             <h3 className="guideHeaders">Build Your Profile</h3>
+                            <img src="images/profile.svg" alt="profile-icon"/>
                             <p>Enter your stats.</p>
                         </div>
                         <div className="guideSection">
                             <h3 className="guideHeaders">Showcase Your Talent</h3>
+                            <img src="images/video-player.svg" alt="video-icon"/>
                             <p>Load a clip of your skills in action.</p>
                         </div>
                         <div className="guideSection">
                             <h3 className="guideHeaders">Get Noticed</h3>
+                            <img src="images/search.svg" alt="get-seen-icon"/>
                             <p>Your profile will be accessible to coaches across the country.</p>
                         </div>
                     </div>
