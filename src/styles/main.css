@@ -67,7 +67,29 @@ input[type="submit"] {
     background-color: #eb1b3b;
     text-align: right;
     border-radius: 0px;
-    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Audiowide', sans-serif;
+}
+
+.navLinkWrapper{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logoutBtn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: 'Audiowide', sans-serif;
+    color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
 }
 
 ul {

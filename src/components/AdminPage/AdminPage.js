@@ -46,19 +46,49 @@ class AdminPage extends Component {
     })
   }
 
+  //function to check if coach is already in the database
   submitCoach = (event) => {
     event.preventDefault();
     console.log('Coach submitted');
 
-    axios.post('/api/password/coachInvite', this.state)
+    axios.post('/api/coaches/checkCoach', this.state)
+      .then((response) => {
+        console.log('response', response.status);
+        if(response.status === 200){
+          alert('An invite was already sent to this email');
+          this.setState({
+            name: '',
+            email: '',
+          });
+        }
+        else if(response.status === 201){
+          this.sendCoachInvite();
+        }
+       
+      })
+      .catch((error) => {
+        console.log('error checking coach:', error)
+        alert('error checking coach');
+      });
+  }
+
+  //function to send invite to coach email
+  sendCoachInvite = () => {
+    axios.post('/api/coaches/coachInvite', this.state)
       .then((response) => {
         console.log('email invite sent to: ', this.state.email);
         alert('email invite sent');
+
       })
       .catch((error) => {
         console.log('error sending invite: ', error);
         alert('error sending invite email');
       });
+
+    this.setState({
+      name: '',
+      email: ''
+    });
   }
 
   sendToCoaches = () => {
