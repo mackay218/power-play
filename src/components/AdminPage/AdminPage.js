@@ -7,6 +7,9 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import './AdminPage.css';
+import TextField from '@material-ui/core/TextField';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -59,11 +62,11 @@ class AdminPage extends Component {
   }
 
   sendToCoaches = () => {
-    console.log('Sent to Coaches');
+    this.props.history.push('admin_coach_list_page')
   }
 
   sendToPlayers = () => {
-    console.log('Sent to players');
+    this.props.history.push('players_page');
   }
 
   render() {
@@ -73,18 +76,16 @@ class AdminPage extends Component {
       content = (
         <div>
           <h1>Add Coaches</h1>
-          <form onSubmit={this.submitCoach}>
-            <label>Name:</label>
-            <input type="text" onChange={this.handleChange} value={this.state.name} name="name"></input>
+          <form className="center-text coach-form" onSubmit={this.submitCoach}>
+            <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
             <br />
-            <label>Email:</label>
-            <input type="text" onChange={this.handleChange} value={this.state.email} name="email"></input>
+            <TextField label="email" type="text" onChange={this.handleChange} value={this.state.email} name="email" />
             <br />
-            <button type="submit">Add Coach</button>
+            <Button variant="contained" type="submit">Add Coach</Button>
           </form>
           <div className="center-text">
-            <button onClick={this.sendToPlayers}>Player list</button>
-            <button onClick={this.sendToCoaches}>Coach List</button>
+            <Button variant="contained" onClick={this.sendToPlayers}>Player list</Button>
+            <Button variant="contained" onClick={this.sendToCoaches}>Coach List</Button>
           </div>
         </div>
       );
