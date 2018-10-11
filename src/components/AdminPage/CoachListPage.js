@@ -28,6 +28,7 @@ const mapStateToProps = state => ({
     }
 
     deleteCoach = (id) => {
+      //TODO: set up delete
       console.log('Coach deleted:', id);
     }
   
@@ -51,7 +52,7 @@ const mapStateToProps = state => ({
                 {this.props.coach.map((coach, i) => {
                     return (
                     <tr key={i}>
-                      <td>{coach.name}</td>
+                      <td>{coach.coach_name}</td>
                       <td>{coach.email}</td>
                       <td>{coach.status_type}</td>
                       <td><button onClick={() => this.deleteCoach(coach.id)}>Delete</button></td>

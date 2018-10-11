@@ -55,8 +55,14 @@ class Nav extends Component {
             alt="logo">
           </img>
           <div>
+            <Link to="players_page">
+              Player List
+            </Link>
+            <Link to="admin_coach_list_page">
+              Coach List
+            </Link>
             <Link to="/admin_page">
-              Administrative Overlord Access Portal
+              Add Coaches
             </Link>
             <Link to="/terms">
               Terms

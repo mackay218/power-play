@@ -75,7 +75,7 @@ class AdminPage extends Component {
     if (this.props.user.email) {
       content = (
         <div>
-          <h1>Add Coaches</h1>
+          <h1 className="center-text">Add Coaches</h1>
           <form className="center-text coach-form" onSubmit={this.submitCoach}>
             <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
             <br />
@@ -83,10 +83,6 @@ class AdminPage extends Component {
             <br />
             <Button variant="contained" type="submit">Add Coach</Button>
           </form>
-          <div className="center-text">
-            <Button variant="contained" onClick={this.sendToPlayers}>Player list</Button>
-            <Button variant="contained" onClick={this.sendToCoaches}>Coach List</Button>
-          </div>
         </div>
       );
     }

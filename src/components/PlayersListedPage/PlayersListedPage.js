@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
 import './PlayersListedPage.css';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -83,7 +84,7 @@ class PlayersListedPage extends Component {
     if (this.props.user.role === "admin") {
       deleteHeader = <TableCell>Delete</TableCell>;
       deleteButton = (id) => {
-        return (<TableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}>Delete</Button></TableCell>);
+        return (<TableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></TableCell>);
       }
     }
     if (this.state.position_id === "1" || this.state.position_id === "2") {

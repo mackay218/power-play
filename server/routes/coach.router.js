@@ -6,7 +6,7 @@ const router = express.Router();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT "email", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach';`;
+    const query = `SELECT "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach';`;
     pool.query(query).then((result) => {
         console.log(result.rows);
         res.send(result.rows);
