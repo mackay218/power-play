@@ -1,14 +1,39 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
+import { triggerLogout } from '../../redux/actions/loginActions';
 
 let mapStateToProps = (state) => ({
   user: state.user,
 });
 
+
 class Nav extends Component {
+
+  logout = () => {
+    this.props.dispatch(triggerLogout());
+  }
+
+  componentDidMount() {
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  }
+
   render() {
     let content = null;
+
+    let logOutBtn = null;
+
+    if (this.props.user) {
+      logOutBtn = (
+        <button
+          className="logoutBtn"
+          onClick={this.logout}
+        >
+          Log Out
+          </button>
+      )
+    }
 
     if (this.props.user.role === "player") {
       content = (
@@ -17,15 +42,18 @@ class Nav extends Component {
             src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
             alt="logo">
           </img>
-          <Link to="/player_profile_page">
-            Player Profile
-          </Link>
-          <Link to="/suspend_page">
-            suspend and delete
-          </Link>
-          <Link to="/terms">
-            Terms
-          </Link>
+          <div className="navLinkWrapper">
+            <Link to="/player_profile_page">
+              Player Profile
+            </Link>
+            <Link to="/suspend_page">
+              suspend and delete
+            </Link>
+            <Link to="/terms">
+              Terms
+            </Link>
+          </div>
+          {logOutBtn}
         </div>
       );
     }
@@ -36,15 +64,18 @@ class Nav extends Component {
             src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
             alt="logo">
           </img>
-          <Link to="/players_page">
-            Players Listed Page
-          </Link>
-          <Link to="/suspend_page">
-            suspend and delete
-          </Link>
-          <Link to="/terms">
-            Terms
-          </Link>
+          <div className="navLinkWrapper">
+            <Link to="/players_page">
+              Players Listed Page
+            </Link>
+            <Link to="/suspend_page">
+              suspend and delete
+            </Link>
+            <Link to="/terms">
+              Terms
+            </Link>
+          </div>
+          {logOutBtn}
         </div>);
     }
     else if (this.props.user.role === "admin") {
@@ -54,7 +85,7 @@ class Nav extends Component {
             src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
             alt="logo">
           </img>
-          <div>
+          <div className="navLinkWrapper">
             <Link to="players_page">
               Player List
             </Link>
@@ -68,30 +99,31 @@ class Nav extends Component {
               Terms
             </Link>
           </div>
+          {logOutBtn}
         </div>
       )
     }
     else {
       content = (
         <div className="nav">
-          <div>
             <img className="logo"
               src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
               alt="logo">
             </img>
-            <Link to="/landing_page">
-              Home
+            <div className="navLinkWrapper">
+              <Link to="/landing_page">
+                Home
             </Link>
-            <Link to="/login">
-              Log In
+              <Link to="/login">
+                Log In
             </Link>
-            <Link to="/register">
-              Register
+              <Link to="/register">
+                Register
             </Link>
-            <Link to="/terms">
-              Terms
+              <Link to="/terms">
+                Terms
             </Link>
-          </div>
+            </div>
         </div>
       )
     }
