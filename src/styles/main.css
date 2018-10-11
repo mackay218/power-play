@@ -67,7 +67,11 @@ input[type="submit"] {
     background-color: #eb1b3b;
     text-align: right;
     border-radius: 0px;
-    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Audiowide', sans-serif;
 }
 
 ul {
