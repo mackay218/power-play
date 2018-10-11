@@ -1,9 +1,9 @@
 /* before running mock data generator 
 hard code in position table:
 id     position_name
-1       fwd
-2       def
-3       gol
+1       forward
+2       defense
+3       goalie
 
 hard code in leage table: 
 id    league_name
@@ -21,33 +21,41 @@ id    league_name
 12    4AA
 13    5AA
 14    6AA
-15    7AA
+15    7AAs
 16    8AA
+
+hard code in account_status table
+id   status_type
+1    active
+2    suspended
+3    banned
+4    pending
+
+
 */
 
 
-
-CREATE TABLE "activity_log" (
-	"id" SERIAL PRIMARY KEY,
-	"time" TIMESTAMP DEFAULT NOW(),
-	"activity_type" VARCHAR(200)
-);
-
 CREATE TABLE "account_status" (
 	"id" SERIAL PRIMARY KEY,
-	"status_type" VARCHAR(100),
-	"reason" VARCHAR(1000)
+	"status_type" VARCHAR(100)f
 );
 
 CREATE TABLE "person" (
 	"id" SERIAL PRIMARY KEY,
 	"email" VARCHAR(200),
 	"password" VARCHAR(1080),
-	"role" VARCHAR(15),
+	"role" VARCHAR(15) DEFAULT 'player',
 	"coach_name" VARCHAR(200),
 	"invite" VARCHAR(2000),
 	"status_id" INTEGER REFERENCES "account_status"(id),
-	"activity_log_id" INTEGER REFERENCES "activity_log"(id)
+	"status_reason" VARCHAR(1000)
+);
+
+CREATE TABLE "activity_log" (
+	"id" SERIAL PRIMARY KEY,
+	"person_id" INTEGER REFERENCES "person"(id),
+	"time" TIMESTAMP DEFAULT NOW(),
+	"activity_type" VARCHAR(200)
 );
 
 CREATE TABLE "league" (

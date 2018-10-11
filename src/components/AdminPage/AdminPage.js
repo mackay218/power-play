@@ -7,6 +7,9 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import './AdminPage.css';
+import TextField from '@material-ui/core/TextField';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -43,27 +46,57 @@ class AdminPage extends Component {
     })
   }
 
+  //function to check if coach is already in the database
   submitCoach = (event) => {
     event.preventDefault();
     console.log('Coach submitted');
 
-    axios.post('/api/password/coachInvite', this.state)
+    axios.post('/api/coaches/checkCoach', this.state)
+      .then((response) => {
+        console.log('response', response.status);
+        if(response.status === 200){
+          alert('An invite was already sent to this email');
+          this.setState({
+            name: '',
+            email: '',
+          });
+        }
+        else if(response.status === 201){
+          this.sendCoachInvite();
+        }
+       
+      })
+      .catch((error) => {
+        console.log('error checking coach:', error)
+        alert('error checking coach');
+      });
+  }
+
+  //function to send invite to coach email
+  sendCoachInvite = () => {
+    axios.post('/api/coaches/coachInvite', this.state)
       .then((response) => {
         console.log('email invite sent to: ', this.state.email);
-        alert('email invite sent to: ', this.state.email);
+        alert('email invite sent');
+
       })
       .catch((error) => {
         console.log('error sending invite: ', error);
         alert('error sending invite email');
       });
+
+    this.setState({
+      name: '',
+      email: ''
+    });
   }
 
   sendToCoaches = () => {
-    console.log('Sent to Coaches');
+    this.props.history.push('admin_coach_list_page')
   }
 
   sendToPlayers = () => {
-    console.log('Sent to players');
+    this.props.history.push('players_page');
   }
 
   render() {
@@ -71,29 +104,25 @@ class AdminPage extends Component {
 
     if (this.props.user.email) {
       content = (
-        <div>
-          <h1>Add Coaches</h1>
-          <form onSubmit={this.submitCoach}>
-            <label>Name:</label>
-            <input type="text" onChange={this.handleChange} value={this.state.name} name="name"></input>
+        <div className="adminPageContainer">
+          <h1 className="center-text">Add Coaches</h1>
+          <form className="coach-form" onSubmit={this.submitCoach}>
+            <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
             <br />
-            <label>Email:</label>
-            <input type="text" onChange={this.handleChange} value={this.state.email} name="email"></input>
+            <TextField label="email" type="text" onChange={this.handleChange} value={this.state.email} name="email" />
             <br />
-            <button type="submit">Add Coach</button>
+            <Button variant="contained" type="submit">Add Coach</Button>
           </form>
-          <div className="center-text">
-            <button onClick={this.sendToPlayers}>Player list</button>
-            <button onClick={this.sendToCoaches}>Coach List</button>
-          </div>
         </div>
       );
     }
 
     return (
-      <div>
+      <div className="mainContainer">
         <Nav />
-        {content}
+        <div className="pageContainer">
+          {content}
+        </div>
       </div>
     );
   }

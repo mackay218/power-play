@@ -1,34 +1,102 @@
+body{
+    --red: #f01e3c;
+}
 
+.landingPageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .missionContainer{
-    width: 600px;
-    height: 400px;
-    left:0; 
-    right:0;
-    top:0; 
-    bottom:0;
+    width: 100vw;
+    height: 300px;
     margin:auto;
     max-width:100%;
     max-height:100%;
-    overflow:auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.missionContainer img{
+    height: 120%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+.missionStatement{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient( to bottom, rgba(240, 30, 60, 1) 2.5%,
+                                            rgba(240, 30, 60, 0.9) 2.5%, 
+                                            rgba(240, 30, 60, 0.7) 90%
+                                                                        );
+    color: #fff;
+}
+
+.guideContainer{
+    display: flex;
+    flex-direction: row;
+}
+.guideSection{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    margin-bottom: 100px;
-    margin-top: 100px;
-
-}
-
-.guideContainer{
-    margin-bottom: 150px;
-}
-.guideSections{
-    /* will be replaced with material grid */
-    display: inline-block;
     margin: 20px;
-    
+    width: 25vw;
+    border: 1px solid var(--red);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.guideSection h3{
+    font-size: 20px;
+    text-align: center;
+}
+
+.guideSection p{
+    text-align: center;
+}
+
+.testimonialContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width:  100vw;
+}
+
+.testimonialSection{
+    margin: 20px;
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--red);
+    padding: 10px 0 0 0;
+}
+
+.testimonialSection img{
+    border-radius: 50%;
+}
+
+.testimonialSection p{
+    width: 100%;
+    padding: 5px;
 }
 
 .bioSections{
@@ -42,18 +110,6 @@ a{
     margin: 20px;
     color: white;
 }
-
-.nav{
-    width: 100%;
-    background-color: #eb1b3b;
-    text-align: right;
-    
-}
-
-.logo{
-    height: 80px;
-    left: auto;
-} 
 
 .getStarted{
     left:0; 

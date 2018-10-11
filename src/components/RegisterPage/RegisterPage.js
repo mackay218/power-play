@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
 
+
+import {connect} from 'react-redux';
+import Nav from '../Nav/Nav';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -35,7 +39,9 @@ class RegisterPage extends Component {
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
         .then((response) => {
-          if (response.status === 201) {
+          console.log(response);
+          if (response.data.status === 201) {
+            this.props.dispatch({type: 'CREATE_PLAYER', payload: response.data.id});
             this.props.history.push('/login');
           } else {
             this.setState({
@@ -74,30 +80,41 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderAlert()}
-        <form onSubmit={this.registerUser}>
-          <h1>Register User</h1>
-          <div>
-            <label htmlFor="email">
-              email:
+      <div className="mainContainer">
+        <Nav />
+        <div className="pageContainer">
+          {this.renderAlert()}
+          <form onSubmit={this.registerUser}>
+            <h1>Register User</h1>
+            <div>
+              <label htmlFor="email">
+                email:
               <input
-                type="text"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleInputChangeFor('email')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
+                  type="text"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChangeFor('email')}
+                />
+              </label>
+            </div>
+            <div>
+              <label htmlFor="password">
+                Password:
               <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChangeFor('password')}
+                />
+              </label>
+            </div>
+            <div>
+              <input
+                type="submit"
+                name="submit"
+                value="Register"
               />
+
             </label>
           </div>
           <div>
@@ -123,10 +140,15 @@ class RegisterPage extends Component {
         </div>
 
 
+              <Link to="/login">Cancel</Link>
+            </div>
+          </form>
+        </div>
+
       </div>
     );
   }
 }
 
-export default RegisterPage;
+export default connect()(RegisterPage);
 
