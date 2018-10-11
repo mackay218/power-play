@@ -61,7 +61,7 @@ const mapStateToProps = state => ({
           console.log('error finding email in database:', error);
 
         });
-
+        this.handleClose();
     }
 
     render() {

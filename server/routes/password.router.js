@@ -222,8 +222,9 @@ router.get('/:emailAddress',(req, res) => {
 
     pool.query(queryText, [email])
         .then((results) => {
-            if(results.rows.length >= 1){
-                //call function to send email
+            console.log(results.rows.length);
+             if(results.rows.length >= 1){
+                 //call function to send email
                 resetPersonInviteCode(email);
                 res.sendStatus(200);
             }
@@ -232,6 +233,7 @@ router.get('/:emailAddress',(req, res) => {
             }
         })
         .catch((error) => {
+            console.log('error finding email:', error);
             res.sendStatus(404);
         });
 });
@@ -279,6 +281,9 @@ resetPersonInviteCode = (email) => {
 
             // let activityLogId = activityLogResult.rows[0].id;
 
+                let personId = personResult.rows[0].id;
+            }
+           
             //send reset password code in an email
             await sendPasswordResetEmail(infoForEmail);
 
@@ -419,15 +424,18 @@ sendPasswordResetEmail = (infoForEmail) => {
 
 //post route for new password / resetting password
 router.put('/setPassword', (req, res) => {
+    console.log('in set setPassword put route');
     console.log('password info:', req.body);
-
     const passwordInfo = req.body;
     const inviteCode = passwordInfo.inviteCode;
+    
+    const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+
     const password = encryptLib.encryptPassword(passwordInfo.password);
 
     //reset inivite code to prevent link from being used more than once
     const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
-
+  
     (async () => {
 
         const client = await pool.connect();
@@ -482,6 +490,45 @@ router.put('/setPassword', (req, res) => {
         res.sendStatus(500);
     });
 
-});
+
+        const activityType = 'password set or reset';
+        const activityTime = new Date();
+
+        (async () => {
+
+            const client = await pool.connect();
+
+            try {
+                //log activity
+                let queryText = `INSERT INTO activity_log(time, activity_type)
+                            VALUES ($1, $2) RETURNING "id";`;
+
+                values = [activityTime, activityType];
+
+                const activityLogResult = await client.query(queryText, values);
+
+                let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `UPDATE person SET "activity_log_id = $1 WHERE "id" = $2;`;
+
+                values = [activityLogId, personId];
+
+                await client.query(queryText, values);
+
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+        })().catch((error) => {
+                console.log('CATCH', error);
+                res.sendStatus(500);
+            });
+    }
+   
+}
 
 module.exports = router;

@@ -61,7 +61,7 @@ class SetPasswordPage extends Component {
             axios.put('/api/password/setPassword', body)
                 .then((response) => {
                     if(response.status === 201){
-                        this.props.history.replace('/#/login');
+                        this.props.history.replace('/login');
                     } else {
                         this.setState({
                             message: 'Resetting password failed please try again.'

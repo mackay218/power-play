@@ -70,9 +70,22 @@ class PlayersListedPage extends Component {
     console.log(id);
   }
 
+  deletePlayer = (id) => {
+    this.props.dispatch({type: 'DELETE_PLAYER', payload: id});
+  }
+
   render() {
     let content = null;
     let formContent = null;
+    let deleteHeader = null;
+    let deleteButton = null;
+
+    if (this.props.user.role === "admin") {
+      deleteHeader = <TableCell>Delete</TableCell>;
+      deleteButton = (id) => {
+        return (<TableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}>Delete</Button></TableCell>);
+      }
+    }
     if (this.state.position_id === "1" || this.state.position_id === "2") {
       formContent = (
         <div>
@@ -124,17 +137,19 @@ class PlayersListedPage extends Component {
                   <TableCell>Birthdate</TableCell>
                   <TableCell>Points</TableCell>
                   <TableCell>Wins</TableCell>
+                  {deleteHeader}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {this.props.player.map((player, i) => {
                   return (
-                    <TableRow key={i} onClick={() => this.toPlayerProfile(player.id)}>
-                    <TableCell>{player.first_name} {player.last_name}</TableCell>
-                    <TableCell>{player.position_name}</TableCell>
-                    <TableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</TableCell>
-                    <TableCell>{player.points}</TableCell>
-                    <TableCell>{player.wins}</TableCell>
+                    <TableRow key={i}>
+                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</TableCell>
+                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</TableCell>
+                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</TableCell>
+                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</TableCell>
+                    <TableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</TableCell>
+                    {deleteButton(player.person_id)}
                   </TableRow>
                   )
                 })}
