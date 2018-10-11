@@ -5,6 +5,7 @@ import { triggerLogin, formError, clearError } from '../../redux/actions/loginAc
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 import ForgotPasswordDialog from './ForgotPasswordDialog';
+import Nav from '../Nav/Nav';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -71,6 +72,7 @@ class LoginPage extends Component {
   render() {
     return (
       <div>
+        <Nav />
         { this.renderAlert() }
         <form onSubmit={this.login}>
           <h1>Login</h1>
