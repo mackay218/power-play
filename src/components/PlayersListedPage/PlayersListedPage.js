@@ -13,10 +13,15 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import moment from 'moment';
 import './PlayersListedPage.css';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import swal from 'sweetalert';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -25,26 +30,26 @@ const mapStateToProps = state => ({
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-      fontSize: 20,
+    fontSize: 20,
   },
   body: {
-      fontSize: 14,
+    fontSize: 14,
   },
 }))(TableCell);
 
 const styles = theme => ({
   root: {
-      width: '100%',
-      marginTop: theme.spacing.unit * 3,
-      overflowX: 'auto',
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
   },
   table: {
-      minWidth: 700,
+    minWidth: 700,
   },
   row: {
-      '&:nth-of-type(odd)': {
-          backgroundColor: theme.palette.background.default,
-      },
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
   },
 });
 
@@ -95,7 +100,25 @@ class PlayersListedPage extends Component {
   }
 
   deletePlayer = (id) => {
-    this.props.dispatch({type: 'DELETE_PLAYER', payload: id});
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able undo this action!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        this.props.dispatch({ type: 'DELETE_COACH', payload: id });
+        swal('The player was deleted', {
+          icon: 'success'
+        });
+      }
+      else {
+        swal('The player was not deleted', {
+          dangerMode: true,
+        });
+      }
+    })
   }
 
   render() {
@@ -107,7 +130,7 @@ class PlayersListedPage extends Component {
     if (this.props.user.role === "admin") {
       deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
       deleteButton = (id) => {
-        return (<CustomTableCell><Button variant="contained" color="secondary"onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></CustomTableCell>);
+        return (<CustomTableCell><Button variant="contained" color="secondary" onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></CustomTableCell>);
       }
     }
     if (this.state.position_id === "1" || this.state.position_id === "2") {
@@ -116,8 +139,8 @@ class PlayersListedPage extends Component {
           <h4 className="center-text">Skater Options</h4>
           <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
           <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Year Min" name="birthDayMin" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Year max" name="birthDayMax" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
         </div>
       )
     }
@@ -127,8 +150,8 @@ class PlayersListedPage extends Component {
           <h4 className="center-text">Goalie Options</h4>
           <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
           <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Year Min" name="birthDayMin" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Year max" name="birthDayMax" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
+          <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
         </div>
       )
     }
@@ -138,14 +161,18 @@ class PlayersListedPage extends Component {
         <div>
           <form className="search-form" onSubmit={this.sendSortBy}>
             <h3 className="center-text">Search Players By:</h3>
-                <TextField type="text" label="Player Name" onChange={this.handleChange} name="playerName" />
-                <span>or </span>
-                <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
-                  <option value="">Position</option>
-                  <option value="1">Forward</option>
-                  <option value="2">Defense</option>
-                  <option value="3">Goalies</option>
-                </select>
+            <div className="form-container">
+              <TextField type="text" label="Name" className="input-width" onChange={this.handleChange} name="playerName" />
+              <div className="or"><p>or</p></div>
+              <FormControl className="input-width">
+                <InputLabel>Position</InputLabel>
+                <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
+                  <MenuItem value="1">Forward</MenuItem>
+                  <MenuItem value="2">Defense</MenuItem>
+                  <MenuItem value="3">Goalies</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <br />
             {formContent}
             <Button variant="contained" type="submit">Sort</Button>
@@ -167,13 +194,13 @@ class PlayersListedPage extends Component {
                 {this.props.player.map((player, i) => {
                   return (
                     <TableRow key={i}>
-                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</CustomTableCell>
-                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</CustomTableCell>
-                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
-                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</CustomTableCell>
-                    <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</CustomTableCell>
-                    {deleteButton(player.person_id)}
-                  </TableRow>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</CustomTableCell>
+                      {deleteButton(player.person_id)}
+                    </TableRow>
                   )
                 })}
               </TableBody>

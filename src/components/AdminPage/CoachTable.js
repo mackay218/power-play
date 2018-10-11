@@ -20,6 +20,7 @@ const mapStateToProps = state => ({
 const CustomTableCell = withStyles(theme => ({
     head: {
         fontSize: 20,
+        maxWidth: 10,
     },
     body: {
         fontSize: 14,
@@ -34,6 +35,9 @@ const styles = theme => ({
     },
     table: {
         minWidth: 700,
+    },
+    column: {
+        maxWidth: 1,
     },
     row: {
         '&:nth-of-type(odd)': {
@@ -58,11 +62,14 @@ class CustomizedTable extends Component {
             if (willDelete) {
                 this.props.dispatch({ type: 'DELETE_COACH', payload: id });
                 swal('The coach was deleted', {
-                    icon: 'success'
+                    icon: 'success',
+                    dangerMode: true,
                 });
             }
             else {
-                swal('The coach was not deleted');
+                swal('The coach was not deleted', {
+                    dangerMode: true,
+                  });
             }
         })
     }
