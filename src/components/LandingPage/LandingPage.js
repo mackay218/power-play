@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
-import ReactDOM from 'react-dom';
-
+import Nav from  '../Nav/Nav';
 // styling imports
 import '../LandingPage/LandingPage.css';
 
@@ -34,30 +31,7 @@ class LandingPage extends Component {
     render() {
         return (
             <div className="landingPageContainer">
-                <div className="nav">
-                    <img className="logo"
-                        src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-                        alt="logo"></img>
-
-
-                    <Link to="/register">
-                        Register
-                </Link>
-
-                    <Link to="/login">
-                        Log In
-                </Link>
-
-                    <Link to="/terms">
-                        Terms
-                </Link>
-
-                    <a>About</a>
-
-                </div>
-
-                <p>Landing Page</p>
-
+                <Nav />
                 <div className="missionContainer">
                     <h1 className="missionHeader">
                         A Mission Statement A Mission Statement A Mission Statement</h1>
@@ -118,7 +92,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img alt="bio1"></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -127,7 +101,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img alt="bio2"></img>
                         <p>A bio. A personal epic of Olympian scale.
                         <br></br>Avatars go right above this.
                         </p>
@@ -137,7 +111,7 @@ class LandingPage extends Component {
 
                     <div className="bioSections">
                         {/* material avatars go here */}
-                        <img></img>
+                        <img alt="bio3"></img>
                         <p>A bio. A personal epic of Olympian scale.<br>
                         </br>Avatars go right above this.</p>
                     </div>

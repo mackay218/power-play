@@ -1,5 +1,5 @@
 .search-form {
-    background-color: red;
+    background-color: #eb1b3b;
     width: 60%;
     height: 250px;
     margin: 20px auto;
@@ -10,7 +10,7 @@
 }
 
 .table-head {
-    background-color: red;
+    background-color: #eb1b3b;
 }
 
 .th {
