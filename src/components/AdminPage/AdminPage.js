@@ -106,7 +106,7 @@ class AdminPage extends Component {
       content = (
         <div className="adminPageContainer">
           <h1 className="center-text">Add Coaches</h1>
-          <form className="center-text coach-form" onSubmit={this.submitCoach}>
+          <form className="coach-form" onSubmit={this.submitCoach}>
             <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
             <br />
             <TextField label="email" type="text" onChange={this.handleChange} value={this.state.email} name="email" />
