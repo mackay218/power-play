@@ -280,9 +280,6 @@ resetPersonInviteCode = (email) => {
             // const activityLogResult = await client.query(queryText, values);
 
             // let activityLogId = activityLogResult.rows[0].id;
-
-                let personId = personResult.rows[0].id;
-            }
            
             //send reset password code in an email
             await sendPasswordResetEmail(infoForEmail);
@@ -432,9 +429,6 @@ router.put('/setPassword', (req, res) => {
     const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
     const password = encryptLib.encryptPassword(passwordInfo.password);
-
-    //reset inivite code to prevent link from being used more than once
-    const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
   
     (async () => {
 
@@ -527,8 +521,6 @@ router.put('/setPassword', (req, res) => {
                 console.log('CATCH', error);
                 res.sendStatus(500);
             });
-    }
-   
-}
+})
 
 module.exports = router;

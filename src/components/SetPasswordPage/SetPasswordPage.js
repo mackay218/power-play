@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Nav from '../Nav/Nav';
 
 class SetPasswordPage extends Component {
     constructor(props) {
@@ -94,6 +95,7 @@ class SetPasswordPage extends Component {
     render(){
         return(
             <div>
+                <Nav />
                 {this.renderAlert()}
                 <form onSubmit={this.setPassword} >
                     <h1>Set Password</h1>

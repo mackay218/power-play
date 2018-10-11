@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import Nav from '../Nav/Nav';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class RegisterPage extends Component {
   render() {
     return (
       <div>
+        <Nav />
         {this.renderAlert()}
         <form onSubmit={this.registerUser}>
           <h1>Register User</h1>
