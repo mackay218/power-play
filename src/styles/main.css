@@ -107,6 +107,7 @@ input[type="submit"] {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-right: 100px;
 }
 
 .logoutBtn{
@@ -133,7 +134,7 @@ li {
 
 .logo{
     height: 100px;
-    width: 150px;
+    width: 225px;
     float: left;
 } 
 

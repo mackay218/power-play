@@ -94,41 +94,40 @@ class SetPasswordPage extends Component {
 
     render(){
         return(
-            <div>
+            <div className="mainContainer">
                 <Nav />
-                {this.renderAlert()}
-                <form onSubmit={this.setPassword} >
-                    <h1>Set Password</h1>
-                    <div>
-                        <label htmlFor="newPassword">
-                            new password
+                <div className="pageContainer">
+                    {this.renderAlert()}
+                    <form onSubmit={this.setPassword} >
+                        <h1>Set Password</h1>
+                        <div>
+                            <label htmlFor="newPassword">
+                                new password
                             <input
-                                type="password"
-                                name="newPassword"
-                                value={this.state.newPassword}
-                                onChange={this.handleInputChangeFor('newPassword')}
-                            />
-                        </label>
-                    </div>
-                    <div>
-                        <label htmlFor="confirmPassword">
-                            new password
+                                    type="password"
+                                    name="newPassword"
+                                    value={this.state.newPassword}
+                                    onChange={this.handleInputChangeFor('newPassword')}
+                                />
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor="confirmPassword">
+                                new password
                             <input
-                                type="password"
-                                name="confirmPassword"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleInputChangeFor('confirmPassword')}
-                            />
-                        </label>
-                    </div>
-                    <button >Submit</button>
-                </form>
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={this.state.confirmPassword}
+                                    onChange={this.handleInputChangeFor('confirmPassword')}
+                                />
+                            </label>
+                        </div>
+                        <button >Submit</button>
+                    </form>
+                </div>
             </div>
-
-
         )
     }
-
 }
 
 export default SetPasswordPage;
