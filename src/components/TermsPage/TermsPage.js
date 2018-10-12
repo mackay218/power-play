@@ -67,9 +67,11 @@ class TermsPage extends Component {
     
 
     return (
-      <div>
+      <div className="mainContainer">
         <Nav />
-        { content }
+        <div className="pageContainer">
+          {content}
+        </div> 
       </div>
     );
   }

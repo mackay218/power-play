@@ -135,23 +135,27 @@ class PlayersListedPage extends Component {
     }
     if (this.state.position_id === "1" || this.state.position_id === "2") {
       formContent = (
-        <div>
-          <h4 className="center-text">Skater Options</h4>
-          <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
-          <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+        <div className="form-column">
+          <h4>Skater Options</h4>
+          <div className="position-options">
+            <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
+            <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+          </div>
         </div>
       )
     }
     else if (this.state.position_id === "3") {
       formContent = (
-        <div>
-          <h4 className="center-text">Goalie Options</h4>
-          <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
-          <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-          <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+        <div className="form-column">
+          <h4>Goalie Options</h4>
+          <div className="position-options">
+            <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
+            <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+          </div>
         </div>
       )
     }
@@ -160,21 +164,22 @@ class PlayersListedPage extends Component {
       content = (
         <div>
           <form className="search-form" onSubmit={this.sendSortBy}>
-            <h3 className="center-text">Search Players By:</h3>
-            <div className="form-container">
-              <TextField type="text" label="Name" className="input-width" onChange={this.handleChange} name="playerName" />
-              <div className="or"><p>or</p></div>
-              <FormControl className="input-width">
-                <InputLabel>Position</InputLabel>
-                <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
-                  <MenuItem value="1">Forward</MenuItem>
-                  <MenuItem value="2">Defense</MenuItem>
-                  <MenuItem value="3">Goalies</MenuItem>
-                </Select>
-              </FormControl>
+            <div className="form-column">
+              <h3>Search Players By:</h3>
+              <div className="form-container">
+                <TextField type="text" label="Name" className="input-width" onChange={this.handleChange} name="playerName" />
+                <div className="or"><p>or</p></div>
+                <FormControl className="input-width">
+                  <InputLabel>Position</InputLabel>
+                  <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
+                    <MenuItem value="1">Forward</MenuItem>
+                    <MenuItem value="2">Defense</MenuItem>
+                    <MenuItem value="3">Goalies</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              {formContent}
             </div>
-            <br />
-            {formContent}
             <Button variant="contained" type="submit">Sort</Button>
           </form>
           <h2 className="center-text">Players</h2>
