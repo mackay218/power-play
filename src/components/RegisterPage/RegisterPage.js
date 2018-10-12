@@ -114,13 +114,6 @@ class RegisterPage extends Component {
                 name="submit"
                 value="Register"
               />
-            </div>
-            <div>
-              <input
-                type="submit"
-                name="submit"
-                value="Register"
-              />
               <Link to="/login">Cancel</Link>
             </div>
           </form>
