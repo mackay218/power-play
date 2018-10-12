@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
-import { Elements, StripeProvider } from 'react-stripe-elements';
-import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
-
-
 import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 
@@ -33,9 +28,6 @@ class RegisterPage extends Component {
         password: this.state.password,
       };
 
-
-
-
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
         .then((response) => {
@@ -56,7 +48,6 @@ class RegisterPage extends Component {
         });
     }
   } // end registerUser
-
 
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
@@ -114,37 +105,10 @@ class RegisterPage extends Component {
                 name="submit"
                 value="Register"
               />
-
-            </label>
-          </div>
-          <div>
-            <input
-              type="submit"
-              name="submit"
-              value="Register"
-            />
-            <Link to="/login">Cancel</Link>
-          </div>
-        </form>
-
-
-
-        {/*Checkout form for stripe*/}
-
-        <div className="element-checkout">
-          <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
-            <Elements>
-              <CheckoutForm />
-            </Elements>
-          </StripeProvider>
-        </div>
-
-
               <Link to="/login">Cancel</Link>
             </div>
           </form>
         </div>
-
       </div>
     );
   }
