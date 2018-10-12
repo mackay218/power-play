@@ -48,6 +48,12 @@ class Nav extends Component {
             <Link to="/player_profile_page">
               Player Profile
             </Link>
+            <Link to="/landing_page">
+              Home
+            </Link>
+            <Link to="/teams">
+              Teams
+            </Link>
             <Link to="/suspend_page">
               suspend and delete
             </Link>
@@ -68,7 +74,14 @@ class Nav extends Component {
               alt="logo">
             </img>
           </Link>
+          
           <div className="navLinkWrapper">
+            <Link to="/landing_page">
+              Home
+            </Link>
+            <Link to="/teams">
+              Teams
+            </Link>
             <Link to="/players_page">
               Players Listed Page
             </Link>
@@ -92,6 +105,12 @@ class Nav extends Component {
             </img>
           </Link>
           <div className="navLinkWrapper">
+            <Link to="/landing_page">
+              Home
+              </Link>
+            <Link to="/teams">
+              Teams
+              </Link>
             <Link to="players_page">
               Player List
             </Link>
@@ -121,6 +140,9 @@ class Nav extends Component {
             <div className="navLinkWrapper">
               <Link to="/landing_page">
                 Home
+              </Link>
+              <Link to="/teams">
+                Teams
               </Link>
               <Link to="/login">
                 Log In
