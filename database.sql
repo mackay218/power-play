@@ -1,43 +1,8 @@
-/* before running mock data generator 
-hard code in position table:
-id     position_name
-1       forward
-2       defense
-3       goalie
-
-hard code in leage table: 
-id    league_name
-1     1A
-2     2A
-3     3A
-4     4A
-5     5A
-6     6A
-7     7A
-8     8A
-9     1AA
-10    2AA
-11    3AA
-12    4AA
-13    5AA
-14    6AA
-15    7AAs
-16    8AA
-
-hard code in account_status table
-id   status_type
-1    active
-2    suspended
-3    banned
-4    pending
-
-
-*/
 
 
 CREATE TABLE "account_status" (
 	"id" SERIAL PRIMARY KEY,
-	"status_type" VARCHAR(100)f
+	"status_type" VARCHAR(100)
 );
 
 CREATE TABLE "person" (
@@ -59,22 +24,22 @@ CREATE TABLE "activity_log" (
 );
 
 CREATE TABLE "league" (
-	"id" SERIAL PRIMARY KEY,
+	"leagueId" SERIAL PRIMARY KEY,
 	"league_name" VARCHAR(200)
 );
 
 CREATE TABLE "team" (
-	"id" SERIAL PRIMARY KEY,
+	"teamId" SERIAL PRIMARY KEY,
 	"team_name" VARCHAR(200)
 );
 
 CREATE TABLE "school" (
-	"id" SERIAL PRIMARY KEY,
+	"schoolId" SERIAL PRIMARY KEY,
 	"school_name" VARCHAR(200)
 );
 
 CREATE TABLE "position" (
-	"id" SERIAL PRIMARY KEY,
+	"positionId" SERIAL PRIMARY KEY,
 	"position_name" VARCHAR(200)
 );
 
@@ -96,20 +61,24 @@ CREATE TABLE "player_stats" (
 	"school_year" INTEGER,
 	"image_path" VARCHAR(1080),
 	"video_link" VARCHAR(1080),
-	"goals" INTEGER,
-	"assists" INTEGER,
-	"points" INTEGER,
-	"games_played" INTEGER,
-	"wins" INTEGER,
-	"losses" INTEGER,
-	"ties" INTEGER,
+	"goals" INTEGER DEFAULT 0,
+	"assists" INTEGER DEFAULT 0,
+	"points" INTEGER DEFAULT 0,
+	"games_played" INTEGER DEFAULT 0,
+	"wins" INTEGER DEFAULT 0,
+	"losses" INTEGER DEFAULT 0,
+	"ties" INTEGER DEFAULT 0,
 	"save_percent" VARCHAR(10),
-	"shutouts" INTEGER,
-	"goals_against"INTEGER,
-	"guardian" BOOLEAN,
+	"shutouts" INTEGER DEFAULT 0,
+	"goals_against"INTEGER DEFAULT 0,
+	"guardian" BOOLEAN DEFAULT false,
 	"created_on" DATE DEFAULT NOW(),
 	"player_info" VARCHAR(200)
 );
 
+INSERT INTO "position" ("position_name") VALUES ('forward'),('defense'),('goalie');
 
+INSERT INTO "league" ("league_name") VALUES ('1A'),('2A'),('3A'),('4A'),('5A'),('6A'),('7A'),('8A'),('1AA'),('2AA'),('3AA'),('4AA'),('5AA'),('6AA'),('7AA'),('8AA');
+
+INSERT INTO "account_status" ("status_type") VALUES ('active'),('suspended'),('banned'),('pending');
 

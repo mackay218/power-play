@@ -66,3 +66,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.page-buttons {
+    width: 90vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

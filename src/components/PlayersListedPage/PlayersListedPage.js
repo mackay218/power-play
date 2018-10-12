@@ -60,12 +60,13 @@ class PlayersListedPage extends Component {
     this.state = {
       playerName: '',
       position_id: '',
-      pointsMin: '',
-      pointsMax: '',
-      winsMin: '',
-      winsMax: '',
-      birthDayMin: '',
-      birthDayMax: '',
+      pointsMin: 0,
+      pointsMax: 999999,
+      winsMin: 0,
+      winsMax: 999999,
+      birthDayMin: '2002-01-01',
+      birthDayMax: '2018-01-01',
+      page: 0,
     }
   }
 
@@ -80,8 +81,6 @@ class PlayersListedPage extends Component {
     }
   }
 
- 
-
   handleChange = (event) => {
     this.setState({
       ...this.state,
@@ -91,7 +90,11 @@ class PlayersListedPage extends Component {
 
   sendSortBy = (event) => {
     event.preventDefault();
-    console.log('Sent sort info to server', this.state);
+    this.setState({
+      ...this.state,
+      page: 0,
+    });
+    this.props.dispatch({type: 'SORT_BY', payload: this.state});
   }
 
   toPlayerProfile = (id) => {
@@ -108,7 +111,7 @@ class PlayersListedPage extends Component {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        this.props.dispatch({ type: 'DELETE_COACH', payload: id });
+        this.props.dispatch({ type: 'DELETE_PLAYER', payload: id });
         swal('The player was deleted', {
           icon: 'success'
         });
@@ -119,6 +122,28 @@ class PlayersListedPage extends Component {
         });
       }
     })
+  }
+
+  previousPage = () => {
+    this.setState({
+      ...this.state,
+      page: (this.state.page - 10),
+    });
+    if (this.state.page < 0) {
+      this.setState({
+        ...this.state,
+        page: 0,
+      });
+    }
+    this.props.dispatch({type: 'SORT_BY', payload: this.state});
+  }
+
+  nextPage = () => {
+    this.setState({
+      ...this.state,
+      page: (this.state.page + 10),
+    });
+    this.props.dispatch({type: 'SORT_BY', payload: this.state});
   }
 
   render() {
@@ -180,9 +205,13 @@ class PlayersListedPage extends Component {
               </div>
               {formContent}
             </div>
-            <Button variant="contained" type="submit">Sort</Button>
+            <Button variant="contained" type="submit">Search</Button>
           </form>
           <h2 className="center-text">Players</h2>
+          <div className="page-buttons">
+            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+          </div>
           <Paper>
             <Table>
               <TableHead className="table-head">
@@ -199,11 +228,11 @@ class PlayersListedPage extends Component {
                 {this.props.player.map((player, i) => {
                   return (
                     <TableRow key={i}>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.first_name} {player.last_name}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.position_name}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.points}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.id)} >{player.wins}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.first_name} {player.last_name}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.position_name}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.points}</CustomTableCell>
+                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.wins}</CustomTableCell>
                       {deleteButton(player.person_id)}
                     </TableRow>
                   )

@@ -4,13 +4,13 @@ const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
 
-    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."id" 
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
                     FROM "player_stats" 
-                    JOIN "person" ON "person_id" = "person"."id"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
                     ORDER BY "created_on" DESC LIMIT 10;`;
     pool.query(query).then((result) => {
         res.send(result.rows)
@@ -24,13 +24,13 @@ router.get('/all', (req, res) => {
 router.get('/profileById', (req, res) => {
 
     id = req.user.id;
-    const query = `SELECT "player_stats".*, "person"."id" FROM "player_stats"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
-                    JOIN "person" ON "person_id" = "person"."id"
-                    WHERE "person"."id" = $1;`;
+    const query = `SELECT "player_stats".*, "person"."personid" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "person"."personid" = $1;`;
     pool.query(query, [id]).then((result) => {
         res.send(result.rows[0])
         console.log('by id results', id, result.rows[0]);
@@ -41,25 +41,52 @@ router.get('/profileById', (req, res) => {
 
 });
 
-router.get('/sorted/:position/:minPoints/:maxpoints/:minWins/:maxWins/:minDate/:maxDate', (req, res) => {
-    const query = `CREATE TEMP TABLE "sorted_players" AS
-                    SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."id" 
-                    FROM "player_stats" 
-                    JOIN "person" ON "person_id" = "person"."id"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
-                    WHERE "position_id" = 3
-                        AND "points" > coalesce($1,75)
-                        AND "points" < coalesce($2,999999)
-                        AND "wins" > coalesce($3,0)
-                        AND "wins" < coalesce($4,999999)
-                        AND "birth_date" > coalesce($5, DATE('1998-01-01')) 
-                        AND "birth_date" < coalesce($6, DATE('2002-01-01'))
-                    ORDER BY "created_on" DESC LIMIT 10 OFFSET 10;`;
-    pool.query(query, [])
-})
+router.get('/sorted', (req, res) => {
+    (async () => {
+        const client = await pool.connect();
+        try {
+            // let queryText = `BEGIN;`;
+            // await client.query(queryText);
+            let queryText = `CREATE TEMP TABLE "sorted_players" AS
+                            SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                            FROM "player_stats" 
+                            JOIN "person" ON "person_id" = "person"."personid"
+                            JOIN "position" ON "position_id" = "position"."positionid"
+                            JOIN "league" ON "league_id" = "league"."leagueid"
+                            JOIN "team" ON "team_id" = "team"."teamid"
+                            JOIN "school" ON "school_id" = "school"."schoolid"
+                            WHERE "position_id" = $1
+                                AND "points" >= coalesce($2,0)
+                                AND "points" <= coalesce($3,999999)
+                                AND "wins" >= coalesce($4,0)
+                                AND "wins" <= coalesce($5,999999)
+                                AND "birth_date" >= coalesce($6, DATE('1998-01-01')) 
+                                AND "birth_date" <= coalesce($7, DATE('2018-01-01'));`;
+            await client.query(queryText, [parseInt(req.query.position), 
+                                           parseInt(req.query.minPoints), 
+                                           parseInt(req.query.maxPoints), 
+                                           parseInt(req.query.minWins), 
+                                           parseInt(req.query.maxWins), 
+                                           req.query.minDate, 
+                                           req.query.maxDate]);
+            queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
+            const sortedPlayers = await client.query(queryText, [parseInt(req.query.page)]);
+            await client.query('COMMIT');
+            console.log(sortedPlayers.rows);
+            res.send(sortedPlayers.rows);
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    })().catch((error) => {
+        console.log('CATCH', error);
+    });
+});
+
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     const userId = req.user.id;
@@ -147,7 +174,7 @@ router.delete('/delete/:id', (req, res) => {
         try {
             let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
             await client.query(queryText, [req.params.id]);
-            queryText = `DELETE FROM "person" WHERE "id" = $1 ;`;
+            queryText = `DELETE FROM "person" WHERE "personid" = $1 ;`;
             await client.query(queryText, [req.params.id]);
             await client.query('COMMIT');
         }
@@ -157,6 +184,7 @@ router.delete('/delete/:id', (req, res) => {
             throw error;
         } finally {
             client.release();
+            res.sendStatus(200);
         }
     })().catch((error) => {
         console.log('CATCH', error);

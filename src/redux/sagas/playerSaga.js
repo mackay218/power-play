@@ -23,6 +23,7 @@ function* createPlayer(action) {
 function* deletePlayer(action) {
     try {
         yield call(axios.delete, `/api/players/delete/${action.payload}`);
+        yield put({type: 'GET_ALL_PLAYERS'});
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
@@ -30,15 +31,8 @@ function* deletePlayer(action) {
 
 function* sortBy(action) {
     try {
-        const sortedPlayers = yield call(axios.get, `/api/player/sorted?position=${action.payload.position_id}
-                                                                       &minPoints=${action.payload.pointsMin}
-                                                                       &maxPoints=${action.payload.pointsMax}
-                                                                       &minWins=${action.payload.winsMin}
-                                                                       &maxWins${action.payload.winsMax}
-                                                                       &minDate=${action.payload.birthDayMin}
-                                                                       &maxDate=${action.payload.birthDayMax}
-                                                                       &page=${action.payload.page}`);
-        yield put({type: 'SET_ALL_PLAYERS', paylaod: sortedPlayers});        
+        const sortedPlayers = yield call(axios.get, `/api/players/sorted?position=${action.payload.position_id}&minPoints=${action.payload.pointsMin}&maxPoints=${action.payload.pointsMax}&minWins=${action.payload.winsMin}&maxWins=${action.payload.winsMax}&minDate=${action.payload.birthDayMin}&maxDate=${action.payload.birthDayMax}&page=${action.payload.page}`);
+        yield put({type: 'SET_ALL_PLAYERS', payload: sortedPlayers.data});        
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }

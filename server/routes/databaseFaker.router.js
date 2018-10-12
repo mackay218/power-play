@@ -126,19 +126,19 @@ router.post('/', (req, res) => {
 
                 // let activityLogId = activityLogResult.rows[0].id;
 
-                queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "id";`;
+                queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "schoolid";`;
                 values = [school];
 
                 const schoolResult = await client.query(queryText, values);
 
-                let schoolId = schoolResult.rows[0].id;
+                let schoolId = schoolResult.rows[0].schoolid;
 
-                queryText = `INSERT INTO team(team_name) VALUES ($1) RETURNING "id";`;
+                queryText = `INSERT INTO team(team_name) VALUES ($1) RETURNING "teamid";`;
                 values = [teamName];
 
                 const teamResult = await client.query(queryText, values);
 
-                let teamId = teamResult.rows[0].id;
+                let teamId = teamResult.rows[0].teamid;
 
                 queryText = `INSERT INTO player_stats(person_id, league_id, team_id, school_id, position_id, 
                             first_name, last_name, phone_number, birth_date, height, weight, gpa, act_score, 
