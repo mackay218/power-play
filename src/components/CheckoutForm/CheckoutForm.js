@@ -22,7 +22,7 @@ class CheckoutForm extends Component {
     handleSubmit = () => {
         this.props.stripe.createToken({ name: "Name" })
             .then((token) => {
-                console.log('Token in submit funk' , token);
+                console.log('Token in submit function' , token);
                 axios({
                     method: 'POST',
                     url: 'api/charge',

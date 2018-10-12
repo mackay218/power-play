@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
+import REACT_APP_STRIPE_PB_KEY from '../../config';
 
+
+// let PBKEY = process.env.REACT_APP_STRIPE_PB_KEY
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -13,8 +16,33 @@ class RegisterPage extends Component {
       email: '',
       password: '',
       message: '',
+      // keyPublish: '',
+      // stripe: '',
     };
   }
+
+  // componentDidMount(){
+   
+  //   setTimeout(() => {
+  //     this.setPublishKey();
+  //   }, 1);
+    
+  //   setTimeout( () => {
+  //     this.whatIsPublishKey();
+  //   }, 10);
+  // }
+
+  // setPublishKey = () => {
+  //   console.log(this.state.keyPublish);
+  //   this.setState({
+  //     keyPublish: process.env.REACT_APP_STRIPE_PB_KEY ,
+  //   });
+  // };
+
+  // whatIsPublishKey = () => {
+  //   console.log(this.state.keyPublish);
+  // }
+
 
   registerUser = (event) => {
     event.preventDefault();
@@ -28,9 +56,6 @@ class RegisterPage extends Component {
         email: this.state.email,
         password: this.state.password,
       };
-
-
-
 
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
@@ -51,6 +76,7 @@ class RegisterPage extends Component {
     }
   } // end registerUser
 
+  
 
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
@@ -71,6 +97,9 @@ class RegisterPage extends Component {
     }
     return (<span />);
   }
+
+  
+
 
   render() {
     return (
@@ -115,7 +144,7 @@ class RegisterPage extends Component {
         {/*Checkout form for stripe*/}
 
         <div className="element-checkout">
-          <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
+          <StripeProvider apiKey={REACT_APP_STRIPE_PB_KEY}>
             <Elements>
               <CheckoutForm />
             </Elements>
