@@ -40,6 +40,26 @@ router.get('/profileById', (req, res) => {
     })
 
 });
+
+router.get('/sorted/:position/:minPoints/:maxpoints/:minWins/:maxWins/:minDate/:maxDate', (req, res) => {
+    const query = `CREATE TEMP TABLE "sorted_players" AS
+                    SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."id" 
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."id"
+                    JOIN "position" ON "position_id" = "position"."id"
+                    JOIN "league" ON "league_id" = "league"."id"
+                    JOIN "team" ON "team_id" = "team"."id"
+                    JOIN "school" ON "school_id" = "school"."id"
+                    WHERE "position_id" = 3
+                        AND "points" > coalesce($1,75)
+                        AND "points" < coalesce($2,999999)
+                        AND "wins" > coalesce($3,0)
+                        AND "wins" < coalesce($4,999999)
+                        AND "birth_date" > coalesce($5, DATE('1998-01-01')) 
+                        AND "birth_date" < coalesce($6, DATE('2002-01-01'))
+                    ORDER BY "created_on" DESC LIMIT 10 OFFSET 10;`;
+    pool.query(query, [])
+})
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     const userId = req.user.id;
