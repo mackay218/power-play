@@ -148,13 +148,7 @@ class PlayerProfilePage extends Component {
               {/* {JSON.stringify(this.props.player)} */}
             </div>
           </div>
-          video_link: null,
-          save_percent: null,
-          shutouts: null,
-          goals_against: null,
-          guardian: false,
-          player_info: null,
-        
+          
 
       )
     }
