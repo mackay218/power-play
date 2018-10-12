@@ -30,6 +30,8 @@ router.post('/', (req, res) => {
             statusReason = 'awaiting payment';
         }
 
+        console.log('statusType', statusType);
+
         //activity log
         // const activityTime = new Date();
         // const activityType = 'logged in';

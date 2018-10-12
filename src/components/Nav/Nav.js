@@ -126,7 +126,7 @@ class Nav extends Component {
                 Log In
               </Link>
               <Link to="/register">
-                Register
+                Sign Up
               </Link>
               <Link to="/terms">
                 Terms
