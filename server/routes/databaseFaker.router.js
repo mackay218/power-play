@@ -30,6 +30,8 @@ router.post('/', (req, res) => {
             statusReason = 'awaiting payment';
         }
 
+        console.log('statusType', statusType);
+
         //activity log
         // const activityTime = new Date();
         // const activityType = 'logged in';
@@ -69,17 +71,17 @@ router.post('/', (req, res) => {
 
         const videoLink = 'https://www.youtube.com/watch?v=dwDpSKDyKRU';
 
-        let goals = null;
-        let assists = null;
-        let points = null;
+        let goals = 0;
+        let assists = 0;
+        let points = 0;
 
-        let wins = null;
-        let losses = null;
-        let ties = null;
-        let gamesPlayed = null;
-        let savePercent = null;
-        let shutOuts = null;
-        let goalsAgainst = null;
+        let wins = 0;
+        let losses = 0;
+        let ties = 0;
+        let gamesPlayed = 0;
+        let savePercent = 0;
+        let shutOuts = 0;
+        let goalsAgainst = 0;
 
         const guardian = false;
 

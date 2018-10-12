@@ -34,37 +34,41 @@ class LandingPage extends Component {
                 <Nav />
                 <div className="pageContainer">
                     <div className="missionContainer">
-                        <img src="images/hockeyGif.gif" alt="hockeyGif" />
+                        <img className="hockeyGif" src="images/hockeyGif.gif" alt="hockeyGif" />
                         <div className="missionStatement">
                             <h1 className="missionHeader">
                                 A Mission Statement A Mission Statement A Mission Statement</h1>
                             <h3 className="missionDetail">
                                 We do the things. All the things. All the time.
                                 We do the things. All the things. All the time.
-                    We do the things. All the things. All the time.</h3>
+                                We do the things. All the things. All the time.
+                            </h3>
                             <h3 className="missionDetail">
                                 And we do them well. We do them with gusto. We accomplish them with gravitas.
-                    </h3>
+                            </h3>
+                            <div className="guideContainer">
+                                <div className="guideSection">
+                                    <h3 className="guideHeaders">Build Your Profile</h3>
+                                    <img className="guideImg" src="images/profile.svg" alt="profile-icon" />
+                                    <p>Enter your stats.</p>
+                                </div>
+                                <img src="images/right-arrow.svg"></img>
+                                <div className="guideSection">
+                                    <h3 className="guideHeaders">Showcase Your Talent</h3>
+                                    <img className="guideImg" src="images/video-player.svg" alt="video-icon" />
+                                    <p>Load a clip of your skills in action.</p>
+                                </div>
+                                <img src="images/right-arrow.svg"></img>
+                                <div className="guideSection">
+                                    <h3 className="guideHeaders">Get Noticed</h3>
+                                    <img className="guideImg" src="images/target.svg" alt="get-seen-icon" />
+                                    <p>Your profile will be accessible to coaches across the country.</p>
+                                </div>
+                            </div>
                         </div>
-
+                        
                     </div>
-                    <div className="guideContainer">
-                        <div className="guideSection">
-                            <h3 className="guideHeaders">Build Your Profile</h3>
-                            <img src="images/profile.svg" alt="profile-icon"/>
-                            <p>Enter your stats.</p>
-                        </div>
-                        <div className="guideSection">
-                            <h3 className="guideHeaders">Showcase Your Talent</h3>
-                            <img src="images/video-player.svg" alt="video-icon"/>
-                            <p>Load a clip of your skills in action.</p>
-                        </div>
-                        <div className="guideSection">
-                            <h3 className="guideHeaders">Get Noticed</h3>
-                            <img src="images/search.svg" alt="get-seen-icon"/>
-                            <p>Your profile will be accessible to coaches across the country.</p>
-                        </div>
-                    </div>
+                   
 
                     <div className="testimonialContainer">
 
