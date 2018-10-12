@@ -4,6 +4,8 @@ const player = (state = [], action) => {
     switch (action.type) {
         case 'SET_ALL_PLAYERS':
             return action.payload;
+        case 'SET_PLAYERS_BY_ID':
+            return action.payload;
         default:
             return state;
     }

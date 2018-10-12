@@ -13,24 +13,28 @@ router.post('/', (req, res) => {
     for (let i = 0; i < 10000; i++) {
 
         //account status_type
-        const statusTypeArr = ['active', 'suspended', 'banned'];
+        const statusType = Math.round(Math.random() * (4 - 1) + 1);
 
-        const statusTypePicker = Math.round(Math.random() * (2 - 0) + 0);
+        let statusReason = null;
 
-        const statusType = statusTypeArr[statusTypePicker];
-
-        statusReason = null;
-
-        if (statusType === 'suspended') {
+        if(statusType === 1){
+            statusReason = 'account activated';
+        }
+        else if (statusType === 2) {
             statusReason = 'committed to team/school';
         }
-        else if (statusType === 'banned') {
+        else if (statusType === 3) {
             statusReason = 'fake account'
         }
+        else if (statusType === 4) {
+            statusReason = 'awaiting payment';
+        }
+
+        console.log('statusType', statusType);
 
         //activity log
-        const activityTime = new Date();
-        const activityType = 'logged in';
+        // const activityTime = new Date();
+        // const activityType = 'logged in';
 
         let createdOn = new Date();
         createdOn = moment(createdOn).format('L');
@@ -67,17 +71,17 @@ router.post('/', (req, res) => {
 
         const videoLink = 'https://www.youtube.com/watch?v=dwDpSKDyKRU';
 
-        let goals = null;
-        let assists = null;
-        let points = null;
+        let goals = 0;
+        let assists = 0;
+        let points = 0;
 
-        let wins = null;
-        let losses = null;
-        let ties = null;
-        let gamesPlayed = null;
-        let savePercent = null;
-        let shutOuts = null;
-        let goalsAgainst = null;
+        let wins = 0;
+        let losses = 0;
+        let ties = 0;
+        let gamesPlayed = 0;
+        let savePercent = 0;
+        let shutOuts = 0;
+        let goalsAgainst = 0;
 
         const guardian = false;
 
@@ -105,43 +109,36 @@ router.post('/', (req, res) => {
             const client = await pool.connect();
 
             try {
-                let queryText = `INSERT INTO account_status(status_type, reason) 
-                                VALUES ($1, $2) RETURNING "id";`;
-                let values = [statusType, statusReason];
-
-                const accountStatusResult = await client.query(queryText, values);
-
-                let accountStatusId = accountStatusResult.rows[0].id;
-
-                queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-                values = [activityTime, activityType];
-
-                const activityLogResult = await client.query(queryText, values);
-
-                let activityLogId = activityLogResult.rows[0].id;
-
-                queryText = `INSERT INTO person(email, password, role, status_id, activity_log_id)
+                queryText = `INSERT INTO person(email, password, role, status_id, status_reason)
                             VALUES ($1, $2, $3, $4, $5) RETURNING "id";`;
-                values = [emailAddress, fakePassword, role, accountStatusId, activityLogId];
+                values = [emailAddress, fakePassword, role, statusType, statusReason];
 
                 const personResult = await client.query(queryText, values);
 
                 let personId = personResult.rows[0].id;
 
-                queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "id";`;
+                 //ACTIVITY LOG DATA THIS NEEDS TO CHANGE TO NEW TABLE STRUCTURE WITH PERSON ID FOREIGN KEY
+                // queryText = `INSERT INTO activity_log(time, activity_type)
+                //             VALUES ($1, $2) RETURNING "id";`;
+                // values = [activityTime, activityType];
+
+                // const activityLogResult = await client.query(queryText, values);
+
+                // let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "schoolid";`;
                 values = [school];
 
                 const schoolResult = await client.query(queryText, values);
 
-                let schoolId = schoolResult.rows[0].id;
+                let schoolId = schoolResult.rows[0].schoolid;
 
-                queryText = `INSERT INTO team(team_name) VALUES ($1) RETURNING "id";`;
+                queryText = `INSERT INTO team(team_name) VALUES ($1) RETURNING "teamid";`;
                 values = [teamName];
 
                 const teamResult = await client.query(queryText, values);
 
-                let teamId = teamResult.rows[0].id;
+                let teamId = teamResult.rows[0].teamid;
 
                 queryText = `INSERT INTO player_stats(person_id, league_id, team_id, school_id, position_id, 
                             first_name, last_name, phone_number, birth_date, height, weight, gpa, act_score, 
@@ -176,23 +173,27 @@ router.post('/', (req, res) => {
 router.post('/coaches', (req, res) => {
 
     for (let i = 0; i < 300; i++) {
+        
         //account status_type
-        const statusTypeArr = ['active', 'suspended'];
+        const statusType = Math.round(Math.random() * (4 - 1) + 1);
 
-        const statusTypePicker = Math.round(Math.random() * (1 - 0) + 0);
-
-        const statusType = statusTypeArr[statusTypePicker];
-
-        statusReason = null;
+        let statusReason = null;
  
-        if (statusType === 'suspended') {
+        if(statusType === 1){
+            statusReason = 'account activated';
+        }
+        else if (statusType === 2) {
             statusReason = 'payment due';
         }
-        else {statusType === null}
+        else if (statusType === 3){
+            statusReason = 'fake account';
+        }
+        else if(statusType === 4){
+            statusReason = 'awaiting invite response';
+        }
 
-        //activity log
-        const activityTime = new Date();
-        const activityType = 'logged in';
+        //console.log(statusType, statusReason);
+
 
         const firstName = faker.name.firstName();
 
@@ -205,30 +206,23 @@ router.post('/coaches', (req, res) => {
         (async () => {
             const client = await pool.connect();
 
-            try {
-                let queryText = `INSERT INTO account_status(status_type, reason) 
-                                VALUES ($1, $2) RETURNING "id";`;
-                let values = [statusType, statusReason];
-
-                const accountStatusResult = await client.query(queryText, values);
-
-                let accountStatusId = accountStatusResult.rows[0].id;
-
-                queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-                values = [activityTime, activityType];
-
-                const activityLogResult = await client.query(queryText, values);
-
-                let activityLogId = activityLogResult.rows[0].id;
-
-                queryText = `INSERT INTO person(email, password, role, coach_name, invite, status_id, activity_log_id)
+            try{ 
+                let queryText = `INSERT INTO person(email, password, role, coach_name, invite, status_id, status_reason)
                             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id";`;
-                values = [emailAddress, fakePassword, role, firstName, inviteCode, accountStatusId, activityLogId];
+                values = [emailAddress, fakePassword, role, firstName, inviteCode, statusType, statusReason];
 
                 const personResult = await client.query(queryText, values);
 
                 let personId = personResult.rows[0].id;
+
+                //ACTIVITY LOG DATA THIS NEEDS TO CHANGE TO NEW TABLE STRUCTURE WITH PERSON ID FOREIGN KEY
+                // queryText = `INSERT INTO activity_log(time, activity_type)
+                //             VALUES ($1, $2) RETURNING "id";`;
+                // values = [activityTime, activityType];
+
+                // const activityLogResult = await client.query(queryText, values);
+
+                // let activityLogId = activityLogResult.rows[0].id;
 
             } catch (error) {
                 console.log('ROLLBACK', error);

@@ -1,51 +1,59 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import Nav from '../Nav/Nav';
-
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
+import axios from 'axios'
 
 const mapStateToProps = state => ({
   user: state.user,
+  player: state.player.player,
 });
+
 
 class PlayerProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      person_id: this.props.user.id,
-      league_id: '',
-      team_id: '',
-      school: '',
-      position_id: '',
-      first_name: '',
-      last_name: '',
-      phone_number: '',
-      birth_date: '',
-      height: '',
-      weight: '',
-      gpa: '',
-      act_score: '',
-      school_year: '',
-      video_link: '',
-      goals: '',
-      assists: '',
-      points: '',
-      games_played: '',
-      wins: '',
-      losses: '',
-      ties: '',
-      save_percent: '',
-      shutouts: '',
-      goals_against: '',
-      guardian: false,
-      player_info: '',
+
+      profile:
+      {
+        person_id: this.props.user.id,
+        league_id: null,
+        team_id: null,
+        school: null,
+        position_id: null,
+        first_name: null,
+        last_name: null,
+        phone_number: null,
+        birth_date: null,
+        height: null,
+        weight: null,
+        gpa: null,
+        act_score: null,
+        school_year: null,
+        video_link: null,
+        goals: null,
+        assists: null,
+        points: null,
+        games_played: null,
+        wins: null,
+        losses: null,
+        ties: null,
+        save_percent: null,
+        shutouts: null,
+        goals_against: null,
+        guardian: false,
+        player_info: null,
+      },
+
+      toggleView: false,
     }
   }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    this.props.dispatch({ type: 'GET_THIS_PLAYER' });
   }
 
   componentDidUpdate() {
@@ -54,11 +62,17 @@ class PlayerProfilePage extends Component {
     }
   }
 
-  handleChange = (event) => {
+  handleProfileChange = (event) => {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value,
+
+      profile: {
+        ...this.state.profile,
+        [event.target.name]: event.target.value,
+      }
+
     })
+    console.log('this.state.profile:', this.state.profile)
   }
 
   logout = () => {
@@ -68,39 +82,86 @@ class PlayerProfilePage extends Component {
   submitPlayerProfile = (event) => {
     event.preventDefault();
     console.log('Player profile submitted.');
+    this.toggleDisplay();
+    console.log('this.state.profile:', this.state.profile)
+
+    axios({
+      method: 'PUT',
+      url: '/api/players/updateProfile/' + this.props.user.id,
+      data: this.state.profile,
+      success: function (response) {
+        console.log('update profile response: ', response)
+      }
+    });
+
+  }
+
+  toggleDisplay = () => {
+    this.setState({
+      ...this.state,
+      toggleView: !this.state.toggleView
+    })
+    console.log(this.state.toggleView);
+
   }
 
   render() {
     let content = null;
     let positionalContent = null;
+    let playerScreenContent = null;
+
+    {
+      playerScreenContent = (
+        <div>
+          <div className="card">
+            <img className="img" src="https://media.istockphoto.com/videos/hockey-player-skates-video-id483200277?s=640x640" alt="Avatar" />
+            <div className="container">
+              <h4>{this.props.player}</h4> 
+              <p>Architect Engineer</p> 
+            </div>
+          </div>
+          <div className="playerProfileContainer">
+            <div>
+              {JSON.stringify(this.props.player)}
+              <p>{this.state.person_id} {this.state.league_id}{this.state.team_id}</p>
+            </div>
+            <div>
+              <button onClick={this.toggleDisplay}>test</button>
+            </div>
+          </div>
+        </div>
+
+      )
+    }
+
     if (this.state.position_id === '3') {
       positionalContent = (
         <div>
           <div>
             <label>Goalie Options:</label>
-            <input type="number" placeholder="Wins"></input>
-            <input type="number" placeholder="Losses"></input>
-            <input type="number" placeholder="Ties"></input>
+            <input type="number" placeholder="Wins" value={this.state.profile.wins} onChange={this.handleProfileChange} name="wins"></input>
+            <input type="number" placeholder="Losses" value={this.state.profile.losses} onChange={this.handleProfileChange} name="losses"></input>
+            <input type="number" placeholder="Ties" value={this.state.profile.ties} onChange={this.handleProfileChange} name="ties"></input>
           </div>
           <div>
-            <input type="number" placeholder="Save %"></input>
-            <input type="number" placeholder="Shutouts"></input>
-            <input type="number" placeholder="Goals Against"></input>
-            <input type="number" placeholder="Games Played"></input>
+            <input type="number" placeholder="Save %" value={this.state.profile.save_percent} onChange={this.handleProfileChange} name="save_percent"></input>
+            <input type="number" placeholder="Shutouts" value={this.state.profile.shutouts} onChange={this.handleProfileChange} name="shutouts"></input>
+            <input type="number" placeholder="Goals Against" value={this.state.profile.goals_against} onChange={this.handleProfileChange} name="goals_against"></input>
+            <input type="number" placeholder="Games Played" value={this.state.profile.games_played} onChange={this.handleProfileChange} name="games_played"></input>
           </div>
         </div>
       )
-    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+    } else if (this.state.profile.position_id === '2' || this.state.profile.position_id === '1') {
       positionalContent = (
         <div>
           <div>
             <label>Skater Options:</label>
-            <input type="number" placeholder="Goals"></input>
-            <input type="number" placeholder="Assists"></input>
-            <input type="number" placeholder="Points"></input>
+            <input type="number" placeholder="Goals" value={this.state.profile.goals} onChange={this.handleProfileChange} name="goals"></input>
+            <input type="number" placeholder="Assists" value={this.state.profile.assists} onChange={this.handleProfileChange} name="assists"></input>
+            <input type="number" placeholder="Points" value={this.state.profile.points} onChange={this.handleProfileChange} name="points"></input>
           </div>
           <div>
-            <input type="number" placeholder="Games Played"></input>
+            <input type="number" placeholder="Games Played" value={this.state.profile.games_played} onChange={this.handleProfileChange} name="games_played"></input>
           </div>
         </div>
       )
@@ -109,16 +170,17 @@ class PlayerProfilePage extends Component {
       content = (
         <div>
           <h1 className="center-text">Enter Information</h1>
-          <form className="playerForm" onSubmit={this.submitPlayerProfile}>
+          <form className="playerForm" onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange}>
             <div>
-              <input type="text" placeholder="First Name"></input>
-              <input type="text" placeholder="Last Name"></input>
-              <input type="text" placeholder="School"></input>
+              <input type="text" placeholder="First Name" value={this.state.profile.first_name} onChange={this.handleProfileChange} name="first_name"></input>
+              <input type="text" placeholder="Last Name" value={this.state.profile.last_name} onChange={this.handleProfileChange} name="last_name"></input>
+              <input type="text" placeholder="School" value={this.state.profile.school} onChange={this.handleProfileChange} name="school"></input>
             </div>
             <div>
               <input type="text" placeholder="Email"></input>
-              <input type="number" placeholder="Phone Number"></input>
-              <select>
+              <input type="number" placeholder="Phone Number" value={this.state.profile.phone_number} onChange={this.handleProfileChange} name="phone_number"></input>
+
+              <select value={this.state.profile.grade} onChange={this.handleProfileChange} name="grade">
                 <option value="Grade">Grade</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
@@ -127,18 +189,20 @@ class PlayerProfilePage extends Component {
               </select>
             </div>
             <div>
-              <input type="number" placeholder="GPA"></input>
-              <input type="text" placeholder="Weight"></input>
-              <select value={this.state.position_id} onChange={this.handleChange} name="position_id">
+              <input type="number" placeholder="GPA" value={this.state.profile.gpa} onChange={this.handleProfileChange} name="gpa"></input>
+              <input type="text" placeholder="Weight" value={this.state.profile.weight} onChange={this.handleProfileChange} name="weight"></input>
+
+              <select value={this.state.profile.position_id} onChange={this.handleProfileChange} name="position_id">
                 <option value="">Position</option>
                 <option value="1">Forward</option>
                 <option value="2">Defence</option>
                 <option value="3">Goalie</option>
               </select>
+              {JSON.stringify(this.state.profile.position_id)}
             </div>
             <div>
-              <input placeholder="Video URL"></input>
-              <select value={this.state.league_id} onChange={this.handleChange} name="league_id">
+              <input placeholder="Video URL" value={this.state.profile.video_link} onChange={this.handleProfileChange} name="video_link"></input>
+              <select value={this.state.profile.league_id} onChange={this.handleProfileChange} name="league_id">
                 <option value="">League</option>
                 <option value="1">1A</option>
                 <option value="2">2A</option>
@@ -159,7 +223,7 @@ class PlayerProfilePage extends Component {
               </select>
               <label>Date Of Birth:</label>
               {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
-              <select>
+              <select value={this.state.profile.birth_date} onChange={this.handleProfileChange} name="birth_date">
                 <option value="">DOB</option>
                 <option value="1">Jan, 1956</option>
                 <option value="2">Feb, 1776</option>
@@ -168,7 +232,7 @@ class PlayerProfilePage extends Component {
             </div>
             <div>
               <label>Notes:</label>
-              <input></input>
+              <input value={this.state.profile.player_info} onChange={this.handleProfileChange} name="player_info"></input>
             </div>
             {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
             <div>
@@ -176,20 +240,46 @@ class PlayerProfilePage extends Component {
               <button>Add a pic</button>
             </div>
             <div>
+              <button type="submit">Submit</button>
+            </div>
+            <div>
               {positionalContent}
             </div>
           </form>
+          {/* <div>
+          {playerScreenContent}
+        </div> */}
         </div>
       );
     }
 
-    return (
-      <div>
-        <Nav />
-        {content}
-      </div>
-    );
-  }
+    // if (this.props.player.length > 0) {
+
+      if (this.state.toggleView === false) {
+        return (
+          <div>
+            {playerScreenContent}
+          </div>
+        )
+      } else {
+
+        return (
+          <div>
+            <Nav />
+            {content}
+          </div>
+        );
+      }
+    }
+  //   else {
+  //     return (<div>loading</div>)
+  //   }
+  // }
+
+
+
+
+
 }
 
 // this allows us to use <App /> in index.js
