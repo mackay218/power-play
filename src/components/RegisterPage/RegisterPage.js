@@ -17,7 +17,6 @@ class RegisterPage extends Component {
     };
   }
 
-  
 
 
   registerUser = (event) => {
