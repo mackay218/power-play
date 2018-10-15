@@ -29,8 +29,9 @@ function* deletePlayer(action) {
     }
 }
 
-function* sortBy(action) {
+function* sortPlayerBy(action) {
     try {
+        console.log(action);
         const sortedPlayers = yield call(axios.get, `/api/players/sorted?position=${action.payload.position_id}&minPoints=${action.payload.pointsMin}&maxPoints=${action.payload.pointsMax}&minWins=${action.payload.winsMin}&maxWins=${action.payload.winsMax}&minDate=${action.payload.birthDayMin}&maxDate=${action.payload.birthDayMax}&page=${action.payload.page}`);
         yield put({type: 'SET_ALL_PLAYERS', payload: sortedPlayers.data});        
     } catch (error) {
@@ -52,13 +53,23 @@ function* playerProfileById() {
     }
 }
 
+function* getPlayerInfo(action) {
+    try {
+        const playerInfo = yield call(axios.get, `/api/players/playerInfo/${action.payload}`);
+        yield put({type: 'SET_PLAYER_INFO', payload: playerInfo.data});
+    } catch (error) {
+        yield put({type: 'PLAYER_ERROR', payload: error});
+    }
+}
+
 function* playerSaga() {
     yield takeLatest('GET_ALL_PLAYERS', getAllPlayers);
     yield takeLatest('PLAYER_ERROR', playerError);
     yield takeLatest('GET_THIS_PLAYER', playerProfileById);
     yield takeLatest('CREATE_PLAYER', createPlayer);
     yield takeLatest('DELETE_PLAYER', deletePlayer);
-    yield takeLatest('SORT_BY', sortBy);
+    yield takeLatest('SORT_PLAYER_BY', sortPlayerBy);
+    yield takeLatest('GET_PLAYER_INFO', getPlayerInfo);
 }
 
 export default playerSaga;

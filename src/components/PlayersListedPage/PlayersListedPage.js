@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import Nav from '../Nav/Nav';
-
-
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -22,6 +19,7 @@ import './PlayersListedPage.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
+import PlayerDialog from './PlayerDialogue';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -67,10 +65,18 @@ class PlayersListedPage extends Component {
       birthDayMin: '2002-01-01',
       birthDayMax: '2018-01-01',
       page: 0,
+      open: null,
+      playerInfoId: null,
     }
   }
 
   componentDidMount() {
+    if (!this.props.user.isLoading && this.props.user.email === null) {
+      this.props.history.push('/landing_page');
+    }
+    if (!this.props.user.isLoading && this.props.user.role === "player") {
+      this.props.history.push('/player_profile_page');
+    }
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
   }
@@ -94,12 +100,7 @@ class PlayersListedPage extends Component {
       ...this.state,
       page: 0,
     });
-    this.props.dispatch({type: 'SORT_BY', payload: this.state});
-  }
-
-  toPlayerProfile = (id) => {
-    //this.props.history.push('admin_page')
-    console.log(id);
+    this.props.dispatch({ type: 'SORT_BY', payload: this.state });
   }
 
   deletePlayer = (id) => {
@@ -125,17 +126,13 @@ class PlayersListedPage extends Component {
   }
 
   previousPage = () => {
-    this.setState({
-      ...this.state,
-      page: (this.state.page - 10),
-    });
-    if (this.state.page < 0) {
+    if (this.state.page > 0) {
       this.setState({
         ...this.state,
-        page: 0,
+        page: (this.state.page - 10),
       });
     }
-    this.props.dispatch({type: 'SORT_BY', payload: this.state});
+    setTimeout(() => this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state }), 200);
   }
 
   nextPage = () => {
@@ -143,21 +140,72 @@ class PlayersListedPage extends Component {
       ...this.state,
       page: (this.state.page + 10),
     });
-    this.props.dispatch({type: 'SORT_BY', payload: this.state});
+    setTimeout(() => this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state }), 200);
   }
 
+  handleClickOpen = (id) => {
+    this.setState({ 
+      ...this.state,
+      playerInfoId: id,
+      open: true 
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      ...this.state, 
+      open: false 
+    });
+  };
+
   render() {
+    console.log(this.state);
     let content = null;
     let formContent = null;
     let deleteHeader = null;
-    let deleteButton = null;
+    let playerMap = null;
 
     if (this.props.user.role === "admin") {
       deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
-      deleteButton = (id) => {
-        return (<CustomTableCell><Button variant="contained" color="secondary" onClick={() => this.deletePlayer(id)}><DeleteIcon />Delete</Button></CustomTableCell>);
-      }
+      playerMap = (
+        <TableBody>
+          {this.props.player.map((player) => {
+            return (
+              <TableRow key={player.id}>
+                <CustomTableCell>{player.last_name}, {player.first_name}</CustomTableCell>
+                <CustomTableCell>{player.position_name}</CustomTableCell>
+                <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                <CustomTableCell>{player.points}</CustomTableCell>
+                <CustomTableCell>{player.wins}</CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.id} /></CustomTableCell>
+                <CustomTableCell>
+                  <Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button>
+                </CustomTableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      );
     }
+    if (this.props.user.role === "coach") {
+      playerMap = (
+        <TableBody>
+          {this.props.player.map((player) => {
+            return (
+              <TableRow key={player.id}>
+                <CustomTableCell>{player.first_name} {player.last_name}</CustomTableCell>
+                <CustomTableCell>{player.position_name}</CustomTableCell>
+                <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                <CustomTableCell>{player.points}</CustomTableCell>
+                <CustomTableCell>{player.wins}</CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.id}/></CustomTableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      )
+    }
+
     if (this.state.position_id === "1" || this.state.position_id === "2") {
       formContent = (
         <div className="form-column">
@@ -165,8 +213,8 @@ class PlayersListedPage extends Component {
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
             <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -178,8 +226,8 @@ class PlayersListedPage extends Component {
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
             <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date max" name="birthDayMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -221,25 +269,17 @@ class PlayersListedPage extends Component {
                   <CustomTableCell>Birthdate</CustomTableCell>
                   <CustomTableCell>Points</CustomTableCell>
                   <CustomTableCell>Wins</CustomTableCell>
+                  <CustomTableCell>Player Details</CustomTableCell>
                   {deleteHeader}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {this.props.player.map((player, i) => {
-                  return (
-                    <TableRow key={i}>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.first_name} {player.last_name}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.position_name}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.points}</CustomTableCell>
-                      <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.wins}</CustomTableCell>
-                      {deleteButton(player.person_id)}
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
+              {playerMap}
             </Table>
           </Paper>
+          <div className="page-buttons">
+            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+          </div>
         </div>
       );
     }

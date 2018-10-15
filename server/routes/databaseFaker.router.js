@@ -30,8 +30,6 @@ router.post('/', (req, res) => {
             statusReason = 'awaiting payment';
         }
 
-        console.log('statusType', statusType);
-
         //activity log
         // const activityTime = new Date();
         // const activityType = 'logged in';
@@ -127,6 +125,7 @@ router.post('/', (req, res) => {
                 // let activityLogId = activityLogResult.rows[0].id;
 
                 queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "schoolid";`;
+
                 values = [school];
 
                 const schoolResult = await client.query(queryText, values);

@@ -12,7 +12,7 @@ const chance = new Chance();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT "person"."id", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
+    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
     pool.query(query).then((result) => {
         console.log(result.rows);
         res.send(result.rows);
@@ -23,8 +23,18 @@ router.get('/all', (req, res) => {
 
 });
 
+router.get('/paged', (req, res) => {
+    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10 OFFSET $1;`;
+    pool.query(query, [parseInt(req.query.page)]).then((result) => {
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log('ERROR getting coaches:', error);
+        res.sendStatus(500);
+    });
+});
+
 router.delete('/delete/:id', (req, res) => {
-    const query = `DELETE FROM "person" WHERE "id" = $1;`;
+    const query = `DELETE FROM "person" WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {
@@ -34,7 +44,7 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 router.put('/suspend/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 2 WHERE "id" = $1;`;
+    const query = `UPDATE "person" SET "status_id" = 2 WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {
@@ -44,7 +54,7 @@ router.put('/suspend/:id', (req, res) => {
 });
 
 router.put('/ban/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 3 WHERE "id" = $1;`;
+    const query = `UPDATE "person" SET "status_id" = 3 WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {

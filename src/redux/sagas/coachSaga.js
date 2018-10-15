@@ -35,6 +35,16 @@ function* suspendCoach(action) {
     }
 }
 
+function* pageCoaches(action) {
+    try {
+        console.log(action);
+        const coachPage = yield call(axios.get, `/api/coaches/paged?page=${action.payload.page}`);
+        yield put({type: 'SET_ALL_COACHES', payload: coachPage.data});        
+    } catch (error) {
+        yield put({type: 'COACH_ERROR', payload: error});
+    }
+}
+
 function* banCoach(action) {
     try {
         yield call(axios.put, `api/coaches/ban/${action.payload}`);
@@ -50,6 +60,7 @@ function* coachSaga() {
     yield takeLatest('DELETE_COACH', deleteCoach);
     yield takeLatest('SUSPEND_COACH', suspendCoach);
     yield takeLatest('BAN_COACH', banCoach);
+    yield takeLatest('PAGE_COACHES', pageCoaches);
 }
 
 export default coachSaga;

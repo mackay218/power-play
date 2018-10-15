@@ -33,6 +33,12 @@ class AdminPage extends Component {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('/landing_page');
     }
+    if (!this.props.user.isLoading && this.props.user.role === "player") {
+      this.props.history.push('/player_profile_page');
+    }
+    if (!this.props.user.isLoading && this.props.user.role === "coach") {
+      this.props.history.push('/players_page');
+    }
   }
 
   logout = () => {
