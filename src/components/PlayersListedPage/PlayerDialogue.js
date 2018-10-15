@@ -35,6 +35,29 @@ class PlayerDialog extends Component {
   };
 
   render() {
+    let positionInfo = null;
+    if (this.props.info.position_name === "Forward" || this.props.info.position_name === "Defense") {
+      positionInfo = (
+        <div>
+          <p>Goals: {this.props.info.goals}</p>
+          <p>Assists: {this.props.info.assists}</p>
+          <p>Points: {this.props.info.points}</p>
+        </div>
+      )
+    }
+    else if (this.props.info.position_name === "Goalie") {
+      positionInfo = (
+        <div>
+          <p>Games_played: {this.props.info.games_played}</p>
+          <p>Wins: {this.props.info.wins}</p>
+          <p>Losses: {this.props.info.losses}</p>
+          <p>Ties: {this.props.info.ties}</p>
+          <p>Save Percent: {this.props.info.save_percent}</p>
+          <p>Shutouts: {this.props.info.shutouts}</p>
+          <p>Goals Against: {this.props.info.goals_against}</p>
+        </div>
+      )
+    }
     return (
       <div>
         <Button variant="contained" color="primary" onClick={() => { this.handleClickOpen(this.props.id) }}>View details</Button>
@@ -49,6 +72,7 @@ class PlayerDialog extends Component {
                   <p>Position: {this.props.info.position_name}</p>
                   <p>League: {this.props.info.league_name}</p>
                   <p>Team: {this.props.info.team_name}</p>
+                  {positionInfo}
                 </Grid>
                 <Grid className="center" item md={4}>
                   <h3 className="dialog-head">Personal Info</h3>

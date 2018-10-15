@@ -76,7 +76,7 @@ CREATE TABLE "player_stats" (
     "player_info" VARCHAR(200)
 );
 
-INSERT INTO "position" ("position_name") VALUES ('forward'),('defense'),('goalie');
+INSERT INTO "position" ("position_name") VALUES ('Forward'),('Defense'),('Goalie');
 
 INSERT INTO "league" ("league_name") VALUES ('1A'),('2A'),('3A'),('4A'),('5A'),('6A'),('7A'),('8A'),('1AA'),('2AA'),('3AA'),('4AA'),('5AA'),('6AA'),('7AA'),('8AA');
 

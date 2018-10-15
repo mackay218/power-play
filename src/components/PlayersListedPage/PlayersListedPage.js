@@ -263,7 +263,7 @@ class PlayersListedPage extends Component {
                   <CustomTableCell>Birthdate</CustomTableCell>
                   <CustomTableCell>Points</CustomTableCell>
                   <CustomTableCell>Wins</CustomTableCell>
-                  <CustomTableCell>Player Info</CustomTableCell>
+                  <CustomTableCell>Player Details</CustomTableCell>
                   {deleteHeader}
                 </TableRow>
               </TableHead>
