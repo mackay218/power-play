@@ -49,6 +49,10 @@ class Nav extends Component {
     this.setState({
       collapse: !this.state.collapse,
     });
+
+    const hamburger = document.querySelector(".hamburger");
+
+    hamburger.classList.toggle("is-active");
   }
 
   logout = () => {
@@ -87,7 +91,14 @@ class Nav extends Component {
               alt="logo">
             </img>
           </NavbarBrand>
-          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          {!this.state.isWideEnough && 
+            <NavbarToggler onClick={this.onClick}>
+              <div class="hamburger hamburger--3dx" id="hamburger" >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </div>
+            </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav left>
               <NavItem className={classes.primary}>
@@ -200,7 +211,14 @@ class Nav extends Component {
                  alt="logo">
                </img>
           </NavbarBrand>
-          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          {!this.state.isWideEnough && 
+          <NavbarToggler onClick={this.onClick}>
+            <div class="hamburger hamburger--3dx" id="hamburger" >
+              <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+              </span>
+            </div>
+          </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav left>
               <NavItem className={classes.primary}>
