@@ -71,6 +71,12 @@ class PlayersListedPage extends Component {
   }
 
   componentDidMount() {
+    if (!this.props.user.isLoading && this.props.user.email === null) {
+      this.props.history.push('/landing_page');
+    }
+    if (!this.props.user.isLoading && this.props.user.role === "player") {
+      this.props.history.push('/player_profile_page');
+    }
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
   }
@@ -263,7 +269,7 @@ class PlayersListedPage extends Component {
                   <CustomTableCell>Birthdate</CustomTableCell>
                   <CustomTableCell>Points</CustomTableCell>
                   <CustomTableCell>Wins</CustomTableCell>
-                  <CustomTableCell>Player Info</CustomTableCell>
+                  <CustomTableCell>Player Details</CustomTableCell>
                   {deleteHeader}
                 </TableRow>
               </TableHead>
