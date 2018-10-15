@@ -14,6 +14,7 @@ import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage'
 import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
+import TeamsPage from './components/TeamsPage/TeamsPage';
 import SuspendPage from './components/PlayerProfilePage/SuspendPage';
 import SetPasswordPage from './components/SetPasswordPage/SetPasswordPage';
 
@@ -61,6 +62,10 @@ const App = () => (
         <Route
         path="/admin_coach_list_page"
         component={CoachListPage}
+        />
+        <Route
+        path="/teams"
+        component={TeamsPage}
         />
         <Route
         path="/set_password/:inviteCode"

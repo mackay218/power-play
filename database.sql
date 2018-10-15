@@ -1,5 +1,4 @@
 
-
 CREATE TABLE "account_status" (
     "id" SERIAL PRIMARY KEY,
     "status_type" VARCHAR(100)
@@ -21,6 +20,7 @@ CREATE TABLE "activity_log" (
     "person_id" INTEGER REFERENCES "person"(personid),
     "time" TIMESTAMP DEFAULT NOW(),
     "activity_type" VARCHAR(200)
+
 );
 
 CREATE TABLE "league" (

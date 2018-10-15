@@ -81,6 +81,7 @@ input[type="submit"] {
 
 .navbar {
   background-color: #00acb0;
+
   width: 100vw;
 }
 
@@ -119,6 +120,7 @@ input[type="submit"] {
     background: transparent;
     border: 1px solid #fff;
     border-radius: 10px;
+
 }
 
 ul {
