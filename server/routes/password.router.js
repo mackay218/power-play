@@ -63,7 +63,7 @@ resetPersonInviteCode = (email) => {
         const client = await pool.connect();
 
         try {
-            let queryText = `UPDATE person SET "invite" = $1 RETURNING "id";`;
+            let queryText = `UPDATE person SET "invite" = $1 RETURNING "personid";`;
 
             let values = [resetPasswordCode];
 

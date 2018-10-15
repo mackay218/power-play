@@ -120,13 +120,13 @@ router.post('/coachInvite', (req, res) => {
 
         try {
             let queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, status_reason)
-                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id";`;
+                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "personid";`;
 
             let values = [emailAddress, role, coachName, inviteCode, statusType, statusReason];
 
             const personResult = await client.query(queryText, values);
 
-            let personId = personResult.rows[0].id;
+            let personId = personResult.rows[0].personid;
 
             //ACTIVITY LOG will need to be changed to include person id as foreign key
             // queryText = `INSERT INTO activity_log(time, activity_type)

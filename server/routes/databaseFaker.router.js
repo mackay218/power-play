@@ -110,12 +110,12 @@ router.post('/', (req, res) => {
 
             try {
                 queryText = `INSERT INTO person(email, password, role, status_id, status_reason)
-                            VALUES ($1, $2, $3, $4, $5) RETURNING "id";`;
+                            VALUES ($1, $2, $3, $4, $5) RETURNING "personid";`;
                 values = [emailAddress, fakePassword, role, statusType, statusReason];
 
                 const personResult = await client.query(queryText, values);
 
-                let personId = personResult.rows[0].id;
+                let personId = personResult.rows[0].personid;
 
                  //ACTIVITY LOG DATA THIS NEEDS TO CHANGE TO NEW TABLE STRUCTURE WITH PERSON ID FOREIGN KEY
                 // queryText = `INSERT INTO activity_log(time, activity_type)
@@ -208,12 +208,12 @@ router.post('/coaches', (req, res) => {
 
             try{ 
                 let queryText = `INSERT INTO person(email, password, role, coach_name, invite, status_id, status_reason)
-                            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id";`;
+                            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "personid";`;
                 values = [emailAddress, fakePassword, role, firstName, inviteCode, statusType, statusReason];
 
                 const personResult = await client.query(queryText, values);
 
-                let personId = personResult.rows[0].id;
+                let personId = personResult.rows[0].personid;
 
                 //ACTIVITY LOG DATA THIS NEEDS TO CHANGE TO NEW TABLE STRUCTURE WITH PERSON ID FOREIGN KEY
                 // queryText = `INSERT INTO activity_log(time, activity_type)

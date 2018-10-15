@@ -1,0 +1,35 @@
+
+body{
+    --red: #f01e3c;
+}
+
+
+.loginForm{
+    height: 350px;
+    background-color: #fff;
+    border: 5px solid var(--red);
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.formInputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: flex-end;
+}
+
+.btnContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.cancelBtn{
+    color: #000;
+    border: 1px solid var(--red);
+}
