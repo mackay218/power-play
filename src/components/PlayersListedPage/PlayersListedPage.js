@@ -20,10 +20,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import PlayerDialog from './PlayerDialogue';
+import { CSVLink, CSVDownload } from 'react-csv';
 
 const mapStateToProps = state => ({
   user: state.user,
   player: state.player.player,
+  csv: state.player.csvList,
 });
 
 const CustomTableCell = withStyles(theme => ({
@@ -79,6 +81,7 @@ class PlayersListedPage extends Component {
     }
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
+    this.props.dispatch({ type: 'GET_CSV_LIST'});
   }
 
   componentDidUpdate() {
@@ -144,17 +147,17 @@ class PlayersListedPage extends Component {
   }
 
   handleClickOpen = (id) => {
-    this.setState({ 
+    this.setState({
       ...this.state,
       playerInfoId: id,
-      open: true 
+      open: true
     });
   };
 
   handleClose = () => {
     this.setState({
-      ...this.state, 
-      open: false 
+      ...this.state,
+      open: false
     });
   };
 
@@ -164,6 +167,7 @@ class PlayersListedPage extends Component {
     let formContent = null;
     let deleteHeader = null;
     let playerMap = null;
+    const csvData = this.props.csv;
 
     if (this.props.user.role === "admin") {
       deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
@@ -198,7 +202,7 @@ class PlayersListedPage extends Component {
                 <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
                 <CustomTableCell>{player.points}</CustomTableCell>
                 <CustomTableCell>{player.wins}</CustomTableCell>
-                <CustomTableCell><PlayerDialog id={player.id}/></CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.id} /></CustomTableCell>
               </TableRow>
             )
           })}
@@ -258,6 +262,7 @@ class PlayersListedPage extends Component {
           <h2 className="center-text">Players</h2>
           <div className="page-buttons">
             <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players List</CSVLink>
             <Button variant="contained" onClick={this.nextPage}>Next</Button>
           </div>
           <Paper>

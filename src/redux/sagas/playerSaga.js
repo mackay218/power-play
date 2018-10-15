@@ -39,6 +39,15 @@ function* sortPlayerBy(action) {
     }
 }
 
+function* getCSVList() {
+    try {
+        const csvList = yield call(axios.get, '/api/players/csvList');
+        yield put({type: 'SET_CSV_LIST', payload: csvList.data});
+    } catch (error) {
+        yield put({type: 'PLAYER_ERROR', payload: error});
+    }
+}
+
 function* playerError(action) {
     yield alert('There was an error getting the players!');
     console.log('Player Error:', action.payload);
@@ -70,6 +79,7 @@ function* playerSaga() {
     yield takeLatest('DELETE_PLAYER', deletePlayer);
     yield takeLatest('SORT_PLAYER_BY', sortPlayerBy);
     yield takeLatest('GET_PLAYER_INFO', getPlayerInfo);
+    yield takeLatest('GET_CSV_LIST', getCSVList);
 }
 
 export default playerSaga;

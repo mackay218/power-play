@@ -3,7 +3,6 @@ const pool = require('../modules/pool');
 const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
-
     const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
@@ -18,7 +17,23 @@ router.get('/all', (req, res) => {
         console.log('ERROR getting players:', error);
         res.sendStatus(500);
     })
-
+});
+// GET route for populating CSV file
+router.get('/csvList', (req, res) => {
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name"
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    ORDER BY "created_on" DESC;`;
+    pool.query(query).then((result) => {
+        res.send(result.rows)
+    }).catch((error) => {
+        console.log('ERROR getting players:', error);
+        res.sendStatus(500);
+    })
 });
 // GET route for specific player
 router.get('/profileById', (req, res) => {
@@ -43,7 +58,7 @@ router.get('/profileById', (req, res) => {
 // GET route for sorting players
 router.get('/sorted', (req, res) => {
     (async () => {
-        req.query.position = await isPositionEmpty(req.query.position);
+        req.query.position = await areFieldsEmpty(req.query);
         const client = await pool.connect();
         try {
             queryText = `CREATE TEMP TABLE "sorted_players" AS
@@ -208,10 +223,62 @@ router.delete('/delete/:id', (req, res) => {
     });
 }); 
 //function for determining if player position is an empty string
-isPositionEmpty = (position) => {
-    if (position === '') {
-        return null;
+areFieldsEmpty = (query) => {
+    // sets position to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.position === '') {
+        query.position = null;
     }
-    else return parseInt(position);
+    else {
+        query.position = parseInt(query.position);
+    }
+    // sets minPoints to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.minPoints === '') {
+        query.minPoints = null;
+    }
+    else {
+        query.minPoints = parseInt(query.minPoints);
+    }
+    // sets maxPoints to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.maxPoints === '') {
+        query.maxPoints = null;
+    }
+    else {
+        query.maxPoints = parseInt(query.position);
+    }
+    // sets minWins to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.minWins === '') {
+        query.minWins = null;
+    }
+    else {
+        query.minWins = parseInt(query.minWins);
+    }
+    // sets maxWins to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.maxWins === '') {
+        query.maxWins = null;
+    }
+    else {
+        query.maxWins = parseInt(query.maxWins);
+    }
+    // sets minDate to null if passed in an empty string
+    // otherwise changes it to a Date
+    if (query.minDate === '') {
+        query.minDate = null;
+    }
+    else {
+        query.minDate = Date(query.minDate);
+    }
+    // sets maxDate to null if passed in an empty string
+    // otherwise changes it to a Date
+    if (query.maxDate === '') {
+        query.maxDate = null;
+    }
+    else {
+        query.maxDate = Date(query.maxDate);
+    }
 }
 module.exports = router;

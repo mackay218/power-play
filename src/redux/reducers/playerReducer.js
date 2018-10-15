@@ -20,7 +20,17 @@ const playerInfo = (state = [], action) => {
     }
 }
 
+const csvList = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_CSV_LIST':
+            return action.payload;
+        default: 
+            return state;
+    }
+}
+
 export default combineReducers({
     player,
+    csvList,
     playerInfo,
   });
