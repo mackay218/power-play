@@ -6,7 +6,6 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LandingPage from './components/LandingPage/LandingPage';
@@ -15,6 +14,7 @@ import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage'
 import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
+import TeamsPage from './components/TeamsPage/TeamsPage';
 import SuspendPage from './components/PlayerProfilePage/SuspendPage';
 import SetPasswordPage from './components/SetPasswordPage/SetPasswordPage';
 
@@ -22,7 +22,6 @@ import './styles/main.css';
 
 const App = () => (
   <div>
-    <Header title="Project Base" />
     <Router>
       <Switch>
         <Redirect exact from="/" to="/landing_page" />
@@ -63,6 +62,10 @@ const App = () => (
         <Route
         path="/admin_coach_list_page"
         component={CoachListPage}
+        />
+        <Route
+        path="/teams"
+        component={TeamsPage}
         />
         <Route
         path="/set_password/:inviteCode"

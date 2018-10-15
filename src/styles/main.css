@@ -1,5 +1,11 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+*{
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
 .instructions h1 {
@@ -16,7 +22,7 @@ body {
 form {
     background-color: #dbd5d5;
     width: 30%;
-    height: 250px;
+    height: auto;
     margin: 20px auto;
     padding: 25px;
     border-radius: 2px;
@@ -29,6 +35,7 @@ input {
 
 .center-text {
     text-align: center;
+    width: 90vw;
 }
 
 .center-element {
@@ -56,10 +63,64 @@ input[type="submit"] {
     background-color: #f8f8f8;
 }
 
+.mainContainer{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.pageContainer{
+    margin-top: 100px;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .navbar {
   background-color: #00acb0;
-  width: 100%;
-  border-radius: 0px;
+
+  width: 100vw;
+}
+
+
+.nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100vw;
+    height: 100px;
+    background-color: #eb1b3b;
+    text-align: right;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Audiowide', sans-serif;
+}
+
+.navLinkWrapper{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 100px;
+}
+
+.logoutBtn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: 'Audiowide', sans-serif;
+    color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
+
 }
 
 ul {
@@ -72,6 +133,12 @@ ul {
 li {
     float: left;
 }
+
+.logo{
+    height: 100px;
+    width: 225px;
+    float: left;
+} 
 
 li a {
     display: block;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import Nav from '../Nav/Nav';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -70,41 +71,44 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderAlert()}
-        <form onSubmit={this.registerUser}>
-          <h1>Register User</h1>
-          <div>
-            <label htmlFor="email">
-              email:
+      <div className="mainContainer">
+        <Nav />
+        <div className="pageContainer">
+          {this.renderAlert()}
+          <form onSubmit={this.registerUser}>
+            <h1>Register User</h1>
+            <div>
+              <label htmlFor="email">
+                email:
               <input
-                type="text"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleInputChangeFor('email')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
+                  type="text"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChangeFor('email')}
+                />
+              </label>
+            </div>
+            <div>
+              <label htmlFor="password">
+                Password:
               <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChangeFor('password')}
+                />
+              </label>
+            </div>
+            <div>
+              <input
+                type="submit"
+                name="submit"
+                value="Register"
               />
-            </label>
-          </div>
-          <div>
-            <input
-              type="submit"
-              name="submit"
-              value="Register"
-            />
-            <Link to="/login">Cancel</Link>
-          </div>
-        </form>
+              <Link to="/login">Cancel</Link>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

@@ -12,213 +12,6 @@ const nodemailer = require("nodemailer");
 const Chance = require('chance');
 const chance = new Chance();
 
-//function to add new coach to database
-//only called by Admin
-router.post('/coachInvite', (req, res) => {
-    console.log('in coachInvite post');
-    console.log(req.body);
-
-    const coachInfo = req.body;
-    
-    const coachName = coachInfo.name; // this may change depending on client side route
-
-    const emailAddress = coachInfo.email; //this may change depending on client side route
-
-    //limit inivite code to alphanumeric to avoid url problems
-    const inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
-
-    const infoForEmail = {
-        name: coachName,
-        email: emailAddress,
-        inviteCode: inviteCode
-    };
-
-    const role = 'coach'; 
-
-    const statusType = 'pending';
-    const reason = 'awaiting response from invite';
-
-    const activityType = 'invite sent';
-    const activityTime = new Date();
-
-    (async () => {
-
-        const client = await pool.connect();
-
-        try{
-            //insert status for coach in account_status
-            let queryText = `INSERT INTO account_status(status_type, reason) 
-                                VALUES ($1, $2) RETURNING "id";`;
-            let values = [statusType, reason];
-
-            const accountStatusResult = await client.query(queryText, values);
-
-            let accountStatusId = accountStatusResult.rows[0].id;
-
-            queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-            
-            values = [activityTime, activityType];
-            
-            const activityLogResult = await client.query(queryText, values);
-
-            let activityLogId = activityLogResult.rows[0].id;
-
-            queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, activity_log_id)
-                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id";`;
-            
-            values = [emailAddress, role, coachName, inviteCode, accountStatusId, activityLogId];
-
-            const personResult = await client.query(queryText, values);
-
-            let personId = personResult.rows[0].id;
-
-            await sendInviteCode(infoForEmail);
-                
-            await client.query('COMMIT');
-
-            res.sendStatus(201);
-        }
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            //if creating a coach works call function to send invite
-            
-            client.release();
-        }
-
-    })().catch((error) => {
-        console.log('CATCH', error);
-        res.sendStatus(500);
-    });
-});
-
-//function to send invite email
-sendInviteCode = (infoForEmail) => {
-
-    console.log('in sendInviteCode');
-
-    console.log(infoForEmail);
-
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com', 
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: process.env.my_gmail_email,
-            clientId: process.env.my_oauth_client_id,
-            clientSecret: process.env.my_oauth_client_secret,
-            refreshToken: process.env.my_oauth_refresh_token,
-            accessToken: process.env.my_oauth_access_token,
-            expires: 1527200298318 + 3600 
-        }
-    });
-    
-    const inviteCode = infoForEmail.inviteCode;
-
-    const name = infoForEmail.name;
-
-    //create url string for page for link to 
-    //where person can set or reset password
-    const websiteUrl = process.env.set_password_page;
-
-    const inviteUrlAnchor = `<a target="_blank" href="${websiteUrl}${inviteCode}">Confirm Registration</a>`; 
-
-    const homePageAnchor = process.env.set_home_page;
-
-    const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml">
-                <head>
-                    <title>PPR Hockey Invite</title>
-                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
-                    <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
-                    <style>
-                        *{
-                            box-sizing: border-box;
-                        }
-                        body{
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                        }
-                         header{
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            justify-content: center;
-                            background-color: #F0133E;
-                            color: #fff;
-                            width: 100vw;
-                            padding: 20px;
-                            font-family: 'Audiowide', sans-serif;
-                        }
-        
-                        h1{
-                            height: 100%;
-                            padding-top: 40px;
-                        }
-
-                        a img{
-                            width: 200px;
-                            height: 200px;
-                        }
-
-                        main{
-                            font-family: 'Roboto', sans-serif;
-                            font-size: 20px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <header>
-                        <a href="${homePageAnchor}">
-                            <img src="https://drive.google.com/uc?export=view&id=1w_MFiI3Y8M3hDV2nKx_2XyDr8olDI18y" alt="ppr hockey logo"/>
-                        </a>
-                        <h1>YOU'VE BEEN INVITED!</h1>
-                    </header>
-                    <main>
-                        <div>
-                            <p>Hi! ${name},
-                                 You've been invited to try Power Play Recruiting! 
-                                 Click the link below to join.
-                            </p>
-                            ${inviteUrlAnchor}
-                        </div>
-                    </main>
-                </body>
-            </html>`;
-
-
-    const mail = {
-        from: "polarishockey@gmail.com",
-        to: infoForEmail.email,
-        subject: "Power Play Recruiting registration",
-        text: 'We invite you so join us' + infoForEmail.name,
-        html: emailHtml
-    }
-
-    transporter.sendMail(mail, function (error, info) {
-        if (error) {
-            console.log('error sending mail:', error);
-        }
-        else {
-            //see https://nodemailer.com/usage
-            console.log("info.messageId: " + info.messageId);
-            console.log("info.envelope: " + info.envelope);
-            console.log("info.accepted: " + info.accepted);
-            console.log("info.rejected: " + info.rejected);
-            console.log("info.pending: " + info.pending);
-            console.log("info.response: " + info.response);
-        }
-        transporter.close();
-    });
-}
-
 //function to send check if user is signed up 
 router.get('/:emailAddress',(req, res) => {
     console.log('check for email:', req.params.emailAddress);
@@ -261,76 +54,32 @@ resetPersonInviteCode = (email) => {
 
     console.log('infoForEmail', infoForEmail);
 
-    const statusType = 'pending';
-    const reason = 'awaiting password reset';
-
-    const activityType = 'password reset link sent';
-    const activityTime = new Date();
+    //ACTIVITY LOG
+    // const activityType = 'password reset link sent';
+    // const activityTime = new Date();
 
     (async () => {
 
         const client = await pool.connect();
 
         try {
+            let queryText = `UPDATE person SET "invite" = $1 RETURNING "id";`;
 
-            //check if coach or player
-            let queryText = `SELECT "role" FROM person WHERE "email" = $1;`;
+            let values = [resetPasswordCode];
 
-            let values = [email];
+            const personResult = await client.query(queryText, values);
 
-            let roleResult = await client.query(queryText, values);
+            let personId = personResult.rows[0].id;
 
-            let role = roleResult.rows[0].id;
+            //ACTIVITY LOG  person id will need to be added as a foreign key
+             // queryText = `INSERT INTO activity_log(time, activity_type)
+            //                 VALUES ($1, $2) RETURNING "id";`;
 
-            if(role === 'coach'){
-                //insert status for coach in account_status
-                queryText = `INSERT INTO account_status(status_type, reason) 
-                                VALUES ($1, $2) RETURNING "id";`;
-                values = [statusType, reason];
+            // values = [activityTime, activityType];
 
-                const accountStatusResult = await client.query(queryText, values);
+            // const activityLogResult = await client.query(queryText, values);
 
-                let accountStatusId = accountStatusResult.rows[0].id;
-
-                queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-
-                values = [activityTime, activityType];
-
-                const activityLogResult = await client.query(queryText, values);
-
-                let activityLogId = activityLogResult.rows[0].id;
-
-                queryText = `UPDATE person SET "status_id" = $1, "activity_log_id" = $2,
-                            "invite" = $3 WHERE "email" = $4 RETURNING "id";`;
-
-                values = [accountStatusId, activityLogId, resetPasswordCode, email];
-
-                const personResult = await client.query(queryText, values);
-
-                let personId = personResult.rows[0].id;
-
-            }
-
-            else{
-                queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-
-                values = [activityTime, activityType];
-
-                const activityLogResult = await client.query(queryText, values);
-
-                let activityLogId = activityLogResult.rows[0].id;
-
-                queryText = `UPDATE person SET "activity_log_id" = $1,
-                            "invite" = $2 WHERE "email" = $3 RETURNING "id";`;
-
-                values = [activityLogId, resetPasswordCode, email];
-
-                const personResult = await client.query(queryText, values);
-
-                let personId = personResult.rows[0].id;
-            }
+            // let activityLogId = activityLogResult.rows[0].id;
            
             //send reset password code in an email
             await sendPasswordResetEmail(infoForEmail);
@@ -480,56 +229,48 @@ router.put('/setPassword', (req, res) => {
     const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
     const password = encryptLib.encryptPassword(passwordInfo.password);
-
+  
     (async () => {
 
         const client = await pool.connect();
 
-        try{
-            //reset password
-            let queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3 RETURNING "status_id";`;
+        try {
 
-            let values = [password, newInviteCode, inviteCode];
+            let queryText = `SELECT "status_id", "role" FROM person WHERE "invite" = $1;`;
 
-            let statusIdResult = await client.query(queryText, values);
+            let values = [inviteCode];
 
-            let statusId = statusIdResult.rows[0].status_id;
-            console.log('statusId', statusId);
+            let statusResult = await client.query(queryText, values);
 
-            //get person id and role to check status 
-            queryText = `SELECT "id", "role" FROM person WHERE "invite" = $1;`;
+            let statusId = statusResult.rows[0].status_id;
 
-            values = [newInviteCode];
+            let personRole = statusResult.rows[0].role;
 
-            let personInfoResult = await client.query(queryText, values);
+            //if person is a coach and status of coach is pending change to active
+            if(personRole === 'coach' && statusId === 4){
 
-            let personId = personInfoResult.rows[0].id;
+                let newStatusId = 1;
 
-            let personRole = personInfoResult.rows[0].role;
+                let newStatusReason = 'activated account';
 
-            console.log('personId', personId);
+                queryText = `UPDATE person SET "password" = $1, "invite" = $2, "status_id" = $3,
+                                "status_reason" = $4 WHERE "invite" = $5;`;
 
-            //get status type
-            queryText = `SELECT "status_type" FROM account_status WHERE "id" = $1;`;
+                values = [password, newInviteCode, newStatusId, newStatusReason, inviteCode];
 
-            values = [statusId];
+                await client.query(queryText, values);
+            }
+            else{
+                queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3;`;
 
-            let getStatusResult = await client.query(queryText, values);
+                values = [password, newInviteCode, inviteCode];
 
-            let statusType = getStatusResult.rows[0].status_type;
-
-            console.log('statusType', statusType);
-
-            let statusObject = {
-                personId: personId,
-                personRole: personRole,
-                statusType: statusType
+                await client.query(queryText, values);
             }
 
-            //call function to check/change status type if its pending
-            await checkStatusType(statusObject);
+            
             res.sendStatus(201);
-        }
+        } 
         catch (error) {
             console.log('ROLLBACK', error);
             await client.query('ROLLBACK');
@@ -543,77 +284,6 @@ router.put('/setPassword', (req, res) => {
         res.sendStatus(500);
     });
 
-
-
-});
-
-//function to change account_status
-checkStatusType = (statusObject) => {
-    console.log('in checkStatusType');
-    console.log(statusObject);
-
-    let personId = statusObject.personId;
-
-    let personRole = statusObject.personRole;
-
-    let currentStatusType = statusObject.statusType;
-
-    //CHECK ROLE IF PLAYER OR COACH
-
-    if(currentStatusType === 'pending' && personRole === 'coach'){
-
-        let newStatusType = 'active';
-        let reason = 'activated account';
-
-        const activityType = 'password set or reset';
-        const activityTime = new Date();
-
-        (async () => {
-
-            const client = await pool.connect();
-
-            try{
-                //change account status
-                let queryText = `INSERT INTO account_status(status_type, reason) 
-                                VALUES ($1, $2) RETURNING "id";`;
-                let values = [newStatusType, reason];
-
-                const accountStatusResult = await client.query(queryText, values);
-
-                let accountStatusId = accountStatusResult.rows[0].id;
-
-                //log activity
-                queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
-
-                values = [activityTime, activityType];
-
-                const activityLogResult = await client.query(queryText, values);
-
-                let activityLogId = activityLogResult.rows[0].id;
-
-                queryText = `UPDATE person SET "status_id" = $1, activity_log_id = $2 WHERE "id" = $3;`;
-
-                values = [accountStatusId, activityLogId, personId];
-
-                await client.query(queryText, values);
-
-            }
-            catch (error) {
-                console.log('ROLLBACK', error);
-                await client.query('ROLLBACK');
-                throw error;
-            } finally {
-                client.release();
-            }
-
-        })().catch((error) => {
-            console.log('CATCH', error);
-            res.sendStatus(500);
-        });
-    }
-    //else if personRole === 'player' || personRole === 'admin'
-    else{
 
         const activityType = 'password set or reset';
         const activityTime = new Date();
@@ -651,8 +321,6 @@ checkStatusType = (statusObject) => {
                 console.log('CATCH', error);
                 res.sendStatus(500);
             });
-    }
-   
-}
+})
 
 module.exports = router;

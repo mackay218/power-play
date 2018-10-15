@@ -4,11 +4,13 @@ const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
 
-    const query = `SELECT * FROM "player_stats" 
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
                     ORDER BY "created_on" DESC LIMIT 10;`;
     pool.query(query).then((result) => {
         res.send(result.rows)
@@ -22,13 +24,13 @@ router.get('/all', (req, res) => {
 router.get('/profileById', (req, res) => {
 
     id = req.user.id;
-    const query = `SELECT "player_stats".*, "person"."id" FROM "player_stats"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
-                    JOIN "person" ON "person_id" = "person"."id"
-                    WHERE "person"."id" = $1;`;
+    const query = `SELECT "player_stats".*, "person"."personid" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "person"."personid" = $1;`;
     pool.query(query, [id]).then((result) => {
         res.send(result.rows[0])
         console.log('by id results', id, result.rows[0]);
@@ -38,6 +40,70 @@ router.get('/profileById', (req, res) => {
     })
 
 });
+// GET route for sorting players
+router.get('/sorted', (req, res) => {
+    (async () => {
+        req.query.position = await isPositionEmpty(req.query.position);
+        const client = await pool.connect();
+        try {
+            queryText = `CREATE TEMP TABLE "sorted_players" AS
+                            SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                            FROM "player_stats" 
+                            JOIN "person" ON "person_id" = "person"."personid"
+                            JOIN "position" ON "position_id" = "position"."positionid"
+                            JOIN "league" ON "league_id" = "league"."leagueid"
+                            JOIN "team" ON "team_id" = "team"."teamid"
+                            JOIN "school" ON "school_id" = "school"."schoolid"
+                            WHERE "position_id" >= COALESCE($1, 0)
+                            AND "position_id" <= COALESCE($1, 10)
+                            AND "points" >= COALESCE($2,0)
+                            AND "points" <= COALESCE($3,999999)
+                            AND "wins" >= COALESCE($4,0)
+                            AND "wins" <= COALESCE($5,999999)
+                            AND "birth_date" >= COALESCE($6, DATE('1998-01-01')) 
+                            AND "birth_date" <= COALESCE($7, DATE('2018-01-01'));`;
+            await client.query(queryText, [req.query.position, 
+                                           parseInt(req.query.minPoints), 
+                                           parseInt(req.query.maxPoints), 
+                                           parseInt(req.query.minWins), 
+                                           parseInt(req.query.maxWins), 
+                                           req.query.minDate, 
+                                           req.query.maxDate]);
+            queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
+            const sortedPlayers = await client.query(queryText, [parseInt(req.query.page)]);
+            queryText = `DROP TABLE "sorted_players";`;
+            await client.query(queryText);
+            await client.query('COMMIT');
+            console.log(sortedPlayers.rows);
+            res.send(sortedPlayers.rows);
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    })().catch((error) => {
+        console.log('CATCH', error);
+    });
+});
+// GET route for specific player info
+router.get('/playerInfo/:id', (req, res) => {
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "id" = $1;`;
+    pool.query(query, [req.params.id]).then((result) => {
+        res.send(result.rows[0]);
+    }).catch((error) => {
+        console.log('ERROR getting players information:', error);
+        res.sendStatus(500);
+    });
+})
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     const userId = req.user.id;
@@ -120,12 +186,32 @@ router.post('/create', (req, res) => {
 });
 // DELETE route for removing players
 router.delete('/delete/:id', (req, res) => {
-    const query = `DELETE FROM "person" WHERE "id" = $1;`;
-    pool.query(query, [req.params.id]).then((result) => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR deleting user:', error);
-        res.sendStatus(500);
+    (async () => {
+        const client = await pool.connect();
+        try {
+            let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
+            await client.query(queryText, [req.params.id]);
+            queryText = `DELETE FROM "person" WHERE "personid" = $1 ;`;
+            await client.query(queryText, [req.params.id]);
+            await client.query('COMMIT');
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+            res.sendStatus(200);
+        }
+    })().catch((error) => {
+        console.log('CATCH', error);
     });
-});
+}); 
+//function for determining if player position is an empty string
+isPositionEmpty = (position) => {
+    if (position === '') {
+        return null;
+    }
+    else return parseInt(position);
+}
 module.exports = router;

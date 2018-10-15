@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Nav from '../Nav/Nav';
 
 class SetPasswordPage extends Component {
     constructor(props) {
@@ -93,40 +94,40 @@ class SetPasswordPage extends Component {
 
     render(){
         return(
-            <div>
-                {this.renderAlert()}
-                <form onSubmit={this.setPassword} >
-                    <h1>Set Password</h1>
-                    <div>
-                        <label htmlFor="newPassword">
-                            new password
+            <div className="mainContainer">
+                <Nav />
+                <div className="pageContainer">
+                    {this.renderAlert()}
+                    <form onSubmit={this.setPassword} >
+                        <h1>Set Password</h1>
+                        <div>
+                            <label htmlFor="newPassword">
+                                new password
                             <input
-                                type="password"
-                                name="newPassword"
-                                value={this.state.newPassword}
-                                onChange={this.handleInputChangeFor('newPassword')}
-                            />
-                        </label>
-                    </div>
-                    <div>
-                        <label htmlFor="confirmPassword">
-                            new password
+                                    type="password"
+                                    name="newPassword"
+                                    value={this.state.newPassword}
+                                    onChange={this.handleInputChangeFor('newPassword')}
+                                />
+                            </label>
+                        </div>
+                        <div>
+                            <label htmlFor="confirmPassword">
+                                new password
                             <input
-                                type="password"
-                                name="confirmPassword"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleInputChangeFor('confirmPassword')}
-                            />
-                        </label>
-                    </div>
-                    <button >Submit</button>
-                </form>
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={this.state.confirmPassword}
+                                    onChange={this.handleInputChangeFor('confirmPassword')}
+                                />
+                            </label>
+                        </div>
+                        <button >Submit</button>
+                    </form>
+                </div>
             </div>
-
-
         )
     }
-
 }
 
 export default SetPasswordPage;

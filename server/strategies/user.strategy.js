@@ -4,11 +4,11 @@ const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.personid);
 });
 
 passport.deserializeUser((id, done) => {
-  pool.query('SELECT id, email, role FROM person WHERE id = $1', [id]).then((result) => {
+  pool.query('SELECT personid, email, role FROM person WHERE personid = $1', [id]).then((result) => {
     // Handle Errors
     const user = result && result.rows && result.rows[0];
 

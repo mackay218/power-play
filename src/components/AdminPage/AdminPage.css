@@ -1,0 +1,29 @@
+.adminPageContainer{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.coach-form {
+    width: 25%;
+    height: auto;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 2px;
+    text-align: center;
+    border: 5px solid #eb1b3b;
+    background-color: white;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+.table-head {
+    border: 2px solid #eb1b3b;
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 700;
+}

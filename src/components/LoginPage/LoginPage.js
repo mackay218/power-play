@@ -5,6 +5,7 @@ import { triggerLogin, formError, clearError } from '../../redux/actions/loginAc
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 import ForgotPasswordDialog from './ForgotPasswordDialog';
+import Nav from '../Nav/Nav';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -70,43 +71,45 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div>
-        { this.renderAlert() }
-        <form onSubmit={this.login}>
-          <h1>Login</h1>
-          <div>
-            <label htmlFor="email">
-              email:
+      <div className="mainContainer">
+        <Nav />
+        <div className="pageContainer">
+          {this.renderAlert()}
+          <form onSubmit={this.login}>
+            <h1>Login</h1>
+            <div>
+              <label htmlFor="email">
+                email:
               <input
-                type="text"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleInputChangeFor('email')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
+                  type="text"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChangeFor('email')}
+                />
+              </label>
+            </div>
+            <div>
+              <label htmlFor="password">
+                Password:
               <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
+                  type="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChangeFor('password')}
+                />
+              </label>
+            </div>
+            <div>
+              <input
+                type="submit"
+                name="submit"
+                value="Log In"
               />
-            </label>
-          </div>
-          <div>
-            <input
-              type="submit"
-              name="submit"
-              value="Log In"
-            />
-            <Link to="/register">Register</Link>
-          </div>
-          <ForgotPasswordDialog />
-        </form>
-        
+              <Link to="/register">Register</Link>
+            </div>
+            <ForgotPasswordDialog />
+          </form>
+        </div>
       </div>
     );
   }
