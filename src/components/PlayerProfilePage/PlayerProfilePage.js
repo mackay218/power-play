@@ -61,6 +61,12 @@ class PlayerProfilePage extends Component {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
     }
+    if (!this.props.user.isLoading && this.props.user.role === "coach") {
+      this.props.history.push('/players_page');
+    }
+    if (!this.props.user.isLoading && this.props.user.role === "admin") {
+      this.props.history.push('/admin_page');
+    }
   }
 
   handleProfileChange = (event) => {
