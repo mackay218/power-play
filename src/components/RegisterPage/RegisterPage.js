@@ -4,6 +4,12 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
+
+import './RegisterPage.css';
+
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +19,10 @@ class RegisterPage extends Component {
       password: '',
       message: '',
     };
+  }
+
+  handleCancel = () => {
+    this.props.history.push('/landing_page');
   }
 
   registerUser = (event) => {
@@ -75,37 +85,36 @@ class RegisterPage extends Component {
         <Nav />
         <div className="pageContainer">
           {this.renderAlert()}
-          <form onSubmit={this.registerUser}>
+          <form className="registerForm" onSubmit={this.registerUser}>
             <h1>Register User</h1>
-            <div>
-              <label htmlFor="email">
-                email:
-              <input
-                  type="text"
+            <div className="formInputs">
+              <div>
+                <TextField type="email" 
+                  onChange={this.handleInputChangeFor('email')} 
+                  label="email" 
                   name="email"
-                  value={this.state.email}
-                  onChange={this.handleInputChangeFor('email')}
                 />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="password">
-                Password:
-              <input
-                  type="password"
-                  name="password"
-                  value={this.state.password}
+              </div>
+              <div>
+                <TextField type="password"
                   onChange={this.handleInputChangeFor('password')}
+                  label="password"
+                  name="password"
                 />
-              </label>
+              </div>
             </div>
-            <div>
-              <input
+          
+            <div className="btnContainer">
+              <Button
                 type="submit"
                 name="submit"
                 value="Register"
-              />
-              <Link to="/login">Cancel</Link>
+              >Sign Up</Button>
+              <Button 
+                type="button"
+                onClick={this.handleCancel} name="cancel">
+                Cancel
+              </Button>
             </div>
           </form>
         </div>

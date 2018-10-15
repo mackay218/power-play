@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../Nav/Nav';
 
+import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
+
+import './SetPasswordPage.css';
+
 class SetPasswordPage extends Component {
     constructor(props) {
         super(props);
@@ -36,6 +42,8 @@ class SetPasswordPage extends Component {
     }
 
     setPassword = (event) => {
+        console.log('in setPassword');
+
         event.preventDefault();
 
         if (this.state.newPassword === ''){
@@ -98,31 +106,27 @@ class SetPasswordPage extends Component {
                 <Nav />
                 <div className="pageContainer">
                     {this.renderAlert()}
-                    <form onSubmit={this.setPassword} >
+                    <form class="setPasswordForm" >
                         <h1>Set Password</h1>
                         <div>
-                            <label htmlFor="newPassword">
-                                new password
-                            <input
-                                    type="password"
-                                    name="newPassword"
-                                    value={this.state.newPassword}
-                                    onChange={this.handleInputChangeFor('newPassword')}
-                                />
-                            </label>
+                            <TextField 
+                                type="password"
+                                name="newPassword"
+                                label="new password"
+                                value={this.state.newPassword}
+                                onChange={this.handleInputChangeFor('newPassword')}
+                            />
                         </div>
                         <div>
-                            <label htmlFor="confirmPassword">
-                                new password
-                            <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    value={this.state.confirmPassword}
-                                    onChange={this.handleInputChangeFor('confirmPassword')}
-                                />
-                            </label>
+                            <TextField
+                                type="password"
+                                name="newPassword"
+                                label="confirm password"
+                                value={this.state.confirmPassword}
+                                onChange={this.handleInputChangeFor('confirmPassword')}
+                            />
                         </div>
-                        <button >Submit</button>
+                        <Button onClick={this.setPassword}>Submit</Button>
                     </form>
                 </div>
             </div>
