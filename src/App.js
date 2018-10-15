@@ -10,7 +10,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LandingPage from './components/LandingPage/LandingPage';
 import TermsPage from './components/TermsPage/TermsPage';
-import PlayerProfilePage from './components/PlayerProfilePage/PlayerProfilePage';
+import PlayerProfileDisplay from './components/PlayerProfilePage/PlayerProfileDisplay';
 import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
@@ -45,7 +45,7 @@ const App = () => (
         {/* page that will be displayed when user with "player" role logs in */}
         <Route
         path="/player_profile_page"
-        component={PlayerProfilePage}
+        component={PlayerProfileDisplay}
         />
         <Route
         path="/suspend_page"
