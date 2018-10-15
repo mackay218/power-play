@@ -7,6 +7,7 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './AdminPage.css';
 import CoachTable from './CoachTable';
+import Button from '@material-ui/core/Button';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -37,7 +38,7 @@ class CoachListPage extends Component {
       content = (
         <div className="center-text">
           <h1>Coaches</h1>
-          <CoachTable/>
+          <CoachTable />
         </div>
       );
     }
