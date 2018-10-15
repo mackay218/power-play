@@ -1,15 +1,55 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+
+import { withStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
+import './Nav.css';
+
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
+
+import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
 
 let mapStateToProps = (state) => ({
   user: state.user,
 });
 
+const styles = theme => ({
+
+  root: {
+    color: 'inherit',
+  },
+
+  primary: {
+    color: '#fff',
+    fontFamily: "'Audiowide', 'sans-serif'",
+  }
+});
+
 
 class Nav extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      collapse: false,
+      isWideEnough: false,
+    };
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    this.setState({
+      collapse: !this.state.collapse,
+    });
+  }
 
   logout = () => {
     this.props.dispatch(triggerLogout());
@@ -20,147 +60,178 @@ class Nav extends Component {
   }
 
   render() {
+
+    const {classes} = this.props;
+
     let content = null;
 
     let logOutBtn = null;
 
     if (this.props.user) {
       logOutBtn = (
-        <button
-          className="logoutBtn"
+        <Button
+          className={classes.primary}
           onClick={this.logout}
         >
           Log Out
-          </button>
+          </Button>
       )
     }
 
     if (this.props.user.role === "player") {
       content = (
-        <div className="nav">
-          <Link to="/landing_page">
+        <Navbar dark expand="md" scrolling className={classes.primary}>
+          <NavbarBrand href="/landing_page">
             <img className="logo"
               src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
               alt="logo">
             </img>
-          </Link>
-          <div className="navLinkWrapper">
-            <Link to="/player_profile_page">
-              Player Profile
-            </Link>
-            <Link to="/landing_page">
-              Home
-            </Link>
-            <Link to="/teams">
-              Teams
-            </Link>
-            <Link to="/suspend_page">
-              suspend and delete
-            </Link>
-            <Link to="/terms">
-              Terms
-            </Link>
-          </div>
-          {logOutBtn}
-        </div>
+          </NavbarBrand>
+          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          <Collapse isOpen={this.state.collapse} navbar>
+            <NavbarNav left>
+              <NavItem className={classes.primary}>
+                <NavLink to="/landing_page">Home</NavLink>
+              </NavItem>
+              <NavItem active>
+                <NavLink to="/player_profile_page">
+                  Profile
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/teams">Teams</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/suspend_page">Suspend and Delete</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to="/terms">Terms</NavLink>
+              </NavItem>
+            </NavbarNav>
+            <NavbarNav right>
+              {logOutBtn}
+            </NavbarNav>
+          </Collapse>
+        </Navbar>
+
       );
     }
     else if (this.props.user.role === "coach") {
       content = (
-        <div className="nav">
-          <Link to="/landing_page">
+        <Navbar dark expand="md" scrolling>
+          <NavbarBrand href="/landing_page">
             <img className="logo"
               src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
               alt="logo">
             </img>
-          </Link>
-          
-          <div className="navLinkWrapper">
-            <Link to="/landing_page">
-              Home
-            </Link>
-            <Link to="/teams">
-              Teams
-            </Link>
-            <Link to="/players_page">
-              Players Listed Page
-            </Link>
-            <Link to="/suspend_page">
-              suspend and delete
-            </Link>
-            <Link to="/terms">
-              Terms
-            </Link>
-          </div>
-          {logOutBtn}
-        </div>);
+          </NavbarBrand>
+          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          <Collapse isOpen={this.state.collapse} navbar>
+            <NavbarNav left>
+              <NavItem className={classes.primary}>
+                <NavLink to="/landing_page">Home</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/teams">Teams</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/players_page">Player List</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/suspend_page">Suspend and Delete</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/terms">Terms</NavLink>
+              </NavItem>
+            </NavbarNav>
+            <NavbarNav right>
+              {logOutBtn}
+            </NavbarNav>
+          </Collapse>
+        </Navbar>
+
+      );
     }
     else if (this.props.user.role === "admin") {
-      content = (
-        <div className="nav">
-          <Link to="/landing_page">
+      content = (   
+        <Navbar dark expand="md" scrolling>
+          <NavbarBrand href="/landing_page">
             <img className="logo"
               src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
               alt="logo">
             </img>
-          </Link>
-          <div className="navLinkWrapper">
-            <Link to="/landing_page">
-              Home
-              </Link>
-            <Link to="/teams">
-              Teams
-              </Link>
-            <Link to="players_page">
-              Player List
-            </Link>
-            <Link to="admin_coach_list_page">
-              Coach List
-            </Link>
-            <Link to="/admin_page">
-              Add Coaches
-            </Link>
-            <Link to="/terms">
-              Terms
-            </Link>
-          </div>
-          {logOutBtn}
-        </div>
+          </NavbarBrand>
+          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          <Collapse isOpen={this.state.collapse} navbar>
+            <NavbarNav left>
+              <NavItem className={classes.primary}>
+                <NavLink to="/landing_page">Home</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/teams">Teams</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/players_page">Player List</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/admin_coach_list_page">Coach List</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/admin_page">Add Coaches</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/terms">Terms</NavLink>
+              </NavItem>
+            </NavbarNav>  
+            <NavbarNav right>
+              {logOutBtn}
+            </NavbarNav> 
+          </Collapse>
+        </Navbar>
+
       )
     }
     else {
       content = (
-        <div className="nav">
-            <Link to="/landing_page">
-              <img className="logo"
-                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-                alt="logo">
-              </img>
-            </Link>
-            <div className="navLinkWrapper">
-              <Link to="/landing_page">
-                Home
-              </Link>
-              <Link to="/teams">
-                Teams
-              </Link>
-              <Link to="/login">
-                Log In
-              </Link>
-              <Link to="/register">
-                Sign Up
-              </Link>
-              <Link to="/terms">
-                Terms
-              </Link>
-            </div>
-        </div>
+        <Navbar dark expand="md" scrolling>
+          <NavbarBrand href="/landing_page">
+            <img className="logo"
+                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                 alt="logo">
+               </img>
+          </NavbarBrand>
+          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          <Collapse isOpen={this.state.collapse} navbar>
+            <NavbarNav left>
+              <NavItem className={classes.primary}>
+                <NavLink to="/landing_page">Home</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/teams">Teams</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/register">Sign Up</NavLink>
+              </NavItem>
+              <NavItem className={classes.primary}>
+                <NavLink to="/terms">Terms</NavLink>
+              </NavItem>
+            </NavbarNav>
+            <NavbarNav right>
+              <NavItem className={classes.primary}>
+                <NavLink to="/login">Log In</NavLink>
+              </NavItem>
+            </NavbarNav>
+          </Collapse>
+        </Navbar>
+        
       )
     }
     return (
-      <div>{content}</div>
+      <div className="navbarContainer">{content}</div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Nav);
+const NavStyled = withStyles(styles)(Nav);
+
+export default connect(mapStateToProps)(NavStyled);
