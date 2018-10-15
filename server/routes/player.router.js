@@ -40,11 +40,10 @@ router.get('/profileById', (req, res) => {
     })
 
 });
-
+// GET route for sorting players
 router.get('/sorted', (req, res) => {
     (async () => {
         req.query.position = await isPositionEmpty(req.query.position);
-        console.log('SXYDCTFJKVHGJLBKN', req.query);
         const client = await pool.connect();
         try {
             queryText = `CREATE TEMP TABLE "sorted_players" AS
@@ -89,7 +88,22 @@ router.get('/sorted', (req, res) => {
         console.log('CATCH', error);
     });
 });
-
+// GET route for specific player info
+router.get('/playerInfo/:id', (req, res) => {
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "id" = $1;`;
+    pool.query(query, [req.params.id]).then((result) => {
+        res.send(result.rows[0]);
+    }).catch((error) => {
+        console.log('ERROR getting players information:', error);
+        res.sendStatus(500);
+    });
+})
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     const userId = req.user.id;
@@ -192,8 +206,7 @@ router.delete('/delete/:id', (req, res) => {
     })().catch((error) => {
         console.log('CATCH', error);
     });
-});
-
+}); 
 //function for determining if player position is an empty string
 isPositionEmpty = (position) => {
     if (position === '') {

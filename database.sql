@@ -45,7 +45,7 @@ CREATE TABLE "position" (
 
 CREATE TABLE "player_stats" (
     "id" SERIAL PRIMARY KEY,
-    "person_id" INTEGER REFERENCES "person"(id),
+    "person_id" INTEGER REFERENCES "person"(personid),
     "league_id" INTEGER REFERENCES "league"(leagueid),
     "team_id" INTEGER REFERENCES "team"(teamid),
     "school_id" INTEGER REFERENCES "school"(schoolid),

@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import Nav from '../Nav/Nav';
-
-
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -22,6 +19,7 @@ import './PlayersListedPage.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
+import PlayerDialog from './PlayerDialogue';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -67,6 +65,8 @@ class PlayersListedPage extends Component {
       birthDayMin: '2002-01-01',
       birthDayMax: '2018-01-01',
       page: 0,
+      open: null,
+      playerInfoId: null,
     }
   }
 
@@ -95,11 +95,6 @@ class PlayersListedPage extends Component {
       page: 0,
     });
     this.props.dispatch({ type: 'SORT_BY', payload: this.state });
-  }
-
-  toPlayerProfile = (id) => {
-    //this.props.history.push('admin_page')
-    console.log(id);
   }
 
   deletePlayer = (id) => {
@@ -142,7 +137,23 @@ class PlayersListedPage extends Component {
     setTimeout(() => this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state }), 200);
   }
 
+  handleClickOpen = (id) => {
+    this.setState({ 
+      ...this.state,
+      playerInfoId: id,
+      open: true 
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      ...this.state, 
+      open: false 
+    });
+  };
+
   render() {
+    console.log(this.state);
     let content = null;
     let formContent = null;
     let deleteHeader = null;
@@ -155,12 +166,15 @@ class PlayersListedPage extends Component {
           {this.props.player.map((player) => {
             return (
               <TableRow key={player.id}>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.first_name} {player.last_name}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.position_name}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.points}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.wins}</CustomTableCell>
-                <CustomTableCell><Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button></CustomTableCell>
+                <CustomTableCell>{player.last_name}, {player.first_name}</CustomTableCell>
+                <CustomTableCell>{player.position_name}</CustomTableCell>
+                <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                <CustomTableCell>{player.points}</CustomTableCell>
+                <CustomTableCell>{player.wins}</CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.id} /></CustomTableCell>
+                <CustomTableCell>
+                  <Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button>
+                </CustomTableCell>
               </TableRow>
             )
           })}
@@ -173,11 +187,12 @@ class PlayersListedPage extends Component {
           {this.props.player.map((player) => {
             return (
               <TableRow key={player.id}>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.first_name} {player.last_name}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.position_name}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.points}</CustomTableCell>
-                <CustomTableCell onClick={() => this.toPlayerProfile(player.personid)} >{player.wins}</CustomTableCell>
+                <CustomTableCell>{player.first_name} {player.last_name}</CustomTableCell>
+                <CustomTableCell>{player.position_name}</CustomTableCell>
+                <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
+                <CustomTableCell>{player.points}</CustomTableCell>
+                <CustomTableCell>{player.wins}</CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.id}/></CustomTableCell>
               </TableRow>
             )
           })}
@@ -192,8 +207,8 @@ class PlayersListedPage extends Component {
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
             <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Max" name="birthDayMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -205,8 +220,8 @@ class PlayersListedPage extends Component {
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
             <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birth Date Max" name="birthDayMax" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -248,6 +263,7 @@ class PlayersListedPage extends Component {
                   <CustomTableCell>Birthdate</CustomTableCell>
                   <CustomTableCell>Points</CustomTableCell>
                   <CustomTableCell>Wins</CustomTableCell>
+                  <CustomTableCell>Player Info</CustomTableCell>
                   {deleteHeader}
                 </TableRow>
               </TableHead>
