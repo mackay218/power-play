@@ -178,7 +178,6 @@ sendInviteCode = (infoForEmail) => {
             clientSecret: process.env.my_oauth_client_secret,
             refreshToken: process.env.my_oauth_refresh_token,
             accessToken: process.env.my_oauth_access_token,
-            expires: 1527200298318 + 3600
         }
     });
 

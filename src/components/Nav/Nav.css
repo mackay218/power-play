@@ -1,0 +1,84 @@
+
+*{
+    --red: #eb1b3b;
+}
+
+
+.navbar {
+    background: var(--red);
+    width: 100vw;
+    box-shadow: none !important;
+}
+
+
+.nav{
+    text-align: right;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Audiowide', sans-serif;
+}
+
+
+.pageLinks{
+    display: flex;
+    flex-direction: row;
+}
+
+@media only screen and (orientation: landscape AND min-width: 600px){
+    .navLinkWrapper{
+        position: absolute;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 100px;
+    }
+
+    .pageLinks{
+        position: absolute;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        background-color: var(--red);
+    }
+
+    .menuBtnContainer{
+        position: absolute;
+        right: 0;
+        z-index: -1;
+        width: 0px;
+    }
+} 
+
+@media only screen and (orientation: portait){
+    .navLinkWrapper{
+        position: absolute;
+    }
+    .pageLinks{
+        position: absolute;
+        top: -20vh;
+        z-index: -1;
+    }
+
+    .menuBtnContainer{
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.MuiButton-label-5{
+    font-family: 'Audiowide', sans-serif;
+    color: #fff;
+    background: transparent;
+}
+
+
+
+.logo{
+    height: 80px;
+    width: 150px;
+    float: left;
+} 

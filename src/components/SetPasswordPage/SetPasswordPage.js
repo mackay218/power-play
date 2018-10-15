@@ -42,6 +42,8 @@ class SetPasswordPage extends Component {
     }
 
     setPassword = (event) => {
+        console.log('in setPassword');
+
         event.preventDefault();
 
         if (this.state.newPassword === ''){
@@ -104,7 +106,7 @@ class SetPasswordPage extends Component {
                 <Nav />
                 <div className="pageContainer">
                     {this.renderAlert()}
-                    <form class="setPasswordForm" onSubmit={this.setPassword} >
+                    <form class="setPasswordForm" >
                         <h1>Set Password</h1>
                         <div>
                             <TextField 
@@ -120,11 +122,11 @@ class SetPasswordPage extends Component {
                                 type="password"
                                 name="newPassword"
                                 label="confirm password"
-                                value={this.state.newPassword}
-                                onChange={this.handleInputChangeFor('conformPassword')}
+                                value={this.state.confirmPassword}
+                                onChange={this.handleInputChangeFor('confirmPassword')}
                             />
                         </div>
-                        <Button >Submit</Button>
+                        <Button onClick={this.setPassword}>Submit</Button>
                     </form>
                 </div>
             </div>
