@@ -31,7 +31,7 @@ class AdminPage extends Component {
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
-      this.props.history.push('landing_page');
+      this.props.history.push('/landing_page');
     }
     if (!this.props.user.isLoading && this.props.user.role === "player") {
       this.props.history.push('/player_profile_page');
@@ -98,11 +98,11 @@ class AdminPage extends Component {
   }
 
   sendToCoaches = () => {
-    this.props.history.push('admin_coach_list_page')
+    this.props.history.push('/admin_coach_list_page')
   }
 
   sendToPlayers = () => {
-    this.props.history.push('players_page');
+    this.props.history.push('/players_page');
   }
 
   render() {
