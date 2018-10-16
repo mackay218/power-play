@@ -104,7 +104,7 @@ class Nav extends Component {
               <NavItem className={classes.primary}>
                 <NavLink to="/landing_page">Home</NavLink>
               </NavItem>
-              <NavItem active>
+              <NavItem >
                 <NavLink to="/player_profile_page">
                   Profile
                 </NavLink>
