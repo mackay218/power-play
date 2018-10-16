@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+//import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../Nav/Nav';
 
@@ -29,10 +30,31 @@ class SetPasswordPage extends Component {
         };
     }
 
+    scrollPosition = 0
+
+    componentWillReceiveProps() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            this.scrollPosition = window.scrollY
+        }
+    }
+
     componentDidMount(){
         this.getInviteCode();
 
         setTimeout( console.log('state', this.state), 1000);
+
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
+    }
+
+    componentDidUpdate() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
     }
 
 

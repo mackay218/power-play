@@ -1,5 +1,5 @@
 body{
-    --red: #f01e3c;
+    --red: #eb1b3b;;
 }
 
 .landingPageContainer{
@@ -106,8 +106,6 @@ body{
         width: 100%;
     }
 
-    .guid
-
     .arrow{
         transform: rotate(90deg);
     }
@@ -120,7 +118,7 @@ body{
     padding: 10px;
     border: 10px solid #fff;
     border-radius: 20px;
-    box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+    box-shadow: 5px 10px 10px rgba(255,255,255,0.2), inset 5px 10px 10px rgba(255,255,255,0.2);
 }
 
 
@@ -172,7 +170,10 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--red);
+    border: 5px solid var(--red);
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.2);
+    box-shadow: 5px 10px 10px rgba(0,0,0,0.2), inset 5px 10px 10px rgba(0,0,0,0.1);
     padding: 10px 0 0 0;
 }
 
