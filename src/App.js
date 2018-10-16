@@ -19,6 +19,7 @@ import SuspendPage from './components/PlayerProfilePage/SuspendPage';
 import SetPasswordPage from './components/SetPasswordPage/SetPasswordPage';
 
 import './styles/main.css';
+import './styles/hamburgers.css';
 
 const App = () => (
   <div>
