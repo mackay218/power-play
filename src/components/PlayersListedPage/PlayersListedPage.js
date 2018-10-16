@@ -273,7 +273,7 @@ class PlayersListedPage extends Component {
               <h3>Search Players By:</h3>
               {JSON.stringify(this.state.playerName)}
               <div className="form-container">
-                <TextField type="text" label="Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
+                <TextField type="text" label="Last Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
                 <div className="or"><p>or</p></div>
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>

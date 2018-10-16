@@ -52,7 +52,7 @@ function* searchByName(action) {
     try {
         console.log(action.payload);
         const playerByName = yield call(axios.get, `/api/players/byName?name=${action.payload.playerName}&page=${action.payload.page}`);
-        yield put({type: 'SET_ALL_PLAYERS', playerByName});
+        yield put({type: 'SET_ALL_PLAYERS', payload: playerByName.data});
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
