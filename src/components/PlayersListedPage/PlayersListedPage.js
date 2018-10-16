@@ -117,6 +117,14 @@ class PlayersListedPage extends Component {
     })
   }
 
+  handleNameChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
+    setTimeout(() => this.props.dispatch({type: 'SEARCH_BY_NAME', payload: this.state}), 200);
+  }
+
   sendSortBy = (event) => {
     event.preventDefault();
     this.setState({
@@ -263,8 +271,9 @@ class PlayersListedPage extends Component {
           <form className="search-form" onSubmit={this.sendSortBy}>
             <div className="form-column">
               <h3>Search Players By:</h3>
+              {JSON.stringify(this.state.playerName)}
               <div className="form-container">
-                <TextField type="text" label="Name" className="input-width" onChange={this.handleChange} name="playerName" />
+                <TextField type="text" label="Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
                 <div className="or"><p>or</p></div>
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
@@ -282,7 +291,7 @@ class PlayersListedPage extends Component {
           <h2 className="center-text">Players</h2>
           <div className="page-buttons">
             <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players List</CSVLink>
+            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
             <Button variant="contained" onClick={this.nextPage}>Next</Button>
           </div>
           <Paper>
