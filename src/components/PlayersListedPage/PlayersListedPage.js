@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import Nav from '../Nav/Nav';
@@ -72,6 +73,15 @@ class PlayersListedPage extends Component {
     }
   }
 
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
   componentDidMount() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('/landing_page');
@@ -82,11 +92,21 @@ class PlayersListedPage extends Component {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
     this.props.dispatch({ type: 'GET_CSV_LIST'});
+
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
+    }
+
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
     }
   }
 
@@ -295,7 +315,9 @@ class PlayersListedPage extends Component {
     }
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {content}

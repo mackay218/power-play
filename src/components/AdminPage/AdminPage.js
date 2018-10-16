@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
@@ -25,8 +26,22 @@ class AdminPage extends Component {
     }
   }
 
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   componentDidUpdate() {
@@ -38,6 +53,11 @@ class AdminPage extends Component {
     }
     if (!this.props.user.isLoading && this.props.user.role === "coach") {
       this.props.history.push('/players_page');
+    }
+
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
     }
   }
 
@@ -124,7 +144,9 @@ class AdminPage extends Component {
     }
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {content}

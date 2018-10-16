@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Nav from '../Nav/Nav';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -20,6 +21,29 @@ class ContactPage extends Component{
         }
     }
 
+
+    scrollPosition = 0
+
+    componentWillReceiveProps() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            this.scrollPosition = window.scrollY
+        }
+    }
+
+    componentDidMount() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
+    }
+
+    componentDidUpdate() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
+    }
 
     //function to save input in local state
     handleInputChangeFor = propertyName => (event) => {
@@ -74,7 +98,9 @@ class ContactPage extends Component{
     render(){
 
         return(
-            <div className="mainContainer">
+            <div className="mainContainer"
+                style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+            >
                 <Nav/>
                 <div className="pageContainer">
                     <h1>Contact</h1>

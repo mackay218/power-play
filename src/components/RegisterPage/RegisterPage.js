@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {connect} from 'react-redux';
@@ -18,6 +19,29 @@ class RegisterPage extends Component {
       password: '',
       message: '',
     };
+  }
+
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
+  componentDidMount() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
+  }
+
+  componentDidUpdate() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   handleCancel = () => {
@@ -80,7 +104,9 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {this.renderAlert()}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Nav from '../Nav/Nav';
 // styling imports
 import '../LandingPage/LandingPage.css';
@@ -19,11 +20,37 @@ class TeamsPage extends Component{
         this.aboutRef = React.createRef();
     }
 
+    scrollPosition = 0
+
+    componentWillReceiveProps() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            this.scrollPosition = window.scrollY
+        }
+    }
+
+    componentDidMount() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
+    }
+
+    componentDidUpdate() {
+        const element = ReactDOM.findDOMNode(this);
+        if (element != null) {
+            window.scrollTo(0, this.scrollPosition)
+        }
+    }
+
     render(){
 
 
         return(
-            <div className="mainContainer">
+            <div className="mainContainer"
+                style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+
+            >
                 <Nav/>
                 <div className="pageContainer">
                     <h1>Teams</h1>
