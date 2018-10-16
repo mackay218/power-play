@@ -119,6 +119,25 @@ router.get('/playerInfo/:id', (req, res) => {
         res.sendStatus(500);
     });
 })
+// GET route for searchin by name
+router.get('/byName', (req, res) => {
+    req.query.name = `%${req.query.name}%`;
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    WHERE "last_name" ILIKE $1 LIMIT 10 OFFSET $2;`;
+    pool.query(query, [req.query.name, req.query.page]).then((result) => {
+        console.log(result.rows);
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log('ERROR searching by name', error);
+        res.sendStatus(500);
+    });
+});
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     const userId = req.user.id;
