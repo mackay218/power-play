@@ -262,7 +262,7 @@ class PlayersListedPage extends Component {
           <h2 className="center-text">Players</h2>
           <div className="page-buttons">
             <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players List</CSVLink>
+            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
             <Button variant="contained" onClick={this.nextPage}>Next</Button>
           </div>
           <Paper>
