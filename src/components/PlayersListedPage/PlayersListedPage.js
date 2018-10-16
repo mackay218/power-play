@@ -97,6 +97,14 @@ class PlayersListedPage extends Component {
     })
   }
 
+  handleNameChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
+    setTimeout(() => this.props.dispatch({type: 'SEARCH_BY_NAME', payload: this.state}), 200);
+  }
+
   sendSortBy = (event) => {
     event.preventDefault();
     this.setState({
@@ -243,8 +251,9 @@ class PlayersListedPage extends Component {
           <form className="search-form" onSubmit={this.sendSortBy}>
             <div className="form-column">
               <h3>Search Players By:</h3>
+              {JSON.stringify(this.state.playerName)}
               <div className="form-container">
-                <TextField type="text" label="Name" className="input-width" onChange={this.handleChange} name="playerName" />
+                <TextField type="text" label="Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
                 <div className="or"><p>or</p></div>
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
