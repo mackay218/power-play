@@ -5,6 +5,8 @@ const router = express.Router();
 
 const nodemailer = require("nodemailer");
 
+const moment = require('moment');
+
 const Chance = require('chance');
 const chance = new Chance();
 
@@ -107,7 +109,16 @@ router.post('/coachInvite', (req, res) => {
     const emailAddress = coachInfo.email; //this may change depending on client side route
 
     //limit inivite code to alphanumeric to avoid url problems
-    const inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+    let inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+
+    //create expiration date code for invite
+    let expireDate = new Date();
+    
+    expireDate = moment(expireDate).format('L');
+
+    expireDate = expireDate.replace(/\//g, '');
+
+    inviteCode = inviteCode + expireDate;
 
     const infoForEmail = {
         name: coachName,
@@ -119,6 +130,8 @@ router.post('/coachInvite', (req, res) => {
 
     const statusType = 4;
     const statusReason = 'awaiting response from invite';
+
+    console.log(infoForEmail);
 
     //ACTIVITY LOG for analytics
     // const activityType = 'invite sent';

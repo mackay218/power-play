@@ -9,6 +9,13 @@ import TextField from '@material-ui/core/TextField';
 
 import './SetPasswordPage.css';
 
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+
+const moment = extendMoment(Moment);
+
+
+
 class SetPasswordPage extends Component {
     constructor(props) {
         super(props);
@@ -18,11 +25,14 @@ class SetPasswordPage extends Component {
             confirmPassword: '',
             message: '',
             inviteCode: '',
+            expired: true,
         };
     }
 
     componentDidMount(){
         this.getInviteCode();
+
+        setTimeout( console.log('state', this.state), 1000);
     }
 
 
@@ -30,9 +40,46 @@ class SetPasswordPage extends Component {
     getInviteCode = () => {
         console.log('invite code:', this.props.match.params.inviteCode);
         
-        this.setState({
-            inviteCode: this.props.match.params.inviteCode
-        });
+        let inviteCode = this.props.match.params.inviteCode;
+
+        inviteCode = inviteCode.split('');
+
+        let indexToSplit = inviteCode.length - 8;
+
+        inviteCode = inviteCode.slice(indexToSplit);
+        inviteCode = inviteCode.join('');
+        console.log('joined inviteCode', inviteCode);
+
+        let rightNow = new Date();
+
+        let beginDate = moment(inviteCode, 'MMDDYYYY');
+        beginDate = moment(beginDate).format();
+        
+        let expireDate = moment(beginDate).add(2, 'days');
+        expireDate = moment(expireDate).format();
+
+        console.log('beginDate', beginDate);
+        console.log('expireDate', expireDate);
+
+        const range = moment.range(beginDate, expireDate);
+
+        console.log('range', range);
+
+        if(range.contains(rightNow)){
+            console.log('in range');
+            this.setState({
+                inviteCode: this.props.match.params.inviteCode,
+                expired: false,
+            });
+        }
+        else if(range.contains(rightNow) === false){
+            console.log('not in range');
+            this.setState({
+                inviteCode: this.props.match.params.imviteCode,
+                expired: true,
+                message: 'Your set/reset password code is expired',
+            });
+        }      
     }
 
     handleInputChangeFor = propertyName => (event) => {
@@ -101,33 +148,42 @@ class SetPasswordPage extends Component {
     }
 
     render(){
+
+        let passwordForm = null;
+
+        if(this.state.expired === false && this.state.inviteCode){
+            passwordForm = (
+                <form class="setPasswordForm" >
+                    <h1>Set Password</h1>
+                    <div>
+                        <TextField
+                            type="password"
+                            name="newPassword"
+                            label="new password"
+                            value={this.state.newPassword}
+                            onChange={this.handleInputChangeFor('newPassword')}
+                        />
+                    </div>
+                    <div>
+                        <TextField
+                            type="password"
+                            name="newPassword"
+                            label="confirm password"
+                            value={this.state.confirmPassword}
+                            onChange={this.handleInputChangeFor('confirmPassword')}
+                        />
+                    </div>
+                    <Button onClick={this.setPassword}>Submit</Button>
+                </form>
+            )
+        }
+
         return(
             <div className="mainContainer">
                 <Nav />
                 <div className="pageContainer">
                     {this.renderAlert()}
-                    <form class="setPasswordForm" >
-                        <h1>Set Password</h1>
-                        <div>
-                            <TextField 
-                                type="password"
-                                name="newPassword"
-                                label="new password"
-                                value={this.state.newPassword}
-                                onChange={this.handleInputChangeFor('newPassword')}
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                type="password"
-                                name="newPassword"
-                                label="confirm password"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleInputChangeFor('confirmPassword')}
-                            />
-                        </div>
-                        <Button onClick={this.setPassword}>Submit</Button>
-                    </form>
+                    {passwordForm}
                 </div>
             </div>
         )

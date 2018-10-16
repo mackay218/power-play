@@ -12,17 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextFieldLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import moment from 'moment';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { withStyles } from '@material-ui/core/styles';
-import swal from 'sweetalert';
-import InputLabel from '@material-ui/core/InputLabel';
-import Image from 'material-ui-image';
+
 import PlayerProfileDialog from './PlayerProfileDialog';
 
 
