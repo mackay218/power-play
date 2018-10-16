@@ -61,7 +61,7 @@ class LandingPage extends Component {
                                 <img className="arrow" src="images/right-arrow.svg"></img>
                                 <div className="guideSection">
                                     <h3 className="guideHeaders">Get Noticed</h3>
-                                    <img className="guideImg" src="images/target.svg" alt="get-seen-icon" />
+                                    <img className="guideImg" src="images/recruitment.svg" alt="get-seen-icon" />
                                     <p>Your profile will be accessible to coaches across the country.</p>
                                 </div>
                             </div>
