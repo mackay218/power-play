@@ -85,11 +85,13 @@ class Nav extends Component {
     if (this.props.user.role === "player") {
       content = (
         <Navbar dark expand="md" scrolling className={classes.primary}>
-          <NavbarBrand href="/landing_page">
-            <img className="logo"
-              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-              alt="logo">
-            </img>
+          <NavbarBrand >
+            <NavLink to="/landing_page">
+              <img className="logo"
+                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                alt="logo">
+              </img>
+            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough && 
             <NavbarToggler onClick={this.onClick}>
@@ -120,6 +122,9 @@ class Nav extends Component {
               </NavItem>
             </NavbarNav>
             <NavbarNav right>
+              <NavItem className={classes.primary}>
+                <NavLink to="/contact">Contact</NavLink>
+              </NavItem>
               {logOutBtn}
             </NavbarNav>
           </Collapse>
@@ -130,11 +135,13 @@ class Nav extends Component {
     else if (this.props.user.role === "coach") {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand href="/landing_page">
-            <img className="logo"
-              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-              alt="logo">
-            </img>
+          <NavbarBrand >
+            <NavLink to="/landing_page">
+              <img className="logo"
+                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                alt="logo">
+              </img>
+            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
           <Collapse isOpen={this.state.collapse} navbar>
@@ -156,6 +163,9 @@ class Nav extends Component {
               </NavItem>
             </NavbarNav>
             <NavbarNav right>
+              <NavItem className={classes.primary}>
+                <NavLink to="/contact">Contact</NavLink>
+              </NavItem>
               {logOutBtn}
             </NavbarNav>
           </Collapse>
@@ -166,11 +176,13 @@ class Nav extends Component {
     else if (this.props.user.role === "admin") {
       content = (   
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand href="/landing_page">
-            <img className="logo"
-              src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-              alt="logo">
-            </img>
+          <NavbarBrand >
+            <NavLink to="/landing_page">
+              <img className="logo"
+                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                alt="logo">
+              </img>
+            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
           <Collapse isOpen={this.state.collapse} navbar>
@@ -195,6 +207,9 @@ class Nav extends Component {
               </NavItem>
             </NavbarNav>  
             <NavbarNav right>
+              <NavItem className={classes.primary}>
+                <NavLink to="/contact">Contact</NavLink>
+              </NavItem>
               {logOutBtn}
             </NavbarNav> 
           </Collapse>
@@ -205,11 +220,13 @@ class Nav extends Component {
     else {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand href="/landing_page">
-            <img className="logo"
-                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
-                 alt="logo">
-               </img>
+          <NavbarBrand >
+            <NavLink to="/landing_page">
+              <img className="logo"
+                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+                alt="logo">
+              </img>
+            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough && 
           <NavbarToggler onClick={this.onClick}>
@@ -235,6 +252,9 @@ class Nav extends Component {
               </NavItem>
             </NavbarNav>
             <NavbarNav right>
+              <NavItem className={classes.primary}>
+                <NavLink to="/contact">Contact</NavLink>
+              </NavItem>
               <NavItem className={classes.primary}>
                 <NavLink to="/login">Log In</NavLink>
               </NavItem>

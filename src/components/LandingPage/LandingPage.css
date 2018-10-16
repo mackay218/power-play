@@ -83,7 +83,7 @@ body{
     }
 
     .guideSection p{
-        font-size: 1vw;
+        font-size: 20px;
         padding: 1em;
         margin: 0;
     }
@@ -106,6 +106,8 @@ body{
         width: 100%;
     }
 
+    .guid
+
     .arrow{
         transform: rotate(90deg);
     }
@@ -115,6 +117,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 10px;
     border: 10px solid #fff;
     border-radius: 20px;
     box-shadow: 5px 10px 10px rgba(0,0,0,0.2);

@@ -1,0 +1,14 @@
+.contactForm{
+    background-color: #fff;
+    height: 300px;
+    border: 5px solid var(--red);
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.contactSend{
+    width: 100px;
+}

@@ -15,8 +15,10 @@ import PlayersListedPage from './components/PlayersListedPage/PlayersListedPage'
 import AdminPage from './components/AdminPage/AdminPage';
 import CoachListPage from './components/AdminPage/CoachListPage';
 import TeamsPage from './components/TeamsPage/TeamsPage';
+import ContactPage from './components/ContactPage/ContactPage';
 import SuspendPage from './components/PlayerProfilePage/SuspendPage';
 import SetPasswordPage from './components/SetPasswordPage/SetPasswordPage';
+
 
 import './styles/main.css';
 import './styles/hamburgers.css';
@@ -67,6 +69,10 @@ const App = () => (
         <Route
         path="/teams"
         component={TeamsPage}
+        />
+        <Route 
+        path="/contact"
+        component={ContactPage}
         />
         <Route
         path="/set_password/:inviteCode"
