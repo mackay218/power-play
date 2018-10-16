@@ -6,7 +6,7 @@ import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
 
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 
 class RegisterPage extends Component {
@@ -41,7 +41,7 @@ class RegisterPage extends Component {
         .then((response) => {
           console.log(response);
           if (response.data.status === 201) {
-            this.props.dispatch({type: 'CREATE_PLAYER', payload: response.data.id});
+            this.props.dispatch({ type: 'CREATE_PLAYER', payload: response.data.id });
             this.props.history.push('/login');
           } else {
             this.setState({
@@ -114,38 +114,35 @@ class RegisterPage extends Component {
                 name="submit"
                 value="Register"
               />
-
-            </label>
-          </div>
-          <div>
-            <input
-              type="submit"
-              name="submit"
-              value="Register"
-            />
-            <Link to="/login">Cancel</Link>
-          </div>
-        </form>
-
-
-
-        {/*Checkout form for stripe*/}
-
-        <div className="element-checkout">
-          <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
-            <Elements>
-              <CheckoutForm />
-            </Elements>
-          </StripeProvider>
-        </div>
-
-
+            </div>
+            <div>
+              <input
+                type="submit"
+                name="submit"
+                value="Register"
+              />
               <Link to="/login">Cancel</Link>
             </div>
           </form>
+
+
+
+          {/*Checkout form for stripe*/}
+
+          <div className="element-checkout">
+            <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
+              <Elements>
+                <CheckoutForm />
+              </Elements>
+            </StripeProvider>
+          </div>
+
+          <div>
+            <Link to="/login">Cancel</Link>
+          </div>
         </div>
 
-      </div>
+      </div >
     );
   }
 }
