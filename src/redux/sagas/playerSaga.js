@@ -48,9 +48,14 @@ function* getCSVList() {
     }
 }
 
-function* playerError(action) {
-    yield alert('There was an error getting the players!');
-    console.log('Player Error:', action.payload);
+function* searchByName(action) {
+    try {
+        console.log(action.payload);
+        const playerByName = yield call(axios.get, `/api/players/byName?name=${action.payload.playerName}&page=${action.payload.page}`);
+        yield put({type: 'SET_ALL_PLAYERS', playerByName});
+    } catch (error) {
+        yield put({type: 'PLAYER_ERROR', payload: error});
+    }
 }
 
 function* playerProfileById() {
@@ -71,6 +76,11 @@ function* getPlayerInfo(action) {
     }
 }
 
+function* playerError(action) {
+    yield alert('There was an error getting the players!');
+    console.log('Player Error:', action.payload);
+}
+
 function* playerSaga() {
     yield takeLatest('GET_ALL_PLAYERS', getAllPlayers);
     yield takeLatest('PLAYER_ERROR', playerError);
@@ -80,6 +90,7 @@ function* playerSaga() {
     yield takeLatest('SORT_PLAYER_BY', sortPlayerBy);
     yield takeLatest('GET_PLAYER_INFO', getPlayerInfo);
     yield takeLatest('GET_CSV_LIST', getCSVList);
+    yield takeLatest('SEARCH_BY_NAME', searchByName);
 }
 
 export default playerSaga;
