@@ -1,0 +1,42 @@
+.divisionsContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.leagueDivision {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.leagueDivision h2{
+    text-decoration: underline;
+}
+
+.leagueDivision ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.leagueDivision li{
+    margin: 10px;
+}
+
+.D1{
+    font-size: 20px;
+}
+
+.D3{
+    font-size: 15px;
+}
+
+.Juniors{
+    font-size: 14px;
+}

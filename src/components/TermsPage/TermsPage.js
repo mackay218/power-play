@@ -67,9 +67,13 @@ class TermsPage extends Component {
     
 
     return (
-      <div>
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
-        { content }
+        <div className="pageContainer">
+          {content}
+        </div> 
       </div>
     );
   }

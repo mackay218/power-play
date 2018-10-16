@@ -3,14 +3,13 @@ const pool = require('../modules/pool');
 const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
-
-    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."id" 
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
                     FROM "player_stats" 
-                    JOIN "person" ON "person_id" = "person"."id"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
                     ORDER BY "created_on" DESC LIMIT 10;`;
     pool.query(query).then((result) => {
         res.send(result.rows)
@@ -18,19 +17,35 @@ router.get('/all', (req, res) => {
         console.log('ERROR getting players:', error);
         res.sendStatus(500);
     })
-
+});
+// GET route for populating CSV file
+router.get('/csvList', (req, res) => {
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name"
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    ORDER BY "created_on" DESC;`;
+    pool.query(query).then((result) => {
+        res.send(result.rows)
+    }).catch((error) => {
+        console.log('ERROR getting players:', error);
+        res.sendStatus(500);
+    })
 });
 // GET route for specific player
 router.get('/profileById', (req, res) => {
 
     id = req.user.id;
-    const query = `SELECT "player_stats".*, "person"."id" FROM "player_stats"
-                    JOIN "position" ON "position_id" = "position"."id"
-                    JOIN "league" ON "league_id" = "league"."id"
-                    JOIN "team" ON "team_id" = "team"."id"
-                    JOIN "school" ON "school_id" = "school"."id"
-                    JOIN "person" ON "person_id" = "person"."id"
-                    WHERE "person"."id" = $1;`;
+    const query = `SELECT "player_stats".*, "person"."personid" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "person"."personid" = $1;`;
     pool.query(query, [id]).then((result) => {
         res.send(result.rows[0])
         console.log('by id results', id, result.rows[0]);
@@ -39,6 +54,89 @@ router.get('/profileById', (req, res) => {
         res.sendStatus(500);
     })
 
+});
+// GET route for sorting players
+router.get('/sorted', (req, res) => {
+    (async () => {
+        req.query.position = await areFieldsEmpty(req.query);
+        const client = await pool.connect();
+        try {
+            queryText = `CREATE TEMP TABLE "sorted_players" AS
+                            SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                            FROM "player_stats" 
+                            JOIN "person" ON "person_id" = "person"."personid"
+                            JOIN "position" ON "position_id" = "position"."positionid"
+                            JOIN "league" ON "league_id" = "league"."leagueid"
+                            JOIN "team" ON "team_id" = "team"."teamid"
+                            JOIN "school" ON "school_id" = "school"."schoolid"
+                            WHERE "position_id" >= COALESCE($1, 0)
+                            AND "position_id" <= COALESCE($1, 10)
+                            AND "points" >= COALESCE($2,0)
+                            AND "points" <= COALESCE($3,999999)
+                            AND "wins" >= COALESCE($4,0)
+                            AND "wins" <= COALESCE($5,999999)
+                            AND "birth_date" >= COALESCE($6, DATE('1998-01-01')) 
+                            AND "birth_date" <= COALESCE($7, DATE('2018-01-01'));`;
+            await client.query(queryText, [req.query.position, 
+                                           parseInt(req.query.minPoints), 
+                                           parseInt(req.query.maxPoints), 
+                                           parseInt(req.query.minWins), 
+                                           parseInt(req.query.maxWins), 
+                                           req.query.minDate, 
+                                           req.query.maxDate]);
+            queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
+            const sortedPlayers = await client.query(queryText, [parseInt(req.query.page)]);
+            queryText = `DROP TABLE "sorted_players";`;
+            await client.query(queryText);
+            await client.query('COMMIT');
+            console.log(sortedPlayers.rows);
+            res.send(sortedPlayers.rows);
+        }
+        catch (error) {
+            console.log('ROLLBACK', error);
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    })().catch((error) => {
+        console.log('CATCH', error);
+    });
+});
+// GET route for specific player info
+router.get('/playerInfo/:id', (req, res) => {
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email" FROM "player_stats"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    WHERE "id" = $1;`;
+    pool.query(query, [req.params.id]).then((result) => {
+        res.send(result.rows[0]);
+    }).catch((error) => {
+        console.log('ERROR getting players information:', error);
+        res.sendStatus(500);
+    });
+})
+// GET route for searchin by name
+router.get('/byName', (req, res) => {
+    req.query.name = `%${req.query.name}%`;
+    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                    FROM "player_stats" 
+                    JOIN "person" ON "person_id" = "person"."personid"
+                    JOIN "position" ON "position_id" = "position"."positionid"
+                    JOIN "league" ON "league_id" = "league"."leagueid"
+                    JOIN "team" ON "team_id" = "team"."teamid"
+                    JOIN "school" ON "school_id" = "school"."schoolid"
+                    WHERE "last_name" ILIKE $1 LIMIT 10 OFFSET $2;`;
+    pool.query(query, [req.query.name, req.query.page]).then((result) => {
+        console.log(result.rows);
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log('ERROR searching by name', error);
+        res.sendStatus(500);
+    });
 });
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
@@ -127,7 +225,7 @@ router.delete('/delete/:id', (req, res) => {
         try {
             let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
             await client.query(queryText, [req.params.id]);
-            queryText = `DELETE FROM "person" WHERE "id" = $1 ;`;
+            queryText = `DELETE FROM "person" WHERE "personid" = $1 ;`;
             await client.query(queryText, [req.params.id]);
             await client.query('COMMIT');
         }
@@ -137,9 +235,69 @@ router.delete('/delete/:id', (req, res) => {
             throw error;
         } finally {
             client.release();
+            res.sendStatus(200);
         }
     })().catch((error) => {
         console.log('CATCH', error);
     });
-});
+}); 
+//function for determining if player position is an empty string
+areFieldsEmpty = (query) => {
+    // sets position to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.position === '') {
+        query.position = null;
+    }
+    else {
+        query.position = parseInt(query.position);
+    }
+    // sets minPoints to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.minPoints === '') {
+        query.minPoints = null;
+    }
+    else {
+        query.minPoints = parseInt(query.minPoints);
+    }
+    // sets maxPoints to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.maxPoints === '') {
+        query.maxPoints = null;
+    }
+    else {
+        query.maxPoints = parseInt(query.position);
+    }
+    // sets minWins to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.minWins === '') {
+        query.minWins = null;
+    }
+    else {
+        query.minWins = parseInt(query.minWins);
+    }
+    // sets maxWins to null if passed in an empty string
+    // otherwise changes it to an integer
+    if (query.maxWins === '') {
+        query.maxWins = null;
+    }
+    else {
+        query.maxWins = parseInt(query.maxWins);
+    }
+    // sets minDate to null if passed in an empty string
+    // otherwise changes it to a Date
+    if (query.minDate === '') {
+        query.minDate = null;
+    }
+    else {
+        query.minDate = Date(query.minDate);
+    }
+    // sets maxDate to null if passed in an empty string
+    // otherwise changes it to a Date
+    if (query.maxDate === '') {
+        query.maxDate = null;
+    }
+    else {
+        query.maxDate = Date(query.maxDate);
+    }
+}
 module.exports = router;

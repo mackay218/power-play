@@ -5,6 +5,8 @@ const router = express.Router();
 
 const nodemailer = require("nodemailer");
 
+const moment = require('moment');
+
 const Chance = require('chance');
 const chance = new Chance();
 
@@ -12,7 +14,7 @@ const chance = new Chance();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT "person"."id", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
+    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
     pool.query(query).then((result) => {
         console.log(result.rows);
         res.send(result.rows);
@@ -23,8 +25,18 @@ router.get('/all', (req, res) => {
 
 });
 
+router.get('/paged', (req, res) => {
+    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10 OFFSET $1;`;
+    pool.query(query, [parseInt(req.query.page)]).then((result) => {
+        res.send(result.rows);
+    }).catch((error) => {
+        console.log('ERROR getting coaches:', error);
+        res.sendStatus(500);
+    });
+});
+
 router.delete('/delete/:id', (req, res) => {
-    const query = `DELETE FROM "person" WHERE "id" = $1;`;
+    const query = `DELETE FROM "person" WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {
@@ -34,7 +46,7 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 router.put('/suspend/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 2 WHERE "id" = $1;`;
+    const query = `UPDATE "person" SET "status_id" = 2 WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {
@@ -44,7 +56,7 @@ router.put('/suspend/:id', (req, res) => {
 });
 
 router.put('/ban/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 3 WHERE "id" = $1;`;
+    const query = `UPDATE "person" SET "status_id" = 3 WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then(() => {
         res.sendStatus(200);
     }).catch((error) => {
@@ -97,7 +109,16 @@ router.post('/coachInvite', (req, res) => {
     const emailAddress = coachInfo.email; //this may change depending on client side route
 
     //limit inivite code to alphanumeric to avoid url problems
-    const inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+    let inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+
+    //create expiration date code for invite
+    let expireDate = new Date();
+    
+    expireDate = moment(expireDate).format('L');
+
+    expireDate = expireDate.replace(/\//g, '');
+
+    inviteCode = inviteCode + expireDate;
 
     const infoForEmail = {
         name: coachName,
@@ -110,6 +131,8 @@ router.post('/coachInvite', (req, res) => {
     const statusType = 4;
     const statusReason = 'awaiting response from invite';
 
+    console.log(infoForEmail);
+
     //ACTIVITY LOG for analytics
     // const activityType = 'invite sent';
     // const activityTime = new Date();
@@ -120,13 +143,13 @@ router.post('/coachInvite', (req, res) => {
 
         try {
             let queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, status_reason)
-                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id";`;
+                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "personid";`;
 
             let values = [emailAddress, role, coachName, inviteCode, statusType, statusReason];
 
             const personResult = await client.query(queryText, values);
 
-            let personId = personResult.rows[0].id;
+            let personId = personResult.rows[0].personid;
 
             //ACTIVITY LOG will need to be changed to include person id as foreign key
             // queryText = `INSERT INTO activity_log(time, activity_type)
@@ -178,7 +201,6 @@ sendInviteCode = (infoForEmail) => {
             clientSecret: process.env.my_oauth_client_secret,
             refreshToken: process.env.my_oauth_refresh_token,
             accessToken: process.env.my_oauth_access_token,
-            expires: 1527200298318 + 3600
         }
     });
 

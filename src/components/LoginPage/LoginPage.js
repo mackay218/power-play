@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+//import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { triggerLogin, formError, clearError } from '../../redux/actions/loginActions';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
+import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
+
 import ForgotPasswordDialog from './ForgotPasswordDialog';
 import Nav from '../Nav/Nav';
+
+import './LoginPage.css';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -22,9 +29,23 @@ class LoginPage extends Component {
     };
   }
 
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch(clearError());
+    
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   componentDidUpdate() {
@@ -37,6 +58,11 @@ class LoginPage extends Component {
     else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'admin') {
       this.props.history.push('admin_page');
     }
+
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   login = (event) => {
@@ -47,6 +73,10 @@ class LoginPage extends Component {
     } else {
       this.props.dispatch(triggerLogin(this.state.email, this.state.password));
     }
+  }
+
+  handleRegister = () => {
+    this.props.history.push('/register');
   }
 
   handleInputChangeFor = propertyName => (event) => {
@@ -71,41 +101,44 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {this.renderAlert()}
-          <form onSubmit={this.login}>
+          <form className="loginForm" onSubmit={this.login}>
             <h1>Login</h1>
-            <div>
-              <label htmlFor="email">
-                email:
-              <input
-                  type="text"
+            <div className="formInputs">
+              <div>
+                <TextField 
+                  type="email"
                   name="email"
+                  label="email"
                   value={this.state.email}
                   onChange={this.handleInputChangeFor('email')}
                 />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="password">
-                Password:
-              <input
+              </div>
+              <div>
+                <TextField 
                   type="password"
                   name="password"
+                  label="password"
                   value={this.state.password}
                   onChange={this.handleInputChangeFor('password')}
+
                 />
-              </label>
+              </div>
             </div>
-            <div>
-              <input
+            <div className="btnContainer">
+              <Button
                 type="submit"
                 name="submit"
                 value="Log In"
-              />
-              <Link to="/register">Register</Link>
+              >Log In</Button>
+              <Button 
+                type="button"
+                onClick={this.handleRegister}>Register</Button>
             </div>
             <ForgotPasswordDialog />
           </form>

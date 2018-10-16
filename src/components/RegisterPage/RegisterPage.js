@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,6 +10,11 @@ import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
 import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+import './RegisterPage.css';
+
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +24,33 @@ class RegisterPage extends Component {
       password: '',
       message: '',
     };
+  }
+
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
+  componentDidMount() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
+  }
+
+  componentDidUpdate() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
+  }
+
+  handleCancel = () => {
+    this.props.history.push('/landing_page');
   }
 
   registerUser = (event) => {
@@ -32,9 +65,6 @@ class RegisterPage extends Component {
         email: this.state.email,
         password: this.state.password,
       };
-
-
-
 
       // making the request to the server to post the new user's registration
       axios.post('/api/user/register/', body)
@@ -56,7 +86,6 @@ class RegisterPage extends Component {
         });
     }
   } // end registerUser
-
 
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
@@ -80,68 +109,64 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {this.renderAlert()}
-          <form onSubmit={this.registerUser}>
+          <form className="registerForm" onSubmit={this.registerUser}>
             <h1>Register User</h1>
-            <div>
-              <label htmlFor="email">
-                email:
-              <input
-                  type="text"
-                  name="email"
-                  value={this.state.email}
+            <div className="formInputs">
+              <div>
+                <TextField type="email"
                   onChange={this.handleInputChangeFor('email')}
+                  label="email"
+                  name="email"
                 />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="password">
-                Password:
-              <input
-                  type="password"
-                  name="password"
-                  value={this.state.password}
+              </div>
+              <div>
+                <TextField type="password"
                   onChange={this.handleInputChangeFor('password')}
+                  label="password"
+                  name="password"
                 />
-              </label>
+              </div>
             </div>
-            <div>
-              <input
+
+            <div className="btnContainer">
+              <Button
                 type="submit"
                 name="submit"
                 value="Register"
               />
             </div>
             <div>
-              <input
-                type="submit"
-                name="submit"
-                value="Register"
-              />
-              <Link to="/login">Cancel</Link>
+              <Button
+                type="button"
+                onClick={this.handleCancel} name="cancel">
+                Cancel
+              </Button>
             </div>
           </form>
-
-
-
-          {/*Checkout form for stripe*/}
-
-          <div className="element-checkout">
-            <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
-              <Elements>
-                <CheckoutForm />
-              </Elements>
-            </StripeProvider>
-          </div>
-
-          <div>
-            <Link to="/login">Cancel</Link>
-          </div>
         </div>
 
+
+
+
+        {/*Checkout form for stripe*/}
+
+        <div className="element-checkout">
+          <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
+            <Elements>
+              <CheckoutForm />
+            </Elements>
+          </StripeProvider>
+        </div>
+
+        <div>
+          <Link to="/login">Cancel</Link>
+        </div>
       </div >
     );
   }

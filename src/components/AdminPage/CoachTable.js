@@ -50,6 +50,13 @@ const styles = theme => ({
 
 class CustomizedTable extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            page: 0,
+        }
+    }
+
     deleteCoach = (id) => {
         //TODO: set up delete
         swal({
@@ -69,7 +76,7 @@ class CustomizedTable extends Component {
             else {
                 swal('The coach was not deleted', {
                     dangerMode: true,
-                  });
+                });
             }
         })
     }
@@ -114,40 +121,68 @@ class CustomizedTable extends Component {
         })
     }
 
+    previousPage = () => {
+        if (this.state.page > 0) {
+          this.setState({
+            ...this.state,
+            page: (this.state.page - 10),
+          });
+        }
+        setTimeout(() => this.props.dispatch({ type: 'PAGE_COACHES', payload: this.state }), 200);
+      }
+    
+    nextPage = () => {
+      this.setState({
+        ...this.state,
+        page: (this.state.page + 10),
+      });
+      setTimeout(() => this.props.dispatch({ type: 'PAGE_COACHES', payload: this.state }), 200);
+    }
+
     render() {
         const { classes } = this.props;
 
         return (
-            <Paper className={classes.root}>
-                <Table className="center-element">
-                    <TableHead className="table-head">
-                        <TableRow>
-                            <CustomTableCell>Name</CustomTableCell>
-                            <CustomTableCell>Email</CustomTableCell>
-                            <CustomTableCell>Status</CustomTableCell>
-                            <CustomTableCell>Delete</CustomTableCell>
-                            <CustomTableCell>Suspend</CustomTableCell>
-                            <CustomTableCell>Ban</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.props.coach.map(coach => {
-                            return (
-                                <TableRow className={classes.row} key={coach.id}>
-                                    <CustomTableCell component="th" scope="row">
-                                        {coach.coach_name}
-                                    </CustomTableCell>
-                                    <CustomTableCell>{coach.email}</CustomTableCell>
-                                    <CustomTableCell>{coach.status_type}</CustomTableCell>
-                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.deleteCoach(coach.id)}><DeleteIcon />Delete</Button></CustomTableCell>
-                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.suspendCoach(coach.id)}><DeleteIcon />Suspend</Button></CustomTableCell>
-                                    <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.banCoach(coach.id)}><DeleteIcon />Ban</Button></CustomTableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </Paper>
+            <div>
+                <div className="page-buttons">
+                    <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+                    <Button variant="contained" onClick={this.nextPage}>Next</Button>
+                </div>
+                <Paper className={classes.root}>
+                    <Table className="center-element">
+                        <TableHead className="table-head">
+                            <TableRow>
+                                <CustomTableCell>Name</CustomTableCell>
+                                <CustomTableCell>Email</CustomTableCell>
+                                <CustomTableCell>Status</CustomTableCell>
+                                <CustomTableCell>Delete</CustomTableCell>
+                                <CustomTableCell>Suspend</CustomTableCell>
+                                <CustomTableCell>Ban</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.coach.map(coach => {
+                                return (
+                                    <TableRow className={classes.row} key={coach.personid}>
+                                        <CustomTableCell component="th" scope="row">
+                                            {coach.coach_name}
+                                        </CustomTableCell>
+                                        <CustomTableCell>{coach.email}</CustomTableCell>
+                                        <CustomTableCell>{coach.status_type}</CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.deleteCoach(coach.id)}><DeleteIcon />Delete</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.suspendCoach(coach.id)}><DeleteIcon />Suspend</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.banCoach(coach.id)}><DeleteIcon />Ban</Button></CustomTableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Paper>
+                <div className="page-buttons">
+                    <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+                    <Button variant="contained" onClick={this.nextPage}>Next</Button>
+                </div>
+            </div>
         );
     }
 }

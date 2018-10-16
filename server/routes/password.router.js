@@ -18,7 +18,7 @@ router.get('/:emailAddress',(req, res) => {
 
     const email = req.params.emailAddress;
 
-    const queryText = `SELECT "id" FROM person WHERE "email" = $1;`;
+    const queryText = `SELECT "personid" FROM person WHERE "email" = $1;`;
 
     pool.query(queryText, [email])
         .then((results) => {
@@ -45,7 +45,17 @@ resetPersonInviteCode = (email) => {
     console.log(' in resetPersonInviteCode');
     
     //limit inivite code to alphanumeric to avoid url problems
-    const resetPasswordCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+    let resetPasswordCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+
+    //create expiration date code for invite
+    let expireDate = new Date();
+
+    expireDate = moment(expireDate).format('MMDDYYYY');
+
+    expireDate = expireDate.replace(/\//g, '');
+
+    resetPasswordCode = resetPasswordCode + expireDate;
+
 
     const infoForEmail = {
         email: email,
@@ -63,9 +73,9 @@ resetPersonInviteCode = (email) => {
         const client = await pool.connect();
 
         try {
-            let queryText = `UPDATE person SET "invite" = $1 RETURNING "id";`;
+            let queryText = `UPDATE person SET "invite" = $1 WHERE "email" = $2RETURNING "personid";`;
 
-            let values = [resetPasswordCode];
+            let values = [resetPasswordCode, email];
 
             const personResult = await client.query(queryText, values);
 
@@ -284,43 +294,42 @@ router.put('/setPassword', (req, res) => {
         res.sendStatus(500);
     });
 
+        // const activityType = 'password set or reset';
+        // const activityTime = new Date();
 
-        const activityType = 'password set or reset';
-        const activityTime = new Date();
+        // (async () => {
 
-        (async () => {
+        //     const client = await pool.connect();
 
-            const client = await pool.connect();
+        //     try {
+        //         //log activity
+        //         let queryText = `INSERT INTO activity_log(time, activity_type)
+        //                     VALUES ($1, $2) RETURNING "id";`;
 
-            try {
-                //log activity
-                let queryText = `INSERT INTO activity_log(time, activity_type)
-                            VALUES ($1, $2) RETURNING "id";`;
+        //         values = [activityTime, activityType];
 
-                values = [activityTime, activityType];
+        //         const activityLogResult = await client.query(queryText, values);
 
-                const activityLogResult = await client.query(queryText, values);
+        //         let activityLogId = activityLogResult.rows[0].id;
 
-                let activityLogId = activityLogResult.rows[0].id;
+        //         queryText = `UPDATE person SET "activity_log_id = $1 WHERE "personid" = $2;`;
 
-                queryText = `UPDATE person SET "activity_log_id = $1 WHERE "id" = $2;`;
+        //         values = [activityLogId, personId];
 
-                values = [activityLogId, personId];
+        //         await client.query(queryText, values);
 
-                await client.query(queryText, values);
-
-            }
-            catch (error) {
-                console.log('ROLLBACK', error);
-                await client.query('ROLLBACK');
-                throw error;
-            } finally {
-                client.release();
-            }
-        })().catch((error) => {
-                console.log('CATCH', error);
-                res.sendStatus(500);
-            });
-})
+        //     }
+        //     catch (error) {
+        //         console.log('ROLLBACK', error);
+        //         await client.query('ROLLBACK');
+        //         throw error;
+        //     } finally {
+        //         client.release();
+        //     }
+        // })().catch((error) => {
+        //         console.log('CATCH', error);
+        //         res.sendStatus(500);
+        //     });
+});
 
 module.exports = router;
