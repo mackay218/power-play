@@ -39,4 +39,15 @@
 
 .Juniors{
     font-size: 14px;
+    
+}
+
+li {
+    padding: 55px;
+
+}
+
+li:hover {
+    color:#eb1b3b;
+    font-size: 40px;
 }

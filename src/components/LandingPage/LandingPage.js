@@ -39,6 +39,10 @@ class LandingPage extends Component {
         this.props.history.push('register');
     }
 
+    toProfile = () => {
+        this.props.history.push('register');
+    }
+
     constructor(props) {
         super(props)
         this.aboutRef = React.createRef();
@@ -52,6 +56,8 @@ class LandingPage extends Component {
 
     //      window.scrollTo(0, this.aboutRef.current);
     // }
+
+
 
     render() {
         return (
@@ -74,7 +80,7 @@ class LandingPage extends Component {
                             <h3 className="missionDetail">
                                 And we do them well. We do them with gusto. We accomplish them with gravitas.
                             </h3>
-                            <div className="guideContainer">
+                            <div className="guideContainer" onClick={this.toRegister}>
                                 <div className="guideSection">
                                     <h3 className="guideHeaders">Build Your Profile</h3>
                                     <img className="guideImg" src="images/profile.svg" alt="profile-icon" />
