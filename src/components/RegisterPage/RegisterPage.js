@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import Nav from '../Nav/Nav';
 
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 
 import './RegisterPage.css';

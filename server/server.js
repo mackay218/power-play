@@ -13,6 +13,7 @@ const userRouter = require('./routes/user.router');
 const playerRouter = require('./routes/player.router');
 const coachRouter = require('./routes/coach.router');
 const passwordRouter = require('./routes/password.router');
+const contactRouter = require('./routes/contact.router');
 
 //DATABASE MOCK DATA ROUTE - DELETE BEFORE FINAL BUILD
 const databaseFaker = require('./routes/databaseFaker.router');
@@ -35,6 +36,7 @@ app.use('/api/user', userRouter);
 app.use('/api/players', playerRouter);
 app.use('/api/coaches', coachRouter);
 app.use('/api/password', passwordRouter);
+app.use('/api/contact', contactRouter);
 
 // Serve static files
 app.use(express.static('build'));

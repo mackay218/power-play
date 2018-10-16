@@ -6,6 +6,7 @@
 
 .navbar {
     background: var(--red);
+    height: 100px;
     width: 100vw;
     box-shadow: none !important;
 }
