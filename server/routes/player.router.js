@@ -3,13 +3,15 @@ const pool = require('../modules/pool');
 const router = express.Router();
 // GET route for all players
 router.get('/all', (req, res) => {
-    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
+                    "team"."team_name","school"."school_name", "person"."personid", "person"."status_id"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
+                    WHERE "status_id" = 1
                     ORDER BY "created_on" DESC LIMIT 10;`;
     pool.query(query).then((result) => {
         res.send(result.rows)
@@ -64,14 +66,16 @@ router.get('/sorted', (req, res) => {
         const client = await pool.connect();
         try {
             queryText = `CREATE TEMP TABLE "sorted_players" AS
-                            SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+                            SELECT "player_stats".*, "position"."position_name", "league"."league_name",
+                            "team"."team_name","school"."school_name", "person"."personid", "person"."status_id" 
                             FROM "player_stats" 
                             JOIN "person" ON "person_id" = "person"."personid"
                             JOIN "position" ON "position_id" = "position"."positionid"
                             JOIN "league" ON "league_id" = "league"."leagueid"
                             JOIN "team" ON "team_id" = "team"."teamid"
                             JOIN "school" ON "school_id" = "school"."schoolid"
-                            WHERE "position_id" >= COALESCE($1, 0)
+                            WHERE "status_id" = 1
+                            AND "position_id" >= COALESCE($1, 0)
                             AND "position_id" <= COALESCE($1, 10)
                             AND "points" >= COALESCE($2,0)
                             AND "points" <= COALESCE($3,999999)
