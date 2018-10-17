@@ -22,42 +22,14 @@ body{
     justify-content: space-around;
 }
 
-.card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    min-width: 500px;
-    min-height: 800spx;
-    width: 20vw;
-}
-
-.display {
-    border: 1px solid black;
-    height: 80vh;
-    width: 95%;
+.profileContainer{
+    width: 90%;
+    padding: 20px 0 0 0 ;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: flex-start;
 }
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-/* Add some padding inside the card container */
-.container {
-    padding: 2px 16px;
-}
-
-img {
-    width: 10vw;
-}
-
-.img {
-    width: 100%;
-}
-
 
 .profilePicContainer{
     border: 5px solid var(--red);
@@ -71,6 +43,7 @@ img {
 }
 
 .infoContainer{
+    width: 30vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,6 +53,13 @@ img {
     width: 100%;
     text-align: center;
     margin: 10px;
+}
+
+.personInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .toolbar{

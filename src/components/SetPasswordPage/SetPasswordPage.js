@@ -120,12 +120,12 @@ class SetPasswordPage extends Component {
                 message: 'Please enter a new password.'
             });
         }
-        else if(this.state.newPassword != '' && this.state.confirmPassword === ''){
+        else if(this.state.newPassword !== '' && this.state.confirmPassword === ''){
             this.setState({
                 message: 'Please confirm password.'
             });
         }
-        else if(this.state.newPassword != this.state.confirmPassword){
+        else if(this.state.newPassword !== this.state.confirmPassword){
             this.setState({
                 message: 'Passwords do not match.'
             });

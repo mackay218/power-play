@@ -5,24 +5,20 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
 import axios from 'axios';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+
+import moment from 'moment';
+
 import Button from '@material-ui/core/Button';
 
 
 import PlayerProfileDialog from './PlayerProfileDialog';
 
-
-
 const mapStateToProps = state => ({
   user: state.user,
-  player: state.player.player,
+  player: state.player,
 });
 
+let loadedPlayer = false;
 
 class PlayerProfileDisplay extends Component {
   constructor(props) {
@@ -66,19 +62,18 @@ class PlayerProfileDisplay extends Component {
   }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-
-    setTimeout(() => {
-      console.log('get player info test');
-      this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
-    
-    }, 1000);
-
   }
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
     }
+    // Done loading the user, the user exists and the player info hasn't been loaded
+    if (!this.props.user.isLoading && this.props.user.email !== null && !loadedPlayer) {
+      loadedPlayer = true;
+      this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
+    }
+
   }
 
   handleProfileChange = (event) => {
@@ -114,289 +109,208 @@ class PlayerProfileDisplay extends Component {
     });
   }
 
-  toggleDisplay = () => {
-    this.setState({
-      ...this.state,
-      toggleView: !this.state.toggleView
-    })
-    console.log(this.state.toggleView);
-
-  }
-
   render() {
+    let playerInfo = this.props.player.playerInfo;
+    
     let content = null;
-    let positionalContent = null;
-    let playerScreenContent = null;
 
-      //Main display for the player's profile
-      // playerScreenContent = (
-      //   <div className="display">
-      //     <div>
-      //       {/* <Image className="profilePic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdOlQy6phKYtRd7nc9Ow1m0GWOML-yUM8Tt1te62LT-8eIcS84w" alt="Avatar" /> */}
-      //       {/* className="container" */}
-      //       <div>
-      //         <h4>{this.props.player}</h4>
-      //       </div>
-      //     </div>
-      //     {/* className="playerProfileContainer" */}
-      //     <div>
-      //       <Paper>
-      //         <Table>
-      //           <TableHead className="table-head">
-      //             <TableRow>
-      //               <TableCell>First Name</TableCell>
-      //               <TableCell>Last Name</TableCell>
-      //               <TableCell>Birthdate</TableCell>
-      //               <TableCell>School</TableCell>
-      //               <TableCell>Grade</TableCell>
-      //               <TableCell>GPA</TableCell>
-      //               <TableCell>League</TableCell>
-      //               <TableCell>Team</TableCell>
-      //             </TableRow>
-      //           </TableHead>
-      //           <TableBody>
-      //             <TableRow>
-      //               <TableCell>{this.state.profile.last_name}</TableCell>
-      //               <TableCell>{this.state.profile.first_name}</TableCell>
-      //               <TableCell>{this.state.profile.birth_date}</TableCell>
-      //               <TableCell>{this.state.profile.points}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //             </TableRow>
-      //           </TableBody>
-      //         </Table>
-      //         <Table>
-      //           <TableHead className="table-head">
-      //             <TableRow>
-      //               <TableCell>Position</TableCell>
-      //               <TableCell>Weight</TableCell>
-      //               <TableCell>Goals</TableCell>
-      //               <TableCell>Assists</TableCell>
-      //               <TableCell>Points</TableCell>
-      //               <TableCell>Games Played</TableCell>
-      //             </TableRow>
-      //           </TableHead>
-      //           <TableBody>
-      //             <TableRow>
-      //               <TableCell>{this.state.person_id}</TableCell>
-      //               <TableCell>{this.state.profile.position_id}</TableCell>
-      //               <TableCell>{this.state.profile.birth_date}</TableCell>
-      //               <TableCell>{this.state.profile.points}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //             </TableRow>
-      //           </TableBody>
-      //         </Table>
-      //         <Table>
-      //           <TableHead className="table-head">
-      //             <TableRow>
-      //               <TableCell>Position</TableCell>
-      //               <TableCell>Weight</TableCell>
-      //               <TableCell>Wins</TableCell>
-      //               <TableCell>Losses</TableCell>
-      //               <TableCell>Ties</TableCell>
-      //               <TableCell>Save %</TableCell>
-      //               <TableCell>Games Played</TableCell>
-      //             </TableRow>
-      //           </TableHead>
-      //           <TableBody>
-      //             <TableRow>
-      //               <TableCell>{this.state.person_id}</TableCell>
-      //               <TableCell>{this.state.profile.position_id}</TableCell>
-      //               <TableCell>{this.state.profile.birth_date}</TableCell>
-      //               <TableCell>{this.state.profile.points}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //               <TableCell>{this.state.profile.wins}</TableCell>
-      //             </TableRow>
-      //           </TableBody>
-      //             {/* <PlayerProfileDialog /> */}
-      //         </Table>
-      //       </Paper>
-      //     </div>
-      //   </div>
+    //placeholder profile pic
+    let profilePic = (
+      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" 
+      alt="placeholder image"/>
+    )
 
-      // )
+    let lastName = (
+      <p>Last Name</p>
+    );
 
-    let profilePic = null;
+    let firstName = (
+      <p>First Name</p>
+    );
 
-    if(this.state.profile.image_path){
-      profilePic = (
-        <img src={this.state.profile.image_path} />
-      )
-    }
-    else{
-      profilePic = (
-        <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" 
-            alt="placeholder pic" 
-        />
-      )
-    }
+    let birthDate = (
+      <p>DOB: 01/01/01</p>
+    );
 
-    let firstName = null;
-    if(this.state.profile.first_name){
-      firstName = (
-        <h4>{this.state.profile.first_name}</h4>
-      )
-    }
-    else{
-      firstName = (
-        <h4>First Name</h4>
-      )
-    }
+    let phoneNum = (
+      <p>phone: 555-555-5555</p>
+    );
 
-    let lastName = null;
-    if(this.state.profile.last_name){
-      lastName = (
-        <h4>{this.state.profile.last_name}</h4>
-      )
-    }
-    else{
-      lastName = (
-        <h4>Last Name</h4>
-      )
-    }
+    let emailAddress = (
+      <p>email: johnDoe@example.com</p>
+    )
 
-    let birthDate = null;
-    if(this.state.profile.birth_date){
-      birthDate = (
-        <h4>{this.state.profile.birth_date}</h4>
-      )
-    }
-    else{
-      birthDate = (
-        <h4>01/01/01</h4>
-      )
-    }
+    let school = null;
+    let schoolYear = null;
+    let gpa = null;
+    let actScore = null;
 
-    let playerPosition = null;
+    let position = (
+      <h2>Hockey Player</h2>
+    );
 
-    let positionStats = null;
+    let teamName = (
+      <p>Team: </p>
+    );
 
-    if(this.state.profile.position_id === 1){
-      playerPosition = (
-        <h3>Forward</h3>
-      );
-      positionStats = (
-        <div className="positionStats">
-          <p>Goals: {this.state.profile.goals}</p>
-          <p>Assists: {this.state.profile.assists}</p>
-          <p>Points: {this.state.profile.points}</p>
-          <p>Games Played: {this.state.profile.games_played}</p>
-        </div>
-      )
-    }
-    else if(this.state.profile.position_id === 2){
-      playerPosition = (
-        <h3>Defense</h3>
-      )
-      positionStats = (
-        <div className="positionStats">
-          <p>Goals: {this.state.profile.goals}</p>
-          <p>Assists: {this.state.profile.assists}</p>
-          <p>Points: {this.state.profile.points}</p>
-          <p>Games Played: {this.state.profile.games_played}</p>
-        </div>
-      )
-    }
-    else if(this.state.profile.position_id === 3){
-      playerPosition = (
-        <h3>Goalie</h3>
-      )
-      positionStats = (
-        <div className="positionStats">
-          <p>Wins: {this.state.profile.wins}</p>
-          <p>Losses: {this.state.profile.losses}</p>
-          <p>Ties: {this.state.profile.ties}</p>
-          <p>Games Played: {this.state.profile.games_played}</p>
-          <p>Save %: {this.state.profile.save_percent}%</p>
-          <p>Goals Against: {this.state.profile.goals_against}</p>
-        </div>
-      )
-    }
-    else{
-      playerPosition = (
-        <h3>Player Position</h3>
-      )
-      positionStats = (
-        <div className="positionStats">
-          <p>Goals: 0</p>
-          <p>Assists: 0</p>
-          <p>Points: 0</p>
-          <p>Wins: 0</p>
-          <p>Losses: 0</p>
-          <p>Ties: 0</p>
-          <p>Games Played: 0</p>
-          <p>Save %: 0%</p>
-          <p>Goals Against: 0</p>
-        </div>
-      )
-    }
+    let league = (
+      <p>League: </p>
+    );
 
-   
+    let height = (
+      <p>Height: </p>
+    );
 
+    let weight = (
+      <p>Weight: </p>
+    );
 
-      playerScreenContent = (
-        <div className="display">
+    if(playerInfo){
+      //if picture link has been provided
+      if(playerInfo.image_path){
+        profilePic = (
+          <img src={playerInfo.image_path}/>
+        );
+      }  
+      //if last name have been provided
+      if(playerInfo.last_name){
+        lastName = (
+          <h4>{playerInfo.last_name}</h4>
+        );
+      }
+      if(playerInfo.first_name){
+        firstName = (
+          <h4>{playerInfo.first_name}</h4>
+        )
+      }
+      if(playerInfo.birth_date){
+
+        let formatBirthDate = moment(playerInfo.birth_date).format('L');
+
+        birthDate = (
+          <p>DOB: {formatBirthDate}</p>
+        )
+      }
+      if(playerInfo.phone_number){
+        phoneNum = (
+          <p>phone: {playerInfo.phone_number}</p>
+        );
+      }
+      if(playerInfo.email){
+        emailAddress = (
+          <p>email: {playerInfo.email}</p>
+        );
+      }
+      if(playerInfo.school_name){
+        school = (
+          <p>school: {playerInfo.school_name}</p>
+        );
+      }
+      if(playerInfo.school_year){
+        schoolYear = (
+          <p>School Year: {playerInfo.school_year}</p>
+        )
+      }
+      if(playerInfo.gpa){
+        gpa = (
+          <p>GPA: {playerInfo.gpa}</p>
+        )
+      }
+      if(playerInfo.act_score){
+        actScore = (
+          <p>ACT: {playerInfo.act_score}</p>
+        )
+      }
+      if(playerInfo.position_id === 1){
+        position = (
+          <h2>Forward</h2>
+        );
+      } 
+      else if(playerInfo.position_id === 2){
+        position = (
+          <h2>Defense</h2>
+        );
+      }
+      else if(playerInfo.position_id === 3){
+        position = (
+          <h2>Goalie</h2>
+        );  
+      }
+      
+      if(playerInfo.team_name){
+        teamName = (
+          <p>Team: {playerInfo.team_name}</p>
+        );
+      }
+
+      if(playerInfo.league_name){
+        league = (
+          <p>League: {playerInfo.league_name}</p>
+        )
+        
+      }
+
+      if(playerInfo.height){
+        height = (
+          <p>Height: {playerInfo.height}</p>
+        );
+      }
+
+      if(playerInfo.weight){
+        weight = (
+          <p>Weight: {playerInfo.weight}</p>
+        );
+      }
+
+      content = (
+        <div className="profileContainer">
           <div className="infoContainer">
             <div className="profilePicContainer">
               {profilePic}
             </div>
-            <div className="infoContainer">
-              {lastName}
+            <div className="personInfo">
               {firstName}
+              {lastName}
               {birthDate}
+              {phoneNum}
+              {emailAddress}
+              {school}
+              {schoolYear}
+              {gpa}
+              {actScore}
             </div>
           </div>
           <div className="infoContainer">
-              {playerPosition}
-              {positionStats}
-            <iframe id="player" type="text/html" width="640" height="390"
-              src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
-              frameborder="0"></iframe>
+            {position}
+            {teamName}
+            {league}
+            {height}
           </div>
-        </div>
-      )
-
-
-
-    if (this.state.toggleView === false) {
-      return (
-        <div className="mainContainer"
-          style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
-        >
-          <Nav />
-          <div className="pageContainer">
-            {playerScreenContent}
-            <PlayerProfileDialog />
-          </div>
-        </div>
-      )
-    } else {
-
-      return (
-        <div className="mainContainer"
-          style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
-        >
-          <Nav />
-          <div className="pageContainer">
-            {content}
-
-          </div>
+          <PlayerProfileDialog/>
         </div>
       );
     }
+    else{
+      content = (
+        <div>
+          <p>loading...</p>
+        </div>
+      )
+    }
+
+  return (
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
+        <Nav/>
+        <div className="pageContainer">
+          {content}
+        </div>
+      </div>
+    )
+     
   }
-  //   else {
-  //     return (<div>loading</div>)
-  //   }
-  // }
-
-
-
-
+  
 
 }
 
