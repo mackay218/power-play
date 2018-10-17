@@ -1,10 +1,25 @@
-.playerForm {
-    background-color: #f0133e;
-    width: 60%;
+body{
+    --red: #eb1b3b;
+}
+
+.profile-form-container form {
+    width: 90%;
     height: 500px;
     margin: 20px auto;
     padding: 25px;
     border-radius: 2px;
+}
+
+.profile-form-container{
+    width: 100vw;
+}
+
+.playerFormSection{
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .card {
@@ -17,7 +32,12 @@
 }
 
 .display {
-    margin-top: 165px;
+    border: 1px solid black;
+    height: 80vh;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -36,4 +56,42 @@ img {
 
 .img {
     width: 100%;
+}
+
+
+.profilePicContainer{
+    border: 5px solid var(--red);
+    height: 25vh;
+    width: 20vw;
+}
+
+.profilePicContainer img {
+    width: 100%;
+    height: 100%;
+}
+
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.infoContainer h3{
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+}
+
+.toolbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    background-color: var(--red);
+    height: 100px;
+}
+
+.toolbar h1{
+    width:100%;
+    text-align: center;
+    font-family: 'Audiowide', sans-serif;
 }
