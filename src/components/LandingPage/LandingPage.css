@@ -23,20 +23,20 @@ body{
         height: 180vh;
     }
     .hockeyGif{
-    height: 100%;
-    width: 140%;
-    position: absolute;
-    z-index: 1;
-}
+        height: 100%;
+        width: 140%;
+        position: absolute;
+        z-index: 1;
+    }
 }
 
 @media only screen and (orientation: landscape){
     .hockeyGif{
-    height: 120%;
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-}
+        height: 120%;
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+    }
 }
 
 
@@ -74,7 +74,7 @@ body{
 
     .guideSection{
         width: 20vw;
-        min-width: 180px;
+        min-width: 250px;
     }
 
     .guideImg{
@@ -97,7 +97,7 @@ body{
     }
 
     .guideSection{
-        height: 50%;
+        height: 50%; 
         width: 80vw;
     }
 
@@ -108,6 +108,7 @@ body{
 
     .arrow{
         transform: rotate(90deg);
+        width: 10vw;
     }
 }
 
@@ -141,6 +142,11 @@ body{
 
     .testimonialSection{
         width: 25vw;
+        min-width: 250px;
+    }
+
+    .testimonialSection img {
+        width: 50%;
     }
 }
 
@@ -216,5 +222,4 @@ a{
 
 .guideSection:hover {
     cursor: pointer;
-
 }

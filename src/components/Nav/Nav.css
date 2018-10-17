@@ -6,9 +6,17 @@
 
 .navbar {
     background: var(--red);
-    height: 100px;
     width: 100vw;
     box-shadow: none !important;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: -110px;
+}
+
+.navbar-toggler, .navbar-brand, .collapse{
+    position: relative;
+    top: 55px;
 }
 
 
