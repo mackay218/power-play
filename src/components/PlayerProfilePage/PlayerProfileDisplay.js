@@ -106,7 +106,6 @@ class PlayerProfileDisplay extends Component {
         console.log('update profile response: ', response)
       }
     });
-
   }
 
   toggleDisplay = () => {
