@@ -58,7 +58,9 @@ router.get('/profileById', (req, res) => {
 // GET route for sorting players
 router.get('/sorted', (req, res) => {
     (async () => {
-        req.query.position = await areFieldsEmpty(req.query);
+        console.log(req.query);
+        req.query = await areFieldsEmpty(req.query);
+        console.log(req.query);
         const client = await pool.connect();
         try {
             queryText = `CREATE TEMP TABLE "sorted_players" AS
@@ -75,13 +77,13 @@ router.get('/sorted', (req, res) => {
                             AND "points" <= COALESCE($3,999999)
                             AND "wins" >= COALESCE($4,0)
                             AND "wins" <= COALESCE($5,999999)
-                            AND "birth_date" >= COALESCE($6, DATE('1998-01-01')) 
-                            AND "birth_date" <= COALESCE($7, DATE('2018-01-01'));`;
+                            AND "birth_date" >= COALESCE(DATE($6), DATE('1998-01-01')) 
+                            AND "birth_date" <= COALESCE(DATE($7), DATE('2018-01-01'));`;
             await client.query(queryText, [req.query.position, 
-                                           parseInt(req.query.minPoints), 
-                                           parseInt(req.query.maxPoints), 
-                                           parseInt(req.query.minWins), 
-                                           parseInt(req.query.maxWins), 
+                                           req.query.minPoints, 
+                                           req.query.maxPoints, 
+                                           req.query.minWins, 
+                                           req.query.maxWins, 
                                            req.query.minDate, 
                                            req.query.maxDate]);
             queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
@@ -265,7 +267,7 @@ areFieldsEmpty = (query) => {
         query.maxPoints = null;
     }
     else {
-        query.maxPoints = parseInt(query.position);
+        query.maxPoints = parseInt(query.maxPoints);
     }
     // sets minWins to null if passed in an empty string
     // otherwise changes it to an integer
@@ -288,16 +290,11 @@ areFieldsEmpty = (query) => {
     if (query.minDate === '') {
         query.minDate = null;
     }
-    else {
-        query.minDate = Date(query.minDate);
-    }
     // sets maxDate to null if passed in an empty string
     // otherwise changes it to a Date
     if (query.maxDate === '') {
         query.maxDate = null;
     }
-    else {
-        query.maxDate = Date(query.maxDate);
-    }
+    return query;
 }
 module.exports = router;

@@ -6,6 +6,7 @@ import { triggerLogin, formError, clearError } from '../../redux/actions/loginAc
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 import Button from '@material-ui/core/Button';
+import swal from 'sweetalert';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -49,10 +50,13 @@ class LoginPage extends Component {
   }
 
   componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'player') {
+    if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.statusType === 'banned') {
+      swal('Your account has been banned, contact us for more information.');
+    }
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'player' && this.props.user.status_type !== 'banned') {
       this.props.history.push('player_profile_page');
     }
-    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'coach') {
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'coach' && this.props.user.status_type !== 'banned') {
       this.props.history.push('players_page');
     }
     else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'admin') {
