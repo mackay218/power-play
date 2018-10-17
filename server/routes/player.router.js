@@ -38,7 +38,7 @@ router.get('/csvList', (req, res) => {
     })
 });
 // GET route for specific player
-router.get('/profileById', (req, res) => {
+router.get('/profileById/:id', (req, res) => {
 
     id = req.user.id;
     const query = `SELECT "player_stats".*, "person"."personid" FROM "player_stats"
@@ -111,14 +111,16 @@ router.get('/sorted', (req, res) => {
 });
 // GET route for specific player info
 router.get('/playerInfo/:id', (req, res) => {
-    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email" FROM "player_stats"
+    console.log('in playerInfo', req.params.id);
+    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email", "person"."personid" FROM "player_stats"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
                     JOIN "person" ON "person_id" = "person"."personid"
-                    WHERE "id" = $1;`;
+                    WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then((result) => {
+        console.log(result.rows[0]);
         res.send(result.rows[0]);
     }).catch((error) => {
         console.log('ERROR getting players information:', error);

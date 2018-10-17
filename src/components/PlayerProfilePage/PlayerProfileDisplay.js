@@ -66,7 +66,13 @@ class PlayerProfileDisplay extends Component {
   }
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    this.props.dispatch({ type: 'GET_THIS_PLAYER' });
+
+    setTimeout(() => {
+      console.log('get player info test');
+      this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
+    
+    }, 1000);
+
   }
 
   componentDidUpdate() {
@@ -347,6 +353,9 @@ class PlayerProfileDisplay extends Component {
           <div className="infoContainer">
               {playerPosition}
               {positionStats}
+            <iframe id="player" type="text/html" width="640" height="390"
+              src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+              frameborder="0"></iframe>
           </div>
         </div>
       )
