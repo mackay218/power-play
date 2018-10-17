@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
+import { connect } from 'react-redux';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import swal from 'sweetalert';
+import {Link} from 'react-router-dom';
+
+const mapStateToProps = state => ({
+    registered: state.registered.registered,
+})
 
 class CheckoutForm extends Component {
     constructor(props) {
@@ -18,43 +26,56 @@ class CheckoutForm extends Component {
     //     
     // }
 
+    componentDidUpdate() {
+        if (this.state.complete === false && this.props.registered === true)
+            this.setState({
+                complete: this.props.registered,
+            })
+    }
 
     handleSubmit = () => {
         this.props.stripe.createToken({ name: "Name" })
             .then((token) => {
-                console.log('Token in submit function' , token);
-                axios({
-                    method: 'POST',
-                    url: 'api/charge',
-                    data: {stripeToken: token.token.id}
-                }).then((response) => {
-                    // check for errors in the response
-                    
-
-
-
-                    // if no errors, move on
-                    console.log('Sent successfully', response)
-                    this.setState({ complete: true });
-                }).catch((error) => {
-                    console.log(error, 'error')
-                })
-            });
+                console.log('Token in submit function', token);
+                this.props.dispatch({ type: 'CHECKOUT', payload: { token: token.token.id, registerInfo: this.props.registerInfo } });
+                swal('Processing transaction');
+            }).catch((error) => {
+                swal('You must enter your credit card information');
+                console.log('error', error);
+            })
     }
 
+    toLogIn = () => {
+        this.setState({
+            complete: false,
+        })
+        this.props.dispatch({type: 'RESET_REGISTERED'})
+        this.props.history.push('/login');
+    }
 
     render() {
-        if (this.state.complete) return <h1>Purchase Complete</h1>;
+        let toLogInButton = null
+        if (this.state.complete === false) {
+            toLogInButton = <Link to="/login">Cancel</Link>
+        }
+        else if (this.state.complete === true) {
+            toLogInButton = <Button variant="contained" color="primary" onClick={this.toLogIn}>Log In</Button>
+        }
+        if (this.state.complete === true) return <div><h1>Purchase Complete</h1> {toLogInButton}</div>;
         return (
             // text related to payment form and holds stripe card element 
-            <div className="checkout">
+            <div>
                 <h4>Payment Form</h4>
-                <p>Would you like to sign up for a monthly subscription - PPR?</p>
+                <p>Sign up for a monthly subscription</p>
                 <CardElement />
-                <button className="payButton" onClick={this.handleSubmit}>Pay $29.95</button>
+                <br />
+                <Button variant="contained" color="primary" onClick={this.handleSubmit}>Register ($29.95/Month)</Button>
+                <div>
+                    {toLogInButton}
+                </div>
             </div>
         );
     }
 }
 
-export default injectStripe(CheckoutForm);
+export default connect(mapStateToProps)(injectStripe(CheckoutForm));
