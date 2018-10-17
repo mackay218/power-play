@@ -79,20 +79,20 @@ class LandingPage extends Component {
                             <h3 className="missionDetail">
                                 And we do them well. We do them with gusto. We accomplish them with gravitas.
                             </h3>
-                            <div className="guideContainer" onClick={this.toRegister}>
-                                <div className="guideSection">
+                            <div className="guideContainer" >
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Build Your Profile</h3>
                                     <img className="guideImg" src="images/profile.svg" alt="profile-icon" />
                                     <p>Enter your stats.</p>
                                 </div>
                                 <img className="arrow" src="images/right-arrow.svg"></img>
-                                <div className="guideSection">
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Showcase Your Talent</h3>
                                     <img className="guideImg" src="images/video-player.svg" alt="video-icon" />
                                     <p>Load a clip of your skills in action.</p>
                                 </div>
                                 <img className="arrow" src="images/right-arrow.svg"></img>
-                                <div className="guideSection">
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Get Noticed</h3>
                                     <img className="guideImg" src="images/recruitment.svg" alt="get-seen-icon" />
                                     <p>Your profile will be accessible to coaches across the country.</p>

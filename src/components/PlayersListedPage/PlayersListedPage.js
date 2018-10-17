@@ -208,7 +208,7 @@ class PlayersListedPage extends Component {
                 <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
                 <CustomTableCell>{player.points}</CustomTableCell>
                 <CustomTableCell>{player.wins}</CustomTableCell>
-                <CustomTableCell><PlayerDialog id={player.id} /></CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.person_id} /></CustomTableCell>
                 <CustomTableCell>
                   <Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button>
                 </CustomTableCell>
