@@ -25,9 +25,10 @@ class PlayerDialog extends Component {
   }
 
   handleClickOpen = (id) => {
+    console.log('handleClickOpen', id);
     this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: id });
     this.setState({ open: true });
-    console.log(id, this.state);
+    //console.log(id, this.state);
   };
 
   handleClose = () => {
@@ -36,6 +37,42 @@ class PlayerDialog extends Component {
 
   render() {
     let positionInfo = null;
+
+    //placeholder profile pic
+    let profilePic = (
+      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
+        alt="placeholder image" />
+    )
+
+    let videoPlayer = (
+       <iframe id="player" type="text/html" width="640" height="390"
+         src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+         frameborder="0"></iframe>
+      
+    )
+
+    if(this.props.info.video_link){
+      let videoCode = this.props.info.video_link;
+      
+      videoCode = videoCode.split('=');
+      videoCode = videoCode[1];
+
+      let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
+
+      videoPlayer = (
+        <iframe id="player" type="text/html" width="640" height="390"
+          src={videoUrl}
+          frameborder="0"></iframe>
+      )
+
+    }
+
+    if(this.props.info.image_path){
+      profilePic = (
+        <img src={this.props.info.image_path} alt="profile picture"/>
+      )
+    }
+
     if (this.props.info.position_name === "Forward" || this.props.info.position_name === "Defense") {
       positionInfo = (
         <div>
@@ -67,6 +104,16 @@ class PlayerDialog extends Component {
             <h2 className="dialog-head center" >{this.props.info.first_name}'s Information</h2>
             <div>
               <Grid container className="dialog-body" >
+          
+                  <div className="profileMedia">
+                    <div className="profilePicContainer">
+                      {profilePic}
+                    </div>
+                    <div className="videoContainer">
+                      {videoPlayer}
+                    </div>
+                  </div>
+             
                 <Grid className="center" item md={4}>
                   <h3 className="dialog-head center">Position Info</h3>
                   <p>Position: {this.props.info.position_name}</p>
