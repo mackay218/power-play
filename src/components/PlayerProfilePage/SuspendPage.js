@@ -60,7 +60,9 @@ class SuspendPage extends Component {
     }
 
     return (
-      <div className="mainContainer">
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer">
           {content}
