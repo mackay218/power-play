@@ -230,9 +230,9 @@ class Nav extends Component {
           </NavbarBrand>
           {!this.state.isWideEnough && 
           <NavbarToggler onClick={this.onClick}>
-            <div class="hamburger hamburger--3dx" id="hamburger" >
-              <span class="hamburger-box">
-                <span class="hamburger-inner"></span>
+            <div className="hamburger hamburger--3dx" id="hamburger" >
+              <span className="hamburger-box">
+                <span className="hamburger-inner"></span>
               </span>
             </div>
           </NavbarToggler>}

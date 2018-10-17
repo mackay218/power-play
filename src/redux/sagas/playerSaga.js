@@ -31,7 +31,7 @@ function* deletePlayer(action) {
 
 function* sortPlayerBy(action) {
     try {
-        console.log(action);
+        console.log(action.payload);
         const sortedPlayers = yield call(axios.get, `/api/players/sorted?position=${action.payload.position_id}&minPoints=${action.payload.pointsMin}&maxPoints=${action.payload.pointsMax}&minWins=${action.payload.winsMin}&maxWins=${action.payload.winsMax}&minDate=${action.payload.birthDayMin}&maxDate=${action.payload.birthDayMax}&page=${action.payload.page}`);
         yield put({type: 'SET_ALL_PLAYERS', payload: sortedPlayers.data});        
     } catch (error) {
@@ -52,7 +52,7 @@ function* searchByName(action) {
     try {
         console.log(action.payload);
         const playerByName = yield call(axios.get, `/api/players/byName?name=${action.payload.playerName}&page=${action.payload.page}`);
-        yield put({type: 'SET_ALL_PLAYERS', playerByName});
+        yield put({type: 'SET_ALL_PLAYERS', payload: playerByName.data});
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }

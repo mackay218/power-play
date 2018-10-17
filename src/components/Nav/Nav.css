@@ -22,14 +22,7 @@
     font-family: 'Audiowide', sans-serif;
 }
 
-
-.pageLinks{
-    display: flex;
-    flex-direction: row;
-}
-
 .logo{
     height: 80px;
     width: 150px;
-    float: left;
 } 

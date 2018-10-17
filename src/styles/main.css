@@ -116,3 +116,23 @@ li a:hover {
     text-decoration: underline;
     color: #eee;
 }
+
+.checkout {
+    background-color: #dbd5d5;
+    width: 80%;
+    height: 250px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 2px;
+}
+
+.payButton {
+    background-color: skyblue;
+    height: 40px;
+    width: 300px;
+    font-family: bold;
+}
+
+.payButton:hover {
+    background-color: #eb1b3b;
+}

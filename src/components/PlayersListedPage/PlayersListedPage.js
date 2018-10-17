@@ -61,12 +61,12 @@ class PlayersListedPage extends Component {
     this.state = {
       playerName: '',
       position_id: '',
-      pointsMin: 0,
-      pointsMax: 999999,
-      winsMin: 0,
-      winsMax: 999999,
-      birthDayMin: '2002-01-01',
-      birthDayMax: '2018-01-01',
+      pointsMin: '',
+      pointsMax: '',
+      winsMin: '',
+      winsMax: '',
+      birthDayMin: '',
+      birthDayMax: '',
       page: 0,
       open: null,
       playerInfoId: null,
@@ -131,7 +131,7 @@ class PlayersListedPage extends Component {
       ...this.state,
       page: 0,
     });
-    this.props.dispatch({ type: 'SORT_BY', payload: this.state });
+    this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state });
   }
 
   deletePlayer = (id) => {
@@ -190,14 +190,13 @@ class PlayersListedPage extends Component {
   };
 
   render() {
-    console.log(this.state);
     let content = null;
     let formContent = null;
     let deleteHeader = null;
     let playerMap = null;
     const csvData = this.props.csv;
 
-    if (this.props.user.role === "admin") {
+    if (this.props.user.role === "admin" && this.props.player) {
       deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
       playerMap = (
         <TableBody>
@@ -219,7 +218,7 @@ class PlayersListedPage extends Component {
         </TableBody>
       );
     }
-    if (this.props.user.role === "coach") {
+    if (this.props.user.role === "coach" && this.props.player) {
       playerMap = (
         <TableBody>
           {this.props.player.map((player) => {
@@ -271,9 +270,8 @@ class PlayersListedPage extends Component {
           <form className="search-form" onSubmit={this.sendSortBy}>
             <div className="form-column">
               <h3>Search Players By:</h3>
-              {JSON.stringify(this.state.playerName)}
               <div className="form-container">
-                <TextField type="text" label="Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
+                <TextField type="text" label="Last Name" className="input-width" value={this.state.playerName} onChange={this.handleNameChange} name="playerName" />
                 <div className="or"><p>or</p></div>
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
