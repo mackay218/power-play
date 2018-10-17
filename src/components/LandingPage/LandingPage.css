@@ -63,7 +63,7 @@ body{
     display: flex;
     justify-content: space-around;
     height: 50%;
-    width: 100%;
+    width: 90%;
 }
 
 @media only screen and (orientation: landscape){
@@ -86,6 +86,10 @@ body{
         font-size: 20px;
         padding: 1em;
         margin: 0;
+    }
+
+    .arrow{
+        width: 20vw;
     }
 }
 
