@@ -35,7 +35,7 @@ const styles = theme => ({
 
 class Nav extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -65,7 +65,7 @@ class Nav extends Component {
 
   render() {
 
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     let content = null;
 
@@ -93,11 +93,11 @@ class Nav extends Component {
               </img>
             </NavLink>
           </NavbarBrand>
-          {!this.state.isWideEnough && 
+          {!this.state.isWideEnough &&
             <NavbarToggler onClick={this.onClick}>
-              <div className="hamburger hamburger--3dx" id="hamburger" >
-                <span className="hamburger-box">
-                  <span className="hamburger-inner"></span>
+              <div class="hamburger hamburger--3dx" id="hamburger" >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
                 </span>
               </div>
             </NavbarToggler>}
@@ -174,7 +174,7 @@ class Nav extends Component {
       );
     }
     else if (this.props.user.role === "admin") {
-      content = (   
+      content = (
         <Navbar dark expand="md" scrolling>
           <NavbarBrand >
             <NavLink to="/landing_page">
@@ -205,13 +205,13 @@ class Nav extends Component {
               <NavItem className={classes.primary}>
                 <NavLink to="/terms">Terms</NavLink>
               </NavItem>
-            </NavbarNav>  
+            </NavbarNav>
             <NavbarNav right>
               <NavItem className={classes.primary}>
                 <NavLink to="/contact">Contact</NavLink>
               </NavItem>
               {logOutBtn}
-            </NavbarNav> 
+            </NavbarNav>
           </Collapse>
         </Navbar>
 
@@ -228,14 +228,14 @@ class Nav extends Component {
               </img>
             </NavLink>
           </NavbarBrand>
-          {!this.state.isWideEnough && 
-          <NavbarToggler onClick={this.onClick}>
-            <div className="hamburger hamburger--3dx" id="hamburger" >
-              <span className="hamburger-box">
-                <span className="hamburger-inner"></span>
-              </span>
-            </div>
-          </NavbarToggler>}
+          {!this.state.isWideEnough &&
+            <NavbarToggler onClick={this.onClick}>
+              <div className="hamburger hamburger--3dx" id="hamburger" >
+                <span className="hamburger-box">
+                  <span className="hamburger-inner"></span>
+                </span>
+              </div>
+            </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav left>
               <NavItem className={classes.primary}>
@@ -261,7 +261,7 @@ class Nav extends Component {
             </NavbarNav>
           </Collapse>
         </Navbar>
-        
+
       )
     }
     return (

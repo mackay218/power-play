@@ -69,6 +69,10 @@ class LoginPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+  }
+
   login = (event) => {
     event.preventDefault();
 
