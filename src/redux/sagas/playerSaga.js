@@ -58,18 +58,11 @@ function* searchByName(action) {
     }
 }
 
-function* playerProfileById() {
-    try {
-        const playerProfile = yield call(axios.get, '/api/players/profileById');
-        yield put({type: 'SET_PLAYERS_BY_ID', payload: playerProfile.data});
-    } catch (error) {
-        yield put({type: 'PLAYER_ERROR', payload: error});
-    }
-}
-
 function* getPlayerInfo(action) {
     try {
         const playerInfo = yield call(axios.get, `/api/players/playerInfo/${action.payload}`);
+        console.log('in getPlayerInfoSaga', playerInfo.data);
+        
         yield put({type: 'SET_PLAYER_INFO', payload: playerInfo.data});
     } catch (error) {
         yield put({type: 'PLAYER_ERROR', payload: error});
@@ -84,7 +77,6 @@ function* playerError(action) {
 function* playerSaga() {
     yield takeLatest('GET_ALL_PLAYERS', getAllPlayers);
     yield takeLatest('PLAYER_ERROR', playerError);
-    yield takeLatest('GET_THIS_PLAYER', playerProfileById);
     yield takeLatest('CREATE_PLAYER', createPlayer);
     yield takeLatest('DELETE_PLAYER', deletePlayer);
     yield takeLatest('SORT_PLAYER_BY', sortPlayerBy);
