@@ -82,10 +82,10 @@ class RegisterPage extends Component {
     return (
       <div className="mainContainer">
         <Nav />
-        <div className="pageContainer">
+        <div className="pageContainer center-text">
           {this.renderAlert()}
           <form onSubmit={this.registerUser}>
-            <h1>Register User</h1>
+            <h1>Sign Up</h1>
             <div>
               <label htmlFor="email">
                 email:
@@ -109,28 +109,13 @@ class RegisterPage extends Component {
               </label>
             </div>
             <div>
-              <input
-                type="submit"
-                name="submit"
-                value="Register"
-              />
-            </div>
-            <div>
-              <Link to="/login">Cancel</Link>
+              <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PK_KEY}>
+                <Elements>
+                  <CheckoutForm history={this.props.history} registerUser={this.registerUser} registerInfo={{email: this.state.email, password: this.state.password}}/>
+                </Elements>
+              </StripeProvider>
             </div>
           </form>
-
-
-
-          {/*Checkout form for stripe*/}
-
-          <div className="element-checkout">
-            <StripeProvider apiKey="pk_test_dUQIFPQY2uUrRFrCBqQkufhY">
-              <Elements>
-                <CheckoutForm />
-              </Elements>
-            </StripeProvider>
-          </div>
         </div>
       </div>
     );

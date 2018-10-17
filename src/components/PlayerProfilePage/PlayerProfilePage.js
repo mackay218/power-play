@@ -75,7 +75,7 @@ class PlayerProfilePage extends Component {
       this.props.history.push('/players_page');
     }
     if (!this.props.user.isLoading && this.props.user.role === "admin") {
-      this.props.history.push('/admin_page');
+       this.props.history.push('/admin_page');
     }
   }
 

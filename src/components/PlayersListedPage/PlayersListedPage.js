@@ -21,7 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import PlayerDialog from './PlayerDialogue';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink, } from 'react-csv';
 
 const mapStateToProps = state => ({
   user: state.user,
