@@ -53,10 +53,10 @@ class LoginPage extends Component {
     if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.statusType === 'banned') {
       swal('Your account has been banned, contact us for more information.');
     }
-    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'player' && this.props.user.status_type !== 'banned') {
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'player') {
       this.props.history.push('player_profile_page');
     }
-    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'coach' && this.props.user.status_type !== 'banned') {
+    else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'coach') {
       this.props.history.push('players_page');
     }
     else if (!this.props.user.isLoading && this.props.user.email !== null && this.props.user.role === 'admin') {

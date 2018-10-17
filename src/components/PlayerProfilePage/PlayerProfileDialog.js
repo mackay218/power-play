@@ -31,7 +31,7 @@ function Transition(props) {
 
 class PlayerProfileDialog extends React.Component {
   state = {
-    open: false,
+    open: true,
   };
 
   handleClickOpen = () => {
@@ -54,16 +54,11 @@ class PlayerProfileDialog extends React.Component {
           TransitionComponent={Transition}
         >
           <AppBar className={classes.appBar}>
-            <Toolbar>
+            <Toolbar className="toolbar">
+              <h1>Player Details</h1>
               <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
                 <CloseIcon />
               </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
-                Sound
-              </Typography>
-              <Button color="inherit" onClick={this.handleClose}>
-                save
-              </Button>
             </Toolbar>
           </AppBar>
           <List>

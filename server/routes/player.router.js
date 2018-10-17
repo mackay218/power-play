@@ -175,8 +175,9 @@ router.put('/updateProfile/:id', (req, res) => {
                             goals_against=$23,
                             guardian=$24,
                             player_info=$25,
-                            league_id=$26
-                            WHERE person_id=$27;`;
+                            league_id=$26,
+                            image_path=$27
+                            WHERE person_id=$28;`;
     pool.query(profileQuery, 
         [profile.team_id,
         profile.school,
@@ -204,6 +205,7 @@ router.put('/updateProfile/:id', (req, res) => {
         profile.guardian,
         profile.player_info,
         profile.league_id,
+        profile.image_path,
          userId])
         .then((result) => {
             console.log('update result: ', result);
