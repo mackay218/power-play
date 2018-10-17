@@ -115,7 +115,7 @@ class Nav extends Component {
                 <NavLink to="/teams">Teams</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/suspend_page">Suspend and Delete</NavLink>
+                <NavLink to="/suspend_page">Account Options</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to="/terms">Terms</NavLink>
@@ -156,7 +156,7 @@ class Nav extends Component {
                 <NavLink to="/players_page">Player List</NavLink>
               </NavItem>
               <NavItem className={classes.primary}>
-                <NavLink to="/suspend_page">Suspend and Delete</NavLink>
+                <NavLink to="/suspend_page">Account Options</NavLink>
               </NavItem>
               <NavItem className={classes.primary}>
                 <NavLink to="/terms">Terms</NavLink>
