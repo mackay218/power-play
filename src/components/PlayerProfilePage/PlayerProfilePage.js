@@ -29,7 +29,7 @@ const options = {
   accept: 'image/*',
   maxFiles: 1,
   storeTo: {
-      location: 's3',
+    location: 's3',
   },
 };
 
@@ -79,13 +79,13 @@ class PlayerProfilePage extends Component {
     console.log('filestack submitted', result.filesUploaded);
     alert('Image added!');
     this.setState({
-        ...this.state,
-        image_path: result.filesUploaded[0].url
+      ...this.state,
+      image_path: result.filesUploaded[0].url
     })
     console.log(this.state.image_url);
-}
+  }
 
-  
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_THIS_PLAYER' });
@@ -99,7 +99,7 @@ class PlayerProfilePage extends Component {
       this.props.history.push('/players_page');
     }
     if (!this.props.user.isLoading && this.props.user.role === "admin") {
-       this.props.history.push('/admin_page');
+      this.props.history.push('/admin_page');
     }
   }
 
@@ -187,92 +187,91 @@ class PlayerProfilePage extends Component {
           {/* <Image className="profilePic" src="https://eadb.org/wp-content/uploads/2015/08/profile-label.jpg" alt="Avatar" /> */}
           <div className="profile-form-container">
             <h1>Enter Information</h1>
-             <form onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange}>
-                  <div className="playerFormSection">
-                    <TextField type="text" label="First Name" value={this.state.profile.first_name} onChange={this.handleProfileChange} name="first_name" />
-                    <TextField type="text" label="Last Name" value={this.state.profile.last_name} onChange={this.handleProfileChange} name="last_name" />
-                    <TextField type="text" label="School" value={this.state.profile.school} onChange={this.handleProfileChange} name="school" />
-                    <TextField type="text" label="Team" value={this.state.profile.team_id} onChange={this.handleProfileChange} name="team_id" />
-                    <TextField type="text" label="Email" />
-                    <TextField type="number" label="Phone Number" value={this.state.profile.phone_number} onChange={this.handleProfileChange} name="phone_number" />
-                  </div>
-                  <div className="playerFormSection">
-                    <FormControl>
-                      <InputLabel>Grade</InputLabel>
-                      <Select value={this.state.profile.grade} onChange={this.handleProfileChange} name="grade">
-                        <MenuItem value="Grade">Grade</MenuItem>
-                        <MenuItem value="10">10</MenuItem>
-                        <MenuItem value="11">11</MenuItem>
-                        <MenuItem value="12">12</MenuItem>
-                        <MenuItem value="Graduate">Graduate</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <TextField type="number" label="GPA" value={this.state.profile.gpa} onChange={this.handleProfileChange} name="gpa" />
-                    <TextField type="text" label="Weight" value={this.state.profile.weight} onChange={this.handleProfileChange} name="weight" />
-                    <FormControl>
-                      <InputLabel>Position</InputLabel>
-                      <Select value={this.state.profile.position_id} onChange={this.handleProfileChange} name="position_id">
-                        <MenuItem value="1">Forward</MenuItem>
-                        <MenuItem value="2">Defence</MenuItem>
-                        <MenuItem value="3">Goalie</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                  {JSON.stringify(this.state.profile.position_id)}
-                 <div className="playerFormSection">
-                  <TextField label="Video URL" value={this.state.profile.video_link} onChange={this.handleProfileChange} name="video_link" />
-                  <FormControl>
-                    <InputLabel>League</InputLabel>
-                    <Select value={this.state.profile.league_id} onChange={this.handleProfileChange} name="league_id">
-                      <MenuItem value="1">1A</MenuItem>
-                      <MenuItem value="2">2A</MenuItem>
-                      <MenuItem value="3">3A</MenuItem>
-                      <MenuItem value="4">4A</MenuItem>
-                      <MenuItem value="5">5A</MenuItem>
-                      <MenuItem value="6">6A</MenuItem>
-                      <MenuItem value="7">7A</MenuItem>
-                      <MenuItem value="8">8A</MenuItem>
-                      <MenuItem value="9">1AA</MenuItem>
-                      <MenuItem value="10">2AA</MenuItem>
-                      <MenuItem value="11">3AA</MenuItem>
-                      <MenuItem value="12">4AA</MenuItem>
-                      <MenuItem value="13">5AA</MenuItem>
-                      <MenuItem value="14">6AA</MenuItem>
-                      <MenuItem value="15">7AA</MenuItem>
-                      <MenuItem value="16">8AA</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <label>Date Of Birth:</label>
-                  {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
-                   <FormControl>
-                    <InputLabel>DOB</InputLabel>
-                    <Select value={this.state.profile.birth_date} onChange={this.handleProfileChange} name="birth_date">
-                      <MenuItem value="1">Jan, 1956</MenuItem>
-                      <MenuItem value="2">Feb, 1776</MenuItem>
-                      <MenuItem value="3">March, 2012</MenuItem>
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="playerFormSection">
-                  <label>Notes:</label>
-                  <TextField value={this.state.profile.player_info} onChange={this.handleProfileChange} name="player_info" />
-                </div>
-                {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
-                 <div className="playerFormSection">
+            <form onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange}>
+              <div className="playerFormSection">
+                <TextField type="text" label="First Name" value={this.state.profile.first_name} onChange={this.handleProfileChange} name="first_name" />
+                <TextField type="text" label="Last Name" value={this.state.profile.last_name} onChange={this.handleProfileChange} name="last_name" />
+                <TextField type="text" label="School" value={this.state.profile.school} onChange={this.handleProfileChange} name="school" />
+                <TextField type="text" label="Team" value={this.state.profile.team_id} onChange={this.handleProfileChange} name="team_id" />
+                <TextField type="text" label="Email" />
+                <TextField type="number" label="Phone Number" value={this.state.profile.phone_number} onChange={this.handleProfileChange} name="phone_number" />
+              </div>
+              <div className="playerFormSection">
+                <FormControl>
+                  <InputLabel>Grade</InputLabel>
+                  <Select value={this.state.profile.grade} onChange={this.handleProfileChange} name="grade">
+                    <MenuItem value="Grade">Grade</MenuItem>
+                    <MenuItem value="10">10</MenuItem>
+                    <MenuItem value="11">11</MenuItem>
+                    <MenuItem value="12">12</MenuItem>
+                    <MenuItem value="Graduate">Graduate</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField type="number" label="GPA" value={this.state.profile.gpa} onChange={this.handleProfileChange} name="gpa" />
+                <TextField type="text" label="Weight" value={this.state.profile.weight} onChange={this.handleProfileChange} name="weight" />
+                <FormControl>
+                  <InputLabel>Position</InputLabel>
+                  <Select value={this.state.profile.position_id} onChange={this.handleProfileChange} name="position_id">
+                    <MenuItem value="1">Forward</MenuItem>
+                    <MenuItem value="2">Defence</MenuItem>
+                    <MenuItem value="3">Goalie</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              {JSON.stringify(this.state.profile.position_id)}
+              <div className="playerFormSection">
+                <TextField label="Video URL" value={this.state.profile.video_link} onChange={this.handleProfileChange} name="video_link" />
+                <FormControl>
+                  <InputLabel>League</InputLabel>
+                  <Select value={this.state.profile.league_id} onChange={this.handleProfileChange} name="league_id">
+                    <MenuItem value="1">1A</MenuItem>
+                    <MenuItem value="2">2A</MenuItem>
+                    <MenuItem value="3">3A</MenuItem>
+                    <MenuItem value="4">4A</MenuItem>
+                    <MenuItem value="5">5A</MenuItem>
+                    <MenuItem value="6">6A</MenuItem>
+                    <MenuItem value="7">7A</MenuItem>
+                    <MenuItem value="8">8A</MenuItem>
+                    <MenuItem value="9">1AA</MenuItem>
+                    <MenuItem value="10">2AA</MenuItem>
+                    <MenuItem value="11">3AA</MenuItem>
+                    <MenuItem value="12">4AA</MenuItem>
+                    <MenuItem value="13">5AA</MenuItem>
+                    <MenuItem value="14">6AA</MenuItem>
+                    <MenuItem value="15">7AA</MenuItem>
+                    <MenuItem value="16">8AA</MenuItem>
+                  </Select>
+                </FormControl>
+                <label>Date Of Birth:</label>
+                {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
+                <FormControl>
+                  <TextField
+                    value={this.state.profile.birth_date} onChange={this.handleProfileChange} name="birth_date"
+                    type="date"
+                    defaultValue="2017-05-24"
+                  />
+                </FormControl>
+              </div>
+              <div className="playerFormSection">
+                <label>Notes:</label>
+                <TextField value={this.state.profile.player_info} onChange={this.handleProfileChange} name="player_info" />
+              </div>
+              {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
+              <div className="playerFormSection">
 
-                    <ReactFilestack
-                    apikey='AwwYnOWkHRtWpGXbTjLIyz'
-                    buttonText="Upload an Image"
-                    options={options}
-                    onSuccess={this.getImage}
+                <ReactFilestack
+                  apikey='AwwYnOWkHRtWpGXbTjLIyz'
+                  buttonText="Upload an Image"
+                  options={options}
+                  onSuccess={this.getImage}
                 />
-                </div>
-                <div>
-                   <Button variant="contained" color="secondary" type="submit">Submit</Button> 
-                </div>
-                <div>
-                  {positionalContent}
-                </div>
+              </div>
+              <div>
+                <Button variant="contained" color="secondary" type="submit">Submit</Button>
+              </div>
+              <div>
+                {positionalContent}
+              </div>
             </form>
             {/* 
               <form>
