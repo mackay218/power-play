@@ -8,7 +8,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  pool.query('SELECT personid, email, role FROM person WHERE personid = $1', [id]).then((result) => {
+  pool.query('SELECT personid, email, role, status_type FROM person JOIN account_status ON status_id = account_status.id WHERE personid = $1', [id]).then((result) => {
     // Handle Errors
     const user = result && result.rows && result.rows[0];
 

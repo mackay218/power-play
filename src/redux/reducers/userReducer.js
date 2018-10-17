@@ -34,6 +34,17 @@ const role = (state = null, action) => {
   }
 };
 
+const statusType = (state = null, action) => {
+  switch (action.type) {
+    case USER_ACTIONS.SET_USER:
+      return action.user.status_type || state;
+    case USER_ACTIONS.UNSET_USER:
+      return null;
+    default:
+      return state;
+  }
+}
+
 
 const isLoading = (state = false, action) => {
   switch (action.type) {
@@ -51,4 +62,5 @@ export default combineReducers({
   role,
   email,
   isLoading,
+  statusType,
 });
