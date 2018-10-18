@@ -75,3 +75,18 @@ body{
     text-align: center;
     font-family: 'Audiowide', sans-serif;
 }
+
+.suspend-form {
+    width: 25%;
+    height: auto;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 2px;
+    text-align: center;
+    border: 5px solid #eb1b3b;
+    background-color: white;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
