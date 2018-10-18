@@ -5,6 +5,8 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
 import axios from 'axios';
+import ReactDOM from 'react-dom';
+
 
 import moment from 'moment';
 
@@ -60,8 +62,22 @@ class PlayerProfileDisplay extends Component {
       toggleView: false,
     }
   }
+
+  scrollPosition = 0
+
+  componentWillReceiveProps() {
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   componentDidUpdate() {
@@ -73,7 +89,10 @@ class PlayerProfileDisplay extends Component {
       loadedPlayer = true;
       this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
     }
-
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   handleProfileChange = (event) => {
@@ -111,13 +130,13 @@ class PlayerProfileDisplay extends Component {
 
   render() {
     let playerInfo = this.props.player.playerInfo;
-    
+
     let content = null;
 
     //placeholder profile pic
     let profilePic = (
-      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" 
-      alt="placeholder image"/>
+      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
+        alt="placeholder image" />
     )
 
     let lastName = (
@@ -138,6 +157,9 @@ class PlayerProfileDisplay extends Component {
 
     let emailAddress = (
       <p>email: johnDoe@example.com</p>
+    )
+    let playerBio = (
+      <p>Player Info: I am awesome, pick ME!!!!</p>
     )
 
     let school = null;
@@ -165,25 +187,67 @@ class PlayerProfileDisplay extends Component {
       <p>Weight: </p>
     );
 
-    if(playerInfo){
+    let goals = (
+      <p>Goals: 0</p>
+    );
+
+    let assists = (
+      <p>Assists: 0</p>
+    );
+
+    let points = (
+      <p>Points: 0</p>
+    );
+
+    let gamesPlayed = (
+      <p>Games Played: 0</p>
+    );
+
+    let savePercent = (
+      <p>Save %: 0</p>
+    );
+
+    let wins = (
+      <p>Wins: 0</p>
+    )
+
+    let losses = (
+      <p>Losses: 0</p>
+    );
+
+    let ties = (
+      <p>Ties: 0</p>
+    );
+
+    let shutouts = (
+      <p>Shutouts: 0</p>
+    );
+
+    let goalsAgainst = (
+      <p>Goals Against: 0</p>
+    );
+
+
+
+    if (playerInfo) {
       //if picture link has been provided
-      if(playerInfo.image_path){
+      if (playerInfo.image_path) {
         profilePic = (
-          <img src={playerInfo.image_path}/>
+          <img src={playerInfo.image_path} />
         );
-      }  
+      }
       //if last name have been provided
-      if(playerInfo.last_name){
+      if (playerInfo.last_name) {
         lastName = (
           <h4>{playerInfo.last_name}</h4>
         );
       }
-      if(playerInfo.first_name){
+      if (playerInfo.first_name) {
         firstName = (
           <h4>{playerInfo.first_name}</h4>
         )
       }
-      if(playerInfo.birth_date){
+      if (playerInfo.birth_date) {
 
         let formatBirthDate = moment(playerInfo.birth_date).format('L');
 
@@ -191,76 +255,165 @@ class PlayerProfileDisplay extends Component {
           <p>DOB: {formatBirthDate}</p>
         )
       }
-      if(playerInfo.phone_number){
+      if (playerInfo.phone_number) {
         phoneNum = (
           <p>phone: {playerInfo.phone_number}</p>
         );
       }
-      if(playerInfo.email){
+      if (playerInfo.email) {
         emailAddress = (
           <p>email: {playerInfo.email}</p>
         );
       }
-      if(playerInfo.school_name){
+      if (playerInfo.school_name) {
         school = (
           <p>school: {playerInfo.school_name}</p>
         );
       }
-      if(playerInfo.school_year){
+      if (playerInfo.school_year) {
         schoolYear = (
           <p>School Year: {playerInfo.school_year}</p>
         )
       }
-      if(playerInfo.gpa){
+      if (playerInfo.gpa) {
         gpa = (
           <p>GPA: {playerInfo.gpa}</p>
         )
       }
-      if(playerInfo.act_score){
+      if (playerInfo.act_score) {
         actScore = (
           <p>ACT: {playerInfo.act_score}</p>
         )
       }
-      if(playerInfo.position_id === 1){
+      if (playerInfo.player_info) {
+        playerBio = (
+          <p>Player Info: {playerInfo.player_info}</p>
+        )
+      }
+      if (playerInfo.position_id === 1) {
         position = (
           <h2>Forward</h2>
         );
-      } 
-      else if(playerInfo.position_id === 2){
+      }
+      else if (playerInfo.position_id === 2) {
         position = (
           <h2>Defense</h2>
         );
       }
-      else if(playerInfo.position_id === 3){
+      else if (playerInfo.position_id === 3) {
         position = (
           <h2>Goalie</h2>
-        );  
+        );
       }
-      
-      if(playerInfo.team_name){
+
+      if (playerInfo.team_name) {
         teamName = (
           <p>Team: {playerInfo.team_name}</p>
         );
       }
 
-      if(playerInfo.league_name){
+      if (playerInfo.league_name) {
         league = (
           <p>League: {playerInfo.league_name}</p>
         )
-        
+
       }
 
-      if(playerInfo.height){
+      if (playerInfo.height) {
         height = (
           <p>Height: {playerInfo.height}</p>
         );
       }
 
-      if(playerInfo.weight){
+      if (playerInfo.weight) {
         weight = (
           <p>Weight: {playerInfo.weight}</p>
         );
       }
+      if (playerInfo.goals) {
+        goals = (
+          <p>Goals: {playerInfo.goals}</p>
+        );
+      }
+
+      if (playerInfo.assists) {
+        goals = (
+          <p>Assists: {playerInfo.assists}</p>
+        );
+      }
+
+      if (playerInfo.points) {
+        points = (
+          <p>Points: {playerInfo.points}</p>
+        );
+      }
+
+      if (playerInfo.games_played) {
+        gamesPlayed = (
+          <p>Games Played: {playerInfo.games_played}</p>
+        );
+      }
+
+      if (playerInfo.save_percent) {
+        savePercent = (
+          <p>Save Percent: {playerInfo.save_percent}</p>
+        );
+      }
+
+      if (playerInfo.wins) {
+        wins = (
+          <p>Wins:</p>
+        )
+      }
+
+      if (playerInfo.losses) {
+        losses = (
+          <p>Losses:</p>
+        )
+      }
+
+      if (playerInfo.ties) {
+        ties = (
+          <p>Ties:</p>
+        )
+      }
+
+      if (playerInfo.shutouts) {
+        shutouts = (
+          <p>Shutouts:</p>
+        )
+      }
+
+      if (playerInfo.goals_against) {
+        goalsAgainst = (
+          <p>Goals Against:</p>
+        )
+      }
+
+      let videoPlayer = (
+        <iframe id="player" type="text/html" width="640" height="390"
+          src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+          frameborder="0"></iframe>
+
+      )
+
+      if (this.props.player.video_link) {
+        let videoCode = this.props.player.video_link;
+
+        videoCode = videoCode.split('=');
+        videoCode = videoCode[1];
+
+        let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
+
+        videoPlayer = (
+          <iframe id="player" type="text/html" width="640" height="390"
+            src={videoUrl}
+            frameborder="0"></iframe>
+        )
+
+      }
+
+
 
       content = (
         <div className="profileContainer">
@@ -278,6 +431,8 @@ class PlayerProfileDisplay extends Component {
               {schoolYear}
               {gpa}
               {actScore}
+              {playerBio}
+              <PlayerProfileDialog />
             </div>
           </div>
           <div className="infoContainer">
@@ -285,12 +440,25 @@ class PlayerProfileDisplay extends Component {
             {teamName}
             {league}
             {height}
+            {weight}
+            {goals}
+            {assists}
+            {points}
+            {gamesPlayed}
+            {savePercent}
+            {wins}
+            {losses}
+            {ties}
+            {shutouts}
+            {goalsAgainst}
           </div>
-          <PlayerProfileDialog/>
+          <div>
+            {videoPlayer}
+          </div>
         </div>
       );
     }
-    else{
+    else {
       content = (
         <div>
           <p>loading...</p>
@@ -298,19 +466,19 @@ class PlayerProfileDisplay extends Component {
       )
     }
 
-  return (
+    return (
       <div className="mainContainer"
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
-        <Nav/>
+        <Nav />
         <div className="pageContainer">
           {content}
         </div>
       </div>
     )
-     
+
   }
-  
+
 
 }
 
