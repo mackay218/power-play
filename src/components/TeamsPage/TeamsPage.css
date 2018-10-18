@@ -41,3 +41,10 @@
     font-size: 14px;
     
 }
+
+
+.team-list:hover {
+color: darkblue;
+font-weight: bold;
+font-size: 20px;
+}
