@@ -6,6 +6,8 @@ import './RegisterPage.css';
 import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 
+import TextField from '@material-ui/core/TextField';
+
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
@@ -86,26 +88,23 @@ class RegisterPage extends Component {
           <form onSubmit={this.registerUser} className="register-form">
             <h1>Sign Up</h1>
             <div>
-              <label htmlFor="email">
-                email:
-              <input
-                  type="text"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleInputChangeFor('email')}
-                />
-              </label>
+              <TextField
+                type="email"
+                name="email"
+                label="email"
+                value={this.state.email}
+                onChange={this.handleInputChangeFor('email')}
+              />
             </div>
             <div>
-              <label htmlFor="password">
-                Password:
-              <input
-                  type="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleInputChangeFor('password')}
-                />
-              </label>
+              <TextField
+                type="password"
+                name="password"
+                label="password"
+                value={this.state.password}
+                onChange={this.handleInputChangeFor('password')}
+
+              />
             </div>
             <div>
               <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PK_KEY}>
