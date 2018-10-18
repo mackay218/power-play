@@ -220,7 +220,9 @@ router.put('/updateProfile/:id', (req, res) => {
 });
 // POST route for creating a player
 router.post('/create', (req, res) => {
-    const query = `INSERT INTO "player_stats" ("person_id") VALUES ($1);`;
+    const query = `INSERT INTO "player_stats" 
+                    ("person_id", "league_id", "team_id", "school_id", "position_id") 
+                    VALUES ($1, 1, 1, 1, 1);`;
     pool.query(query, [req.body.id]).then((result) => {
         res.sendStatus(201);
     }).catch((error) => {
