@@ -190,7 +190,7 @@ sendPasswordResetEmail = (infoForEmail) => {
                         <a href="${homePageAnchor}">
                             <img src="https://drive.google.com/uc?export=view&id=1w_MFiI3Y8M3hDV2nKx_2XyDr8olDI18y" alt="ppr hockey logo"/>
                         </a>
-                        <h1>YOU'VE BEEN INVITED!</h1>
+                        <h1>PASSWORD RESET</h1>
                     </header>
                     <main>
                         <div>
