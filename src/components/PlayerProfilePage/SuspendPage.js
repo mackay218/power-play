@@ -5,6 +5,13 @@ import Nav from '../Nav/Nav';
 import swal from 'sweetalert';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import './PlayerProfilePage.css';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -42,11 +49,6 @@ class SuspendPage extends Component {
     })
   }
 
-  submitReasonSuspend = (event) => {
-    event.preventDefault();
-    console.log('reason submitted');
-  }
-
   suspendPlayer = (id) => {
     //TODO: set up delete
     swal({
@@ -57,7 +59,7 @@ class SuspendPage extends Component {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: {id: id, reasons: this.state }});
+        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: { id: id, reasons: this.state } });
         swal('Your account has been suspended', {
           icon: 'success'
         });
@@ -69,36 +71,28 @@ class SuspendPage extends Component {
   }
 
   render() {
-    let content = null;
-
-    if (this.props.user.email) {
-      content = (
-        <div>
-          SuspendPage
-        </div>
-      );
-    }
-
     return (
       <div className="mainContainer"
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />
         <div className="pageContainer">
-          {content}
-          <form onSubmit={this.submitReasonSuspend}>
-            <select value={this.state.reason} onChange={this.handleChange} name="reason">
-              <option value="Reason for suspension">reason for suspension</option>
-              <option value="Commited">Commited</option>
-              <option value="No longer looking to be recruited">No longer looking to be recruited</option>
-              <option value="Other">Other</option>
-            </select><br />
-            <label>If other, explain:</label><br />
-            <input type="text" onChange={this.handleChange} name="reasonBody" />
+          <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
+            <h3>Suspend Account</h3>
+            <FormControl >
+              <InputLabel>Reason for suspending account</InputLabel>
+              <Select value={this.state.reason} onChange={this.handleChange} name="reason">
+                <MenuItem value="Commited">Commited</MenuItem>
+                <MenuItem value="No longer looking to be recruited">No longer looking to be recruited</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            <br />
+            <label>If other, explain:</label>
+            <TextField type="text" label="explanation for suspending account" onChange={this.handleChange} name="reasonBody" />
+            <br />
+            <Button variant="contained" color="secondary" type="submit">Suspend Account</Button>
           </form>
-          <div className="center-text">
-            <button onClick={() => this.suspendPlayer(this.props.user.id)}>Suspend Account</button>
-          </div>
         </div>
       </div>
     );
