@@ -209,6 +209,7 @@ body{
 .bioSections{
     /* will be replaced with material grid */
     display: inline-block;
+    text-align: center;
     margin: 20px;
 }
 
