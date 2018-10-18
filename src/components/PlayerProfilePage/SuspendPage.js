@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
-
+import swal from 'sweetalert';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
@@ -11,9 +11,16 @@ const mapStateToProps = state => ({
 });
 
 class SuspendPage extends Component {
-  
-  
-  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      reason: '',
+      reasonBody: ''
+    }
+  }
+
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
@@ -40,12 +47,25 @@ class SuspendPage extends Component {
     console.log('reason submitted');
   }
 
-  suspendAccount = () => {
-    console.log('Suspend Account');
-  }
-
-  deleteAccount = () => {
-    console.log('Delete Account');
+  suspendPlayer = (id) => {
+    //TODO: set up delete
+    swal({
+      title: "Are you sure you want to suspend your account?",
+      text: "Once suspended, you will not be able to be seen by coaches!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: {id: id, reasons: this.state }});
+        swal('Your account has been suspended', {
+          icon: 'success'
+        });
+      }
+      else {
+        swal('Your account has not been suspended');
+      }
+    })
   }
 
   render() {
@@ -55,7 +75,7 @@ class SuspendPage extends Component {
       content = (
         <div>
           SuspendPage
-          </div>
+        </div>
       );
     }
 
@@ -67,18 +87,17 @@ class SuspendPage extends Component {
         <div className="pageContainer">
           {content}
           <form onSubmit={this.submitReasonSuspend}>
-            <select>
+            <select value={this.state.reason} onChange={this.handleChange} name="reason">
               <option value="Reason for suspension">reason for suspension</option>
               <option value="Commited">Commited</option>
               <option value="No longer looking to be recruited">No longer looking to be recruited</option>
               <option value="Other">Other</option>
             </select><br />
             <label>If other, explain:</label><br />
-            <input type="text" onChange={this.handleChange}></input>
+            <input type="text" onChange={this.handleChange} name="reasonBody" />
           </form>
           <div className="center-text">
-            <button onClick={this.suspendAccount}>Suspend Account</button>
-            <button onClick={this.deleteAccount}>Delete Account</button>
+            <button onClick={() => this.suspendPlayer(this.props.user.id)}>Suspend Account</button>
           </div>
         </div>
       </div>

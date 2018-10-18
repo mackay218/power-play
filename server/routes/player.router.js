@@ -218,6 +218,17 @@ router.put('/updateProfile/:id', (req, res) => {
             res.sendStatus(500);
         })
 });
+// PUT route for suspending players
+router.put('/suspend/', (req, res) => {
+    const reason = `${req.body.reasons.reason}, ${req.body.reasons.reasonBody}`
+    const query = `UPDATE "person" SET "status_id" = 2, "status_reason" = $1  WHERE "personid" = $2;`;
+    pool.query(query, [reason, req.body.id]).then(() => {
+        res.sendStatus(200);
+    }).catch((error) => {
+        console.log('ERROR suspending player:', error);
+        res.sendStatus(500);
+    })
+})
 // POST route for creating a player
 router.post('/create', (req, res) => {
     const query = `INSERT INTO "player_stats" 
