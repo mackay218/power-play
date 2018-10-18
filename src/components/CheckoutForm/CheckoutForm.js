@@ -56,7 +56,7 @@ class CheckoutForm extends Component {
     render() {
         let toLogInButton = null
         if (this.state.complete === false) {
-            toLogInButton = <Link to="/login">Cancel</Link>
+            toLogInButton = <Link style={{color:"#eb1b3b"}} to="/login">Cancel</Link>
         }
         else if (this.state.complete === true) {
             toLogInButton = <Button variant="contained" color="primary" onClick={this.toLogIn}>Log In</Button>
