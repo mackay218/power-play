@@ -101,7 +101,12 @@ class PlayerDialog extends Component {
         <Dialog fullScreen open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <Nav />
           <div className="dialog">
-            <h2 className="dialog-head center" >{this.props.info.first_name}'s Information</h2>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Close
+            </Button>
+            </DialogActions>
+            <h2 className="dialog-head center" >{this.props.info.last_name}, {this.props.info.first_name}</h2>
             <div>
               <Grid container className="dialog-body" >
           
@@ -138,11 +143,6 @@ class PlayerDialog extends Component {
                 </Grid>
               </Grid>
             </div>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Close
-            </Button>
-            </DialogActions>
           </div>
         </Dialog>
       </div>
