@@ -2,10 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
-
+import swal from 'sweetalert';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import TextField from '@material-ui/core/TextField';
+
+
+import './PlayerProfilePage.css';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 
 const mapStateToProps = state => ({
@@ -13,9 +22,16 @@ const mapStateToProps = state => ({
 });
 
 class SuspendPage extends Component {
-  
-  
-  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      reason: '',
+      reasonBody: ''
+    }
+  }
+
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
   }
@@ -37,58 +53,51 @@ class SuspendPage extends Component {
     })
   }
 
-  submitReasonSuspend = (event) => {
-    event.preventDefault();
-    console.log('reason submitted');
-  }
-
-  suspendAccount = () => {
-    console.log('Suspend Account');
-  }
-
-  deleteAccount = () => {
-    console.log('Delete Account');
+  suspendPlayer = (id) => {
+    //TODO: set up delete
+    swal({
+      title: "Are you sure you want to suspend your account?",
+      text: "Once suspended, you will not be able to be seen by coaches!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: { id: id, reasons: this.state } });
+        swal('Your account has been suspended', {
+          icon: 'success'
+        });
+      }
+      else {
+        swal('Your account has not been suspended');
+      }
+    })
   }
 
   render() {
-    let content = null;
-
-    if (this.props.user.email) {
-      content = (
-        <div>
-          SuspendPage
-          </div>
-      );
-    }
-
     return (
       <div className="mainContainer"
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />
         <div className="pageContainer">
-          {content}
-          <form onSubmit={this.submitReasonSuspend}>
-          <p>Please select an action below:</p>
-            <select>
-              <option value="Reason for suspension">reason for suspension</option>
-              <option value="Commited">Commited</option>
-              <option value="No longer looking to be recruited">No longer looking to be recruited</option>
-              <option value="Other">Other</option>
-            </select>
+
+          <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
+            <h3>Suspend Account</h3>
+            <FormControl >
+              <InputLabel>Reason for suspending account</InputLabel>
+              <Select value={this.state.reason} onChange={this.handleChange} name="reason">
+                <MenuItem value="Commited">Commited</MenuItem>
+                <MenuItem value="No longer looking to be recruited">No longer looking to be recruited</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
             <br />
-            <br/>
             <label>If other, explain:</label>
+            <TextField type="text" label="explanation for suspending account" onChange={this.handleChange} name="reasonBody" />
             <br />
-            <TextField onChange={this.handleChange}
-                     type="text"
-                     style={{ width: 200}}>
-                     </TextField>
-                     </form>
-          <div className="center-text">
-            <button onClick={this.suspendAccount}>Suspend Account</button>
-            <button onClick={this.deleteAccount}>Delete Account</button>
-          </div>
+            <Button variant="contained" color="secondary" type="submit">Suspend Account</Button>
+          </form>
         </div>
       </div>
     );

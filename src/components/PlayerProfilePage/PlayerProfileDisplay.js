@@ -392,6 +392,7 @@ class PlayerProfileDisplay extends Component {
 
       let videoPlayer = (
         <iframe id="player" type="text/html" width="640" height="390"
+          allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
           frameborder="0"></iframe>
 
@@ -407,6 +408,7 @@ class PlayerProfileDisplay extends Component {
 
         videoPlayer = (
           <iframe id="player" type="text/html" width="640" height="390"
+            allowFullScreen="allowFullScreen"
             src={videoUrl}
             frameborder="0"></iframe>
         )

@@ -91,7 +91,7 @@ class PlayersListedPage extends Component {
     }
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
-    this.props.dispatch({ type: 'GET_CSV_LIST'});
+    this.props.dispatch({ type: 'GET_CSV_LIST' });
 
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
@@ -122,7 +122,7 @@ class PlayersListedPage extends Component {
       ...this.state,
       [event.target.name]: event.target.value,
     });
-    setTimeout(() => this.props.dispatch({type: 'SEARCH_BY_NAME', payload: this.state}), 200);
+    setTimeout(() => this.props.dispatch({ type: 'SEARCH_BY_NAME', payload: this.state }), 200);
   }
 
   sendSortBy = (event) => {
@@ -284,13 +284,15 @@ class PlayersListedPage extends Component {
               </div>
               {formContent}
             </div>
-            <Button variant="contained" type="submit">Search</Button>
+            <Button variant="contained" color="primary" type="submit">Search</Button>
           </form>
           <h2 className="center-text">Players</h2>
-          <div className="page-buttons">
-            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+          <div className="center-text">
             <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
-            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+          </div>
+          <div className="page-buttons">
+            <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
           <Paper>
             <Table>
@@ -309,8 +311,8 @@ class PlayersListedPage extends Component {
             </Table>
           </Paper>
           <div className="page-buttons">
-            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+            <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
         </div>
       );

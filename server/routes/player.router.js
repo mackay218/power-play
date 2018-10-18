@@ -37,26 +37,7 @@ router.get('/csvList', (req, res) => {
         res.sendStatus(500);
     })
 });
-// GET route for specific player
-router.get('/profileById/:id', (req, res) => {
 
-    id = req.user.id;
-    const query = `SELECT "player_stats".*, "person"."personid" FROM "player_stats"
-                    JOIN "position" ON "position_id" = "position"."positionid"
-                    JOIN "league" ON "league_id" = "league"."leagueid"
-                    JOIN "team" ON "team_id" = "team"."teamid"
-                    JOIN "school" ON "school_id" = "school"."schoolid"
-                    JOIN "person" ON "person_id" = "person"."personid"
-                    WHERE "person"."personid" = $1;`;
-    pool.query(query, [id]).then((result) => {
-        res.send(result.rows[0])
-        console.log('by id results', id, result.rows[0]);
-    }).catch((error) => {
-        console.log('ERROR getting players:', error);
-        res.sendStatus(500);
-    })
-
-});
 // GET route for sorting players
 router.get('/sorted', (req, res) => {
     (async () => {
@@ -120,7 +101,7 @@ router.get('/playerInfo/:id', (req, res) => {
                     JOIN "person" ON "person_id" = "person"."personid"
                     WHERE "personid" = $1;`;
     pool.query(query, [req.params.id]).then((result) => {
-        console.log(result.rows[0]);
+        console.log(result.rows);
         res.send(result.rows[0]);
     }).catch((error) => {
         console.log('ERROR getting players information:', error);
@@ -218,9 +199,22 @@ router.put('/updateProfile/:id', (req, res) => {
             res.sendStatus(500);
         })
 });
+// PUT route for suspending players
+router.put('/suspend/', (req, res) => {
+    const reason = `${req.body.reasons.reason}, ${req.body.reasons.reasonBody}`
+    const query = `UPDATE "person" SET "status_id" = 2, "status_reason" = $1  WHERE "personid" = $2;`;
+    pool.query(query, [reason, req.body.id]).then(() => {
+        res.sendStatus(200);
+    }).catch((error) => {
+        console.log('ERROR suspending player:', error);
+        res.sendStatus(500);
+    })
+})
 // POST route for creating a player
 router.post('/create', (req, res) => {
-    const query = `INSERT INTO "player_stats" ("person_id") VALUES ($1);`;
+    const query = `INSERT INTO "player_stats" 
+                    ("person_id", "league_id", "team_id", "school_id", "position_id") 
+                    VALUES ($1, 1, 1, 1, 1);`;
     pool.query(query, [req.body.id]).then((result) => {
         res.sendStatus(201);
     }).catch((error) => {

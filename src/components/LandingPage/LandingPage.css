@@ -238,3 +238,9 @@ a{
 .guideSection:hover {
     cursor: pointer;
 }
+
+.founderPic{
+    border: 5px solid var(--red);
+    border-radius: 10px;
+    box-shadow: 5px 10px 10px rgba(0,0,0,0.2);
+}
