@@ -101,8 +101,10 @@ class TeamsPage extends Component{
                                 <li className="team-list">Brookings Blizzard</li>
                                 <li className="team-list">Alexandria Blizzard</li>
                                 <li className="team-list">Bozeman Icedogs</li>
-                                <li className="team-list">Breezy Point Stars</li>
+
                                 <li className="team-list">Granite City Lumberjacks</li>
+                                <li className="team-list">Breezy Point Stars</li>
+
                                 <li className="team-list">New Ulm Steel</li>
                                 <li className="team-list">North Iowa Bulls</li>
                                 <li className="team-list">Rochester Grizzlies</li>

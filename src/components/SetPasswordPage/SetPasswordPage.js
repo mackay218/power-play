@@ -13,7 +13,10 @@ import './SetPasswordPage.css';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 
+import swal from 'sweetalert';
+
 const moment = extendMoment(Moment);
+
 
 
 
@@ -39,10 +42,10 @@ class SetPasswordPage extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getInviteCode();
 
-        setTimeout( console.log('state', this.state), 1000);
+        setTimeout(console.log('state', this.state), 1000);
 
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
@@ -61,7 +64,7 @@ class SetPasswordPage extends Component {
     //function to get invite code from url user clicked on in email
     getInviteCode = () => {
         console.log('invite code:', this.props.match.params.inviteCode);
-        
+
         let inviteCode = this.props.match.params.inviteCode;
 
         inviteCode = inviteCode.split('');
@@ -76,7 +79,7 @@ class SetPasswordPage extends Component {
 
         let beginDate = moment(inviteCode, 'MMDDYYYY');
         beginDate = moment(beginDate).format();
-        
+
         let expireDate = moment(beginDate).add(2, 'days');
         expireDate = moment(expireDate).format();
 
@@ -87,21 +90,21 @@ class SetPasswordPage extends Component {
 
         console.log('range', range);
 
-        if(range.contains(rightNow)){
+        if (range.contains(rightNow)) {
             console.log('in range');
             this.setState({
                 inviteCode: this.props.match.params.inviteCode,
                 expired: false,
             });
         }
-        else if(range.contains(rightNow) === false){
+        else if (range.contains(rightNow) === false) {
             console.log('not in range');
             this.setState({
                 inviteCode: this.props.match.params.imviteCode,
                 expired: true,
                 message: 'Your set/reset password code is expired',
             });
-        }      
+        }
     }
 
     handleInputChangeFor = propertyName => (event) => {
@@ -115,22 +118,21 @@ class SetPasswordPage extends Component {
 
         event.preventDefault();
 
-        if (this.state.newPassword === ''){
-            this.setState({
-                message: 'Please enter a new password.'
-            });
+        if (this.state.newPassword === '') {
+            swal('Please enter a new password' ,
+             {icon:'warning'})
+        
         }
-        else if(this.state.newPassword !== '' && this.state.confirmPassword === ''){
-            this.setState({
-                message: 'Please confirm password.'
-            });
+        else if (this.state.newPassword !== '' && this.state.confirmPassword === '') {
+            swal('Please Confirm Password' ,
+             {icon:'warning'})
+        
         }
-        else if(this.state.newPassword !== this.state.confirmPassword){
-            this.setState({
-                message: 'Passwords do not match.'
-            });
+        else if (this.state.newPassword !== this.state.confirmPassword) {
+            swal('Passwords Do not Match' ,
+             {icon:'warning'})
         }
-        else{
+        else {
             const body = {
                 inviteCode: this.state.inviteCode,
                 password: this.state.newPassword,
@@ -138,18 +140,19 @@ class SetPasswordPage extends Component {
 
             axios.put('/api/password/setPassword', body)
                 .then((response) => {
-                    if(response.status === 201){
+                    
+                    if (response.status === 201) {
                         this.props.history.replace('/login');
+                        swal('Password Reset Successful' , 
+                        {icon:'success'})
                     } else {
-                        this.setState({
-                            message: 'Resetting password failed please try again.'
-                        });
+                        swal('Unable to reset password. Please Try again.',
+                            { icon: 'warning' })
                     }
                 })
                 .catch((error) => {
-                    this.setState({
-                        message: 'Ooops! Something went wrong! Is the server running?'
-                    });
+                swal('Unable to reset password.',
+                        { icon: 'warning' })
                 });
         }
     } //end setPassword
@@ -169,11 +172,11 @@ class SetPasswordPage extends Component {
         return (<span />);
     }
 
-    render(){
+    render() {
 
         let passwordForm = null;
 
-        if(this.state.expired === false && this.state.inviteCode){
+        if (this.state.expired === false && this.state.inviteCode) {
             passwordForm = (
                 <form class="setPasswordForm" >
                     <h1>Set Password</h1>
@@ -200,7 +203,7 @@ class SetPasswordPage extends Component {
             )
         }
 
-        return(
+        return (
             <div className="mainContainer">
                 <Nav />
                 <div className="pageContainer">

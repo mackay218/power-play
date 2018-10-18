@@ -5,6 +5,9 @@ import Nav from '../Nav/Nav';
 import swal from 'sweetalert';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import TextField from '@material-ui/core/TextField';
+
+
 import './PlayerProfilePage.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +15,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -77,6 +81,7 @@ class SuspendPage extends Component {
       >
         <Nav />
         <div className="pageContainer">
+
           <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
             <h3>Suspend Account</h3>
             <FormControl >
