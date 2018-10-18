@@ -218,7 +218,6 @@ class PlayerProfilePage extends Component {
                   </Select>
                 </FormControl>
               </div>
-              {JSON.stringify(this.state.profile.position_id)}
               <div className="playerFormSection">
                 <TextField label="Video URL" value={this.state.profile.video_link} onChange={this.handleProfileChange} name="video_link" />
                 <FormControl>
