@@ -70,29 +70,28 @@ class LandingPage extends Component {
                         <img className="hockeyGif" src="images/hockeyGif.gif" alt="hockeyGif" />
                         <div className="missionStatement">
                             <h1 className="missionHeader">
-                                A Mission Statement A Mission Statement A Mission Statement</h1>
+                                POWER PLAY RECRUITING
+                            </h1>
                             <h3 className="missionDetail">
-                                We do the things. All the things. All the time.
-                                We do the things. All the things. All the time.
-                                We do the things. All the things. All the time.
+                                Let us be your extra man!!!
                             </h3>
                             <h3 className="missionDetail">
-                                And we do them well. We do them with gusto. We accomplish them with gravitas.
+                               Our team will find your next team.
                             </h3>
-                            <div className="guideContainer" onClick={this.toRegister}>
-                                <div className="guideSection">
+                            <div className="guideContainer" >
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Build Your Profile</h3>
                                     <img className="guideImg" src="images/profile.svg" alt="profile-icon" />
                                     <p>Enter your stats.</p>
                                 </div>
                                 <img className="arrow" src="images/right-arrow.svg"></img>
-                                <div className="guideSection">
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Showcase Your Talent</h3>
                                     <img className="guideImg" src="images/video-player.svg" alt="video-icon" />
                                     <p>Load a clip of your skills in action.</p>
                                 </div>
                                 <img className="arrow" src="images/right-arrow.svg"></img>
-                                <div className="guideSection">
+                                <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Get Noticed</h3>
                                     <img className="guideImg" src="images/recruitment.svg" alt="get-seen-icon" />
                                     <p>Your profile will be accessible to coaches across the country.</p>
@@ -106,7 +105,9 @@ class LandingPage extends Component {
                     <div className="testimonialContainer">
 
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Chris-Amsden.jpg" alt="placeholder" />
+                            </div>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt
@@ -122,7 +123,9 @@ class LandingPage extends Component {
                             </p>
                         </div>
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Justin-Daly.jpg" alt="placeholder" ></img>
+                            </div>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt
@@ -138,7 +141,9 @@ class LandingPage extends Component {
                             </p>
                         </div>
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Sean-Lang.jpg" alt="placeholder" ></img>
+                            </div>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt

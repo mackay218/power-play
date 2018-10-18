@@ -23,22 +23,25 @@ body{
         height: 180vh;
     }
     .hockeyGif{
-    height: 100%;
-    width: 140%;
-    position: absolute;
-    z-index: 1;
-}
+        height: 100%;
+        width: 140%;
+        position: absolute;
+        z-index: 1;
+    }
 }
 
 @media only screen and (orientation: landscape){
     .hockeyGif{
-    height: 120%;
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-}
+        height: 120%;
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+    }
 }
 
+.missionHeader{
+    font-family: 'Audiowide', sans-serif;
+}
 
 .missionStatement{
     position: absolute;
@@ -63,7 +66,7 @@ body{
     display: flex;
     justify-content: space-around;
     height: 50%;
-    width: 100%;
+    width: 90%;
 }
 
 @media only screen and (orientation: landscape){
@@ -74,7 +77,7 @@ body{
 
     .guideSection{
         width: 20vw;
-        min-width: 180px;
+        min-width: 250px;
     }
 
     .guideImg{
@@ -87,6 +90,10 @@ body{
         padding: 1em;
         margin: 0;
     }
+
+    .arrow{
+        width: 20vw;
+    }
 }
 
 @media only screen and (orientation: portrait){
@@ -97,7 +104,7 @@ body{
     }
 
     .guideSection{
-        height: 50%;
+        height: 50%; 
         width: 80vw;
     }
 
@@ -108,6 +115,7 @@ body{
 
     .arrow{
         transform: rotate(90deg);
+        width: 10vw;
     }
 }
 
@@ -141,6 +149,22 @@ body{
 
     .testimonialSection{
         width: 25vw;
+        min-width: 250px;
+    }
+
+    .pictureFrame{
+        width: 10vw;
+        height: 10vw;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+        justify-content: center;
+
+    }
+
+    .testimonialSection img {
+       height: 100%
     }
 }
 
@@ -154,7 +178,7 @@ body{
     }
 
     .testimonialSection img{
-        width: 50%;
+      
     }
 }
 .testimonialContainer{
@@ -175,10 +199,6 @@ body{
     background-color: rgba(255,255,255,0.2);
     box-shadow: 5px 10px 10px rgba(0,0,0,0.2), inset 5px 10px 10px rgba(0,0,0,0.1);
     padding: 10px 0 0 0;
-}
-
-.testimonialSection img{
-    border-radius: 50%;
 }
 
 .testimonialSection p{
@@ -216,5 +236,4 @@ a{
 
 .guideSection:hover {
     cursor: pointer;
-
 }
