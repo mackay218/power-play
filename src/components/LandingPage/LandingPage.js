@@ -162,10 +162,10 @@ class LandingPage extends Component {
 
                         <div className="bioSections">
                             {/* material avatars go here */}
-                            <img src="images/founders.jpg" alt="bio1" width="450px" height="300px"/>
+                            <img className="founderPic" src="images/founders.jpg" alt="bio1" width="450px" height="300px"/>
                             <br />
                             <span><b style={{fontSize: '20px'}}>Logan Sharp(Vice President), Mike Bowman (President), and Austin Hill(Chief Operating Officer)</b>
-                            <br />are the founders of Power Play Recruiting, a revolutionary online scouting servive that helps
+                            <br />are the founders of Power Play Recruiting, a revolutionary online scouting service that helps
                             <br />connect coaches to hockey players. With over 60 years of experience playing, coaching, and
                             <br />scouting at all levels of hockey - from youth ti professional, we have been furthering hockey
                             <br />players careers at all levels for many years, through our large and trusted network of coaches
