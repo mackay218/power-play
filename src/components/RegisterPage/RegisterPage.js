@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from '../CheckoutForm/CheckoutForm.js';
-
-
+import './RegisterPage.css';
 import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 
@@ -80,11 +77,13 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div className="mainContainer">
+      <div className="mainContainer" 
+      style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
         <Nav />
         <div className="pageContainer center-text">
           {this.renderAlert()}
-          <form onSubmit={this.registerUser}>
+          <form onSubmit={this.registerUser} className="register-form">
             <h1>Sign Up</h1>
             <div>
               <label htmlFor="email">

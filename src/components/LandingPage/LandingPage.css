@@ -39,6 +39,9 @@ body{
     }
 }
 
+.missionHeader{
+    font-family: 'Audiowide', sans-serif;
+}
 
 .missionStatement{
     position: absolute;
@@ -149,8 +152,19 @@ body{
         min-width: 250px;
     }
 
+    .pictureFrame{
+        width: 10vw;
+        height: 10vw;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+        justify-content: center;
+
+    }
+
     .testimonialSection img {
-        width: 50%;
+       height: 100%
     }
 }
 
@@ -164,7 +178,7 @@ body{
     }
 
     .testimonialSection img{
-        width: 50%;
+      
     }
 }
 .testimonialContainer{
@@ -187,10 +201,6 @@ body{
     padding: 10px 0 0 0;
 }
 
-.testimonialSection img{
-    border-radius: 50%;
-}
-
 .testimonialSection p{
     width: 100%;
     padding: 5px;
@@ -199,6 +209,7 @@ body{
 .bioSections{
     /* will be replaced with material grid */
     display: inline-block;
+    text-align: center;
     margin: 20px;
 }
 

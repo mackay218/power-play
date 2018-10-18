@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Nav from  '../Nav/Nav';
 // styling imports
 import '../LandingPage/LandingPage.css';
+import Button from '@material-ui/core/Button';
 
 
 class LandingPage extends Component {
@@ -57,8 +58,6 @@ class LandingPage extends Component {
     //      window.scrollTo(0, this.aboutRef.current);
     // }
 
-
-
     render() {
         return (
             <div className="mainContainer"
@@ -70,14 +69,13 @@ class LandingPage extends Component {
                         <img className="hockeyGif" src="images/hockeyGif.gif" alt="hockeyGif" />
                         <div className="missionStatement">
                             <h1 className="missionHeader">
-                                A Mission Statement A Mission Statement A Mission Statement</h1>
+                                POWER PLAY RECRUITING
+                            </h1>
                             <h3 className="missionDetail">
-                                We do the things. All the things. All the time.
-                                We do the things. All the things. All the time.
-                                We do the things. All the things. All the time.
+                                Let us be your extra man!
                             </h3>
                             <h3 className="missionDetail">
-                                And we do them well. We do them with gusto. We accomplish them with gravitas.
+                               Our mission is to connect players with appropriate teams to further their hockey careers!!
                             </h3>
                             <div className="guideContainer" >
                                 <div className="guideSection" onClick={this.toRegister}>
@@ -99,14 +97,13 @@ class LandingPage extends Component {
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
-                   
-
                     <div className="testimonialContainer">
-
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Chris-Amsden.jpg" alt="placeholder" />
+                            </div>
+                            <h4>Chris Amsden</h4>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt
@@ -122,7 +119,10 @@ class LandingPage extends Component {
                             </p>
                         </div>
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Justin-Daly.jpg" alt="placeholder" ></img>
+                            </div>
+                            <h4>Justin Daly</h4>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt
@@ -138,7 +138,10 @@ class LandingPage extends Component {
                             </p>
                         </div>
                         <div className="testimonialSection">
-                            <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" alt="placeholder" ></img>
+                            <div className="pictureFrame">
+                                <img src="images/Sean-Lang.jpg" alt="placeholder" ></img>
+                            </div>
+                            <h4>Sean Lang</h4>
                             <p>"Lorem ipsum dolor sit amet,
                                 consectetur adipiscing elit,
                                 sed do eiusmod tempor incididunt
@@ -153,41 +156,24 @@ class LandingPage extends Component {
                                 mollit anim id est laborum."
                             </p>
                         </div>
-
                     </div>
-
                     <div className="aboutContainer" id="#aboutNavigate"
                         ref={aboutRef => this.aboutRef = aboutRef}>
 
                         <div className="bioSections">
                             {/* material avatars go here */}
-                            <img alt="bio1"></img>
-                            <p>A bio. A personal epic of Olympian scale.
-                        <br></br>Avatars go right above this.
-                        </p>
-
+                            <img src="images/founders.jpg" alt="bio1" width="450px" height="300px"/>
+                            <br />
+                            <span><b style={{fontSize: '20px'}}>Logan Sharp(Vice President), Mike Bowman (President), and Austin Hill(Chief Operating Officer)</b>
+                            <br />are the founders of Power Play Recruiting, a revolutionary online scouting servive that helps
+                            <br />connect coaches to hockey players. With over 60 years of experience playing, coaching, and
+                            <br />scouting at all levels of hockey - from youth ti professional, we have been furthering hockey
+                            <br />players careers at all levels for many years, through our large and trusted network of coaches
+                            <br />and hockey insiders. We look forward to the opportunity to serve and assist in your hockey journey!</span>
                         </div>
-
-                        <div className="bioSections">
-                            {/* material avatars go here */}
-                            <img alt="bio2"></img>
-                            <p>A bio. A personal epic of Olympian scale.
-                        <br></br>Avatars go right above this.
-                        </p>
-
-
-                        </div>
-
-                        <div className="bioSections">
-                            {/* material avatars go here */}
-                            <img alt="bio3"></img>
-                            <p>A bio. A personal epic of Olympian scale.<br>
-                            </br>Avatars go right above this.</p>
-                        </div>
-
                     </div>
-                    <button className="getStarted" onClick={this.toRegister}>Get started!</button>
-                    {/* <button onClick={this.toLogin}>Log In</button> */}
+                    <Button variant="contained" color="primary" className="getStarted" onClick={this.toRegister}>Get started!</Button>
+                    <br />
                 </div >
             </div>
            
