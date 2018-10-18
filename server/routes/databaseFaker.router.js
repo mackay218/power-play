@@ -61,8 +61,8 @@ router.post('/', (req, res) => {
         const height = Math.round(Math.random() * (7 - 4) + 4) + "' " + Math.round(Math.random() * (11)) + '"';
         const weight = Math.round(Math.random() * (300 - 100) + 100);
 
-        const positionId = Math.round(Math.random() * (3 - 1) + 1);
-        const leagueId = Math.round(Math.random() * (16 - 1) + 1);
+        const positionId = Math.round(Math.random() * (4 - 2) + 2);
+        const leagueId = Math.round(Math.random() * (17 - 2) + 2);
 
         const teamName = faker.company.companyName();
         const school = faker.address.city() + ' High School';
