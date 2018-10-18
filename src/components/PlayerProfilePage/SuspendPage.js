@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
+
 const mapStateToProps = state => ({
   user: state.user,
 });
@@ -77,6 +78,7 @@ class SuspendPage extends Component {
       >
         <Nav />
         <div className="pageContainer">
+
           <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
             <h3>Suspend Account</h3>
             <FormControl >
