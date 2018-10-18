@@ -5,6 +5,8 @@ import Nav from '../Nav/Nav';
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import TextField from '@material-ui/core/TextField';
+
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -67,15 +69,22 @@ class SuspendPage extends Component {
         <div className="pageContainer">
           {content}
           <form onSubmit={this.submitReasonSuspend}>
+          <p>Please select an action below:</p>
             <select>
               <option value="Reason for suspension">reason for suspension</option>
               <option value="Commited">Commited</option>
               <option value="No longer looking to be recruited">No longer looking to be recruited</option>
               <option value="Other">Other</option>
-            </select><br />
-            <label>If other, explain:</label><br />
-            <input type="text" onChange={this.handleChange}></input>
-          </form>
+            </select>
+            <br />
+            <br/>
+            <label>If other, explain:</label>
+            <br />
+            <TextField onChange={this.handleChange}
+                     type="text"
+                     style={{ width: 200}}>
+                     </TextField>
+                     </form>
           <div className="center-text">
             <button onClick={this.suspendAccount}>Suspend Account</button>
             <button onClick={this.deleteAccount}>Delete Account</button>
