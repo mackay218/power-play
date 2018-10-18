@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 
+
+
 import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -143,7 +145,14 @@ class Nav extends Component {
               </img>
             </NavLink>
           </NavbarBrand>
-          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          {!this.state.isWideEnough &&
+            <NavbarToggler onClick={this.onClick}>
+              <div class="hamburger hamburger--3dx" id="hamburger" >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </div>
+            </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav left>
               <NavItem className={classes.primary}>
@@ -184,7 +193,14 @@ class Nav extends Component {
               </img>
             </NavLink>
           </NavbarBrand>
-          {!this.state.isWideEnough && <NavbarToggler onClick={this.onClick} />}
+          {!this.state.isWideEnough &&
+            <NavbarToggler onClick={this.onClick}>
+              <div class="hamburger hamburger--3dx" id="hamburger" >
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </div>
+            </NavbarToggler>}
           <Collapse isOpen={this.state.collapse} navbar>
             <NavbarNav left>
               <NavItem className={classes.primary}>

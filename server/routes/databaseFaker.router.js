@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
 
         const phoneNumber = faker.phone.phoneNumber();
 
-        const profilePic = faker.image.imageUrl();
+        const profilePic = faker.image.avatar();
         let birthDate = faker.date.past();
         birthDate = moment(birthDate).format('L');
         const playerInfo = faker.lorem.sentence();
