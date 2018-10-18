@@ -66,18 +66,18 @@ class PlayerProfileDisplay extends Component {
   scrollPosition = 0
 
   componentWillReceiveProps() {
-      const element = ReactDOM.findDOMNode(this);
-      if (element != null) {
-          this.scrollPosition = window.scrollY
-      }
+    const element = ReactDOM.findDOMNode(this);
+    if (element != null) {
+      this.scrollPosition = window.scrollY
+    }
   }
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     const element = ReactDOM.findDOMNode(this);
-        if (element != null) {
-            window.scrollTo(0, this.scrollPosition)
-        }
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   componentDidUpdate() {
@@ -90,9 +90,9 @@ class PlayerProfileDisplay extends Component {
       this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
     }
     const element = ReactDOM.findDOMNode(this);
-        if (element != null) {
-            window.scrollTo(0, this.scrollPosition)
-        }
+    if (element != null) {
+      window.scrollTo(0, this.scrollPosition)
+    }
   }
 
   handleProfileChange = (event) => {
@@ -130,13 +130,13 @@ class PlayerProfileDisplay extends Component {
 
   render() {
     let playerInfo = this.props.player.playerInfo;
-    
+
     let content = null;
 
     //placeholder profile pic
     let profilePic = (
-      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg" 
-      alt="placeholder image"/>
+      <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
+        alt="placeholder image" />
     )
 
     let lastName = (
@@ -202,7 +202,7 @@ class PlayerProfileDisplay extends Component {
     let gamesPlayed = (
       <p>Games Played: 0</p>
     );
-    
+
     let savePercent = (
       <p>Save %: 0</p>
     );
@@ -229,25 +229,25 @@ class PlayerProfileDisplay extends Component {
 
 
 
-    if(playerInfo){
+    if (playerInfo) {
       //if picture link has been provided
-      if(playerInfo.image_path){
+      if (playerInfo.image_path) {
         profilePic = (
-          <img src={playerInfo.image_path}/>
+          <img src={playerInfo.image_path} />
         );
-      }  
+      }
       //if last name have been provided
-      if(playerInfo.last_name){
+      if (playerInfo.last_name) {
         lastName = (
           <h4>{playerInfo.last_name}</h4>
         );
       }
-      if(playerInfo.first_name){
+      if (playerInfo.first_name) {
         firstName = (
           <h4>{playerInfo.first_name}</h4>
         )
       }
-      if(playerInfo.birth_date){
+      if (playerInfo.birth_date) {
 
         let formatBirthDate = moment(playerInfo.birth_date).format('L');
 
@@ -255,139 +255,162 @@ class PlayerProfileDisplay extends Component {
           <p>DOB: {formatBirthDate}</p>
         )
       }
-      if(playerInfo.phone_number){
+      if (playerInfo.phone_number) {
         phoneNum = (
           <p>phone: {playerInfo.phone_number}</p>
         );
       }
-      if(playerInfo.email){
+      if (playerInfo.email) {
         emailAddress = (
           <p>email: {playerInfo.email}</p>
         );
       }
-      if(playerInfo.school_name){
+      if (playerInfo.school_name) {
         school = (
           <p>school: {playerInfo.school_name}</p>
         );
       }
-      if(playerInfo.school_year){
+      if (playerInfo.school_year) {
         schoolYear = (
           <p>School Year: {playerInfo.school_year}</p>
         )
       }
-      if(playerInfo.gpa){
+      if (playerInfo.gpa) {
         gpa = (
           <p>GPA: {playerInfo.gpa}</p>
         )
       }
-      if(playerInfo.act_score){
+      if (playerInfo.act_score) {
         actScore = (
           <p>ACT: {playerInfo.act_score}</p>
         )
       }
-      if(playerInfo.player_info){
+      if (playerInfo.player_info) {
         playerBio = (
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
-      if(playerInfo.position_id === 1){
+      if (playerInfo.position_id === 1) {
         position = (
           <h2>Forward</h2>
         );
-      } 
-      else if(playerInfo.position_id === 2){
+      }
+      else if (playerInfo.position_id === 2) {
         position = (
           <h2>Defense</h2>
         );
       }
-      else if(playerInfo.position_id === 3){
+      else if (playerInfo.position_id === 3) {
         position = (
           <h2>Goalie</h2>
-        );  
+        );
       }
-      
-      if(playerInfo.team_name){
+
+      if (playerInfo.team_name) {
         teamName = (
           <p>Team: {playerInfo.team_name}</p>
         );
       }
 
-      if(playerInfo.league_name){
+      if (playerInfo.league_name) {
         league = (
           <p>League: {playerInfo.league_name}</p>
         )
-        
+
       }
 
-      if(playerInfo.height){
+      if (playerInfo.height) {
         height = (
           <p>Height: {playerInfo.height}</p>
         );
       }
 
-      if(playerInfo.weight){
+      if (playerInfo.weight) {
         weight = (
           <p>Weight: {playerInfo.weight}</p>
         );
       }
-      if(playerInfo.goals){
+      if (playerInfo.goals) {
         goals = (
           <p>Goals: {playerInfo.goals}</p>
         );
       }
 
-      if(playerInfo.assists){
+      if (playerInfo.assists) {
         goals = (
           <p>Assists: {playerInfo.assists}</p>
         );
       }
 
-      if(playerInfo.points){
+      if (playerInfo.points) {
         points = (
           <p>Points: {playerInfo.points}</p>
         );
       }
-      
-      if(playerInfo.games_played){
+
+      if (playerInfo.games_played) {
         gamesPlayed = (
           <p>Games Played: {playerInfo.games_played}</p>
         );
       }
 
-      if(playerInfo.save_percent){
+      if (playerInfo.save_percent) {
         savePercent = (
           <p>Save Percent: {playerInfo.save_percent}</p>
         );
       }
 
-      if(playerInfo.wins){
+      if (playerInfo.wins) {
         wins = (
           <p>Wins:</p>
         )
       }
 
-      if(playerInfo.losses){
+      if (playerInfo.losses) {
         losses = (
           <p>Losses:</p>
         )
       }
 
-      if(playerInfo.ties){
+      if (playerInfo.ties) {
         ties = (
           <p>Ties:</p>
         )
       }
 
-      if(playerInfo.shutouts){
+      if (playerInfo.shutouts) {
         shutouts = (
           <p>Shutouts:</p>
         )
       }
 
-      if(playerInfo.goals_against){
+      if (playerInfo.goals_against) {
         goalsAgainst = (
           <p>Goals Against:</p>
         )
+      }
+
+      let videoPlayer = (
+        <iframe id="player" type="text/html" width="640" height="390"
+          src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+          frameborder="0"></iframe>
+
+      )
+
+      if (this.props.player.video_link) {
+        let videoCode = this.props.player.video_link;
+
+        videoCode = videoCode.split('=');
+        videoCode = videoCode[1];
+
+        let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
+
+        videoPlayer = (
+          <iframe id="player" type="text/html" width="640" height="390"
+            src={videoUrl}
+            frameborder="0"></iframe>
+        )
+
       }
 
 
@@ -409,7 +432,7 @@ class PlayerProfileDisplay extends Component {
               {gpa}
               {actScore}
               {playerBio}
-              <PlayerProfileDialog/>
+              <PlayerProfileDialog />
             </div>
           </div>
           <div className="infoContainer">
@@ -429,10 +452,13 @@ class PlayerProfileDisplay extends Component {
             {shutouts}
             {goalsAgainst}
           </div>
+          <div>
+            {videoPlayer}
+          </div>
         </div>
       );
     }
-    else{
+    else {
       content = (
         <div>
           <p>loading...</p>
@@ -440,19 +466,19 @@ class PlayerProfileDisplay extends Component {
       )
     }
 
-  return (
+    return (
       <div className="mainContainer"
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
-        <Nav/>
+        <Nav />
         <div className="pageContainer">
           {content}
         </div>
       </div>
     )
-     
+
   }
-  
+
 
 }
 
