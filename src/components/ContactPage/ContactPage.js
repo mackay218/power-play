@@ -103,9 +103,9 @@ class ContactPage extends Component{
             >
                 <Nav/>
                 <div className="pageContainer">
-                    <h1>Contact</h1>
                     {this.renderAlert()}
                     <form className="contactForm">
+                        <h1>Contact</h1>
                         <TextField
                             type="text"
                             label="Name"
