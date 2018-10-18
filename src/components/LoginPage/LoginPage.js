@@ -122,7 +122,7 @@ class LoginPage extends Component {
                 <TextField 
                   type="email"
                   name="email"
-                  label="email"
+                  label="Email"
                   value={this.state.email}
                   onChange={this.handleInputChangeFor('email')}
                 />
