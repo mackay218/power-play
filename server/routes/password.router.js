@@ -13,134 +13,148 @@ const Chance = require('chance');
 const chance = new Chance();
 
 //function to send check if user is signed up 
-router.get('/:emailAddress',(req, res) => {
-    console.log('check for email:', req.params.emailAddress);
+router.get('/:emailAddress', (req, res) => {
+    if (req.isAuthenticated()) {
+        console.log('check for email:', req.params.emailAddress);
 
-    const email = req.params.emailAddress;
+        const email = req.params.emailAddress;
 
-    const queryText = `SELECT "personid" FROM person WHERE "email" = $1;`;
+        const queryText = `SELECT "personid" FROM person WHERE "email" = $1;`;
 
-    pool.query(queryText, [email])
-        .then((results) => {
-            console.log(results.rows.length);
-             if(results.rows.length >= 1){
-                 //call function to send email
-                resetPersonInviteCode(email);
-                res.sendStatus(200);
-            }
-            else{
+        pool.query(queryText, [email])
+            .then((results) => {
+                console.log(results.rows.length);
+                if (results.rows.length >= 1) {
+                    //call function to send email
+                    resetPersonInviteCode(email);
+                    res.sendStatus(200);
+                }
+                else {
+                    res.sendStatus(404);
+                }
+            })
+            .catch((error) => {
+                console.log('error finding email:', error);
                 res.sendStatus(404);
-            }
-        })
-        .catch((error) => {
-            console.log('error finding email:', error);
-            res.sendStatus(404);
-        });
+            });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 //function to update invite code in person table of database 
 //and log activity 
 //and change account status to pending until password is reset
 resetPersonInviteCode = (email) => {
-    console.log(' in resetPersonInviteCode');
-    
-    //limit inivite code to alphanumeric to avoid url problems
-    let resetPasswordCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+    if (req.isAuthenticated()) {
+        console.log(' in resetPersonInviteCode');
 
-    //create expiration date code for invite
-    let expireDate = new Date();
+        //limit inivite code to alphanumeric to avoid url problems
+        let resetPasswordCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
-    expireDate = moment(expireDate).format('MMDDYYYY');
+        //create expiration date code for invite
+        let expireDate = new Date();
 
-    expireDate = expireDate.replace(/\//g, '');
+        expireDate = moment(expireDate).format('MMDDYYYY');
 
-    resetPasswordCode = resetPasswordCode + expireDate;
+        expireDate = expireDate.replace(/\//g, '');
+
+        resetPasswordCode = resetPasswordCode + expireDate;
 
 
-    const infoForEmail = {
-        email: email,
-        resetPasswordCode: resetPasswordCode
-    };
+        const infoForEmail = {
+            email: email,
+            resetPasswordCode: resetPasswordCode
+        };
 
-    console.log('infoForEmail', infoForEmail);
+        console.log('infoForEmail', infoForEmail);
 
-    //ACTIVITY LOG
-    // const activityType = 'password reset link sent';
-    // const activityTime = new Date();
+        //ACTIVITY LOG
+        // const activityType = 'password reset link sent';
+        // const activityTime = new Date();
 
-    (async () => {
+        (async () => {
 
-        const client = await pool.connect();
+            const client = await pool.connect();
 
-        try {
-            let queryText = `UPDATE person SET "invite" = $1 WHERE "email" = $2RETURNING "personid";`;
+            try {
+                let queryText = `UPDATE person SET "invite" = $1 WHERE "email" = $2RETURNING "personid";`;
 
-            let values = [resetPasswordCode, email];
+                let values = [resetPasswordCode, email];
 
-            const personResult = await client.query(queryText, values);
+                const personResult = await client.query(queryText, values);
 
-            let personId = personResult.rows[0].id;
+                let personId = personResult.rows[0].id;
 
-            //ACTIVITY LOG  person id will need to be added as a foreign key
-             // queryText = `INSERT INTO activity_log(time, activity_type)
-            //                 VALUES ($1, $2) RETURNING "id";`;
+                //ACTIVITY LOG  person id will need to be added as a foreign key
+                // queryText = `INSERT INTO activity_log(time, activity_type)
+                //                 VALUES ($1, $2) RETURNING "id";`;
 
-            // values = [activityTime, activityType];
+                // values = [activityTime, activityType];
 
-            // const activityLogResult = await client.query(queryText, values);
+                // const activityLogResult = await client.query(queryText, values);
 
-            // let activityLogId = activityLogResult.rows[0].id;
-           
-            //send reset password code in an email
-            await sendPasswordResetEmail(infoForEmail);
+                // let activityLogId = activityLogResult.rows[0].id;
 
-            await client.query('COMMIT');
-        }
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            client.release();
-        }
+                //send reset password code in an email
+                await sendPasswordResetEmail(infoForEmail);
 
-    })().catch((error) => {
-        console.log('CATCH', error);
-        
-    });
+                await client.query('COMMIT');
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+
+        })().catch((error) => {
+            console.log('CATCH', error);
+
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 }
 
 //function to send email with password reset link
 sendPasswordResetEmail = (infoForEmail) => {
-    console.log('in sendPasswordResetEmail')
-    console.log(infoForEmail);
+    if (req.isAuthenticated()) {
+        console.log('in sendPasswordResetEmail')
+        console.log(infoForEmail);
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com', //do I need to change this line?
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: process.env.my_gmail_email,
-            clientId: process.env.my_oauth_client_id,
-            clientSecret: process.env.my_oauth_client_secret,
-            refreshToken: process.env.my_oauth_refresh_token,
-            accessToken: process.env.my_oauth_access_token,
-            expires: 1527200298318 + 3600
-        }
-    });
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com', //do I need to change this line?
+            port: 465,
+            secure: true,
+            auth: {
+                type: 'OAuth2',
+                user: process.env.my_gmail_email,
+                clientId: process.env.my_oauth_client_id,
+                clientSecret: process.env.my_oauth_client_secret,
+                refreshToken: process.env.my_oauth_refresh_token,
+                accessToken: process.env.my_oauth_access_token,
+                expires: 1527200298318 + 3600
+            }
+        });
 
-    const resetPasswordCode = infoForEmail.resetPasswordCode;
+        const resetPasswordCode = infoForEmail.resetPasswordCode;
 
-    //create url string for page for link to 
-    //where person can set or reset password
-    const websiteUrl = process.env.set_password_page;
+        //create url string for page for link to 
+        //where person can set or reset password
+        const websiteUrl = process.env.set_password_page;
 
-    const resetPasswordUrlAnchor = `<a target="_blank" href="${websiteUrl}${resetPasswordCode}">Reset Password</a>`;
+        const resetPasswordUrlAnchor = `<a target="_blank" href="${websiteUrl}${resetPasswordCode}">Reset Password</a>`;
 
-    const homePageAnchor = process.env.set_home_page;
+        const homePageAnchor = process.env.set_home_page;
 
-    const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>PPR Hockey Invite</title>
@@ -204,132 +218,106 @@ sendPasswordResetEmail = (infoForEmail) => {
                 </body>
             </html>`;
 
-    const mail = {
-        from: "polarishockey@gmail.com",
-        to: infoForEmail.email,
-        subject: "Power Play Recruiting reset password request",
-        text: 'Reset password.' + infoForEmail.name,
-        html: emailHtml
-    }
+        const mail = {
+            from: "polarishockey@gmail.com",
+            to: infoForEmail.email,
+            subject: "Power Play Recruiting reset password request",
+            text: 'Reset password.' + infoForEmail.name,
+            html: emailHtml
+        }
 
-    transporter.sendMail(mail, function (error, info) {
-        if (error) {
-            console.log('error sending mail:', error);
-        }
-        else {
-            //see https://nodemailer.com/usage
-            console.log("info.messageId: " + info.messageId);
-            console.log("info.envelope: " + info.envelope);
-            console.log("info.accepted: " + info.accepted);
-            console.log("info.rejected: " + info.rejected);
-            console.log("info.pending: " + info.pending);
-            console.log("info.response: " + info.response);
-        }
-        transporter.close();
-    });
+        transporter.sendMail(mail, function (error, info) {
+            if (error) {
+                console.log('error sending mail:', error);
+            }
+            else {
+                //see https://nodemailer.com/usage
+                console.log("info.messageId: " + info.messageId);
+                console.log("info.envelope: " + info.envelope);
+                console.log("info.accepted: " + info.accepted);
+                console.log("info.rejected: " + info.rejected);
+                console.log("info.pending: " + info.pending);
+                console.log("info.response: " + info.response);
+            }
+            transporter.close();
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 }
 
 //post route for new password / resetting password
 router.put('/setPassword', (req, res) => {
-    console.log('in set setPassword put route');
-    console.log('password info:', req.body);
-    const passwordInfo = req.body;
-    const inviteCode = passwordInfo.inviteCode;
-    
-    const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+    if (req.isAuthenticated()) {
+        console.log('in set setPassword put route');
+        console.log('password info:', req.body);
+        const passwordInfo = req.body;
+        const inviteCode = passwordInfo.inviteCode;
 
-    const password = encryptLib.encryptPassword(passwordInfo.password);
-  
-    (async () => {
+        const newInviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
-        const client = await pool.connect();
+        const password = encryptLib.encryptPassword(passwordInfo.password);
 
-        try {
+        (async () => {
 
-            let queryText = `SELECT "status_id", "role" FROM person WHERE "invite" = $1;`;
+            const client = await pool.connect();
 
-            let values = [inviteCode];
+            try {
 
-            let statusResult = await client.query(queryText, values);
+                let queryText = `SELECT "status_id", "role" FROM person WHERE "invite" = $1;`;
 
-            let statusId = statusResult.rows[0].status_id;
+                let values = [inviteCode];
 
-            let personRole = statusResult.rows[0].role;
+                let statusResult = await client.query(queryText, values);
 
-            //if person is a coach and status of coach is pending change to active
-            if(personRole === 'coach' && statusId === 4){
+                let statusId = statusResult.rows[0].status_id;
 
-                let newStatusId = 1;
+                let personRole = statusResult.rows[0].role;
 
-                let newStatusReason = 'activated account';
+                //if person is a coach and status of coach is pending change to active
+                if (personRole === 'coach' && statusId === 4) {
 
-                queryText = `UPDATE person SET "password" = $1, "invite" = $2, "status_id" = $3,
+                    let newStatusId = 1;
+
+                    let newStatusReason = 'activated account';
+
+                    queryText = `UPDATE person SET "password" = $1, "invite" = $2, "status_id" = $3,
                                 "status_reason" = $4 WHERE "invite" = $5;`;
 
-                values = [password, newInviteCode, newStatusId, newStatusReason, inviteCode];
+                    values = [password, newInviteCode, newStatusId, newStatusReason, inviteCode];
 
-                await client.query(queryText, values);
+                    await client.query(queryText, values);
+                }
+                else {
+                    queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3;`;
+
+                    values = [password, newInviteCode, inviteCode];
+
+                    await client.query(queryText, values);
+                }
+
+
+                res.sendStatus(201);
             }
-            else{
-                queryText = `UPDATE person SET "password" = $1, "invite" = $2 WHERE "invite" = $3;`;
-
-                values = [password, newInviteCode, inviteCode];
-
-                await client.query(queryText, values);
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
             }
 
-            
-            res.sendStatus(201);
-        } 
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            client.release();
-        }
-
-    })().catch((error) => {
-        console.log('CATCH', error);
-        res.sendStatus(500);
-    });
-
-        // const activityType = 'password set or reset';
-        // const activityTime = new Date();
-
-        // (async () => {
-
-        //     const client = await pool.connect();
-
-        //     try {
-        //         //log activity
-        //         let queryText = `INSERT INTO activity_log(time, activity_type)
-        //                     VALUES ($1, $2) RETURNING "id";`;
-
-        //         values = [activityTime, activityType];
-
-        //         const activityLogResult = await client.query(queryText, values);
-
-        //         let activityLogId = activityLogResult.rows[0].id;
-
-        //         queryText = `UPDATE person SET "activity_log_id = $1 WHERE "personid" = $2;`;
-
-        //         values = [activityLogId, personId];
-
-        //         await client.query(queryText, values);
-
-        //     }
-        //     catch (error) {
-        //         console.log('ROLLBACK', error);
-        //         await client.query('ROLLBACK');
-        //         throw error;
-        //     } finally {
-        //         client.release();
-        //     }
-        // })().catch((error) => {
-        //         console.log('CATCH', error);
-        //         res.sendStatus(500);
-        //     });
+        })().catch((error) => {
+            console.log('CATCH', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 module.exports = router;

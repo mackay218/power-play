@@ -5,7 +5,8 @@ const moment = require('moment');
 
 // GET route for all players
 router.get('/all', (req, res) => {
-    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
+    if (req.isAuthenticated()) {
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
                     "team"."team_name","school"."school_name", "person"."personid", "person"."status_id"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
@@ -15,16 +16,23 @@ router.get('/all', (req, res) => {
                     JOIN "school" ON "school_id" = "school"."schoolid"
                     WHERE "status_id" = 1
                     ORDER BY "created_on" DESC LIMIT 10;`;
-    pool.query(query).then((result) => {
-        res.send(result.rows)
-    }).catch((error) => {
-        console.log('ERROR getting players:', error);
-        res.sendStatus(500);
-    })
+        pool.query(query).then((result) => {
+            res.send(result.rows)
+        }).catch((error) => {
+            console.log('ERROR getting players:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 });
 // GET route for populating CSV file
 router.get('/csvList', (req, res) => {
-    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name"
+    if (req.isAuthenticated()) {
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
@@ -32,23 +40,30 @@ router.get('/csvList', (req, res) => {
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
                     ORDER BY "created_on" DESC;`;
-    pool.query(query).then((result) => {
-        res.send(result.rows)
-    }).catch((error) => {
-        console.log('ERROR getting players:', error);
-        res.sendStatus(500);
-    })
+        pool.query(query).then((result) => {
+            res.send(result.rows)
+        }).catch((error) => {
+            console.log('ERROR getting players:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 });
 
 // GET route for sorting players
 router.get('/sorted', (req, res) => {
-    (async () => {
-        console.log(req.query);
-        req.query = await areFieldsEmpty(req.query);
-        console.log(req.query);
-        const client = await pool.connect();
-        try {
-            queryText = `CREATE TEMP TABLE "sorted_players" AS
+    if (req.isAuthenticated()) {
+        (async () => {
+            console.log(req.query);
+            req.query = await areFieldsEmpty(req.query);
+            console.log(req.query);
+            const client = await pool.connect();
+            try {
+                queryText = `CREATE TEMP TABLE "sorted_players" AS
                             SELECT "player_stats".*, "position"."position_name", "league"."league_name",
                             "team"."team_name","school"."school_name", "person"."personid", "person"."status_id" 
                             FROM "player_stats" 
@@ -66,54 +81,67 @@ router.get('/sorted', (req, res) => {
                             AND "wins" <= COALESCE($5,999999)
                             AND "birth_date" >= COALESCE(DATE($6), DATE('1998-01-01')) 
                             AND "birth_date" <= COALESCE(DATE($7), DATE('2018-01-01'));`;
-            await client.query(queryText, [req.query.position, 
-                                           req.query.minPoints, 
-                                           req.query.maxPoints, 
-                                           req.query.minWins, 
-                                           req.query.maxWins, 
-                                           req.query.minDate, 
-                                           req.query.maxDate]);
-            queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
-            const sortedPlayers = await client.query(queryText, [parseInt(req.query.page)]);
-            queryText = `DROP TABLE "sorted_players";`;
-            await client.query(queryText);
-            await client.query('COMMIT');
-            console.log(sortedPlayers.rows);
-            res.send(sortedPlayers.rows);
-        }
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            client.release();
-        }
-    })().catch((error) => {
-        console.log('CATCH', error);
-    });
+                await client.query(queryText, [req.query.position,
+                req.query.minPoints,
+                req.query.maxPoints,
+                req.query.minWins,
+                req.query.maxWins,
+                req.query.minDate,
+                req.query.maxDate]);
+                queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
+                const sortedPlayers = await client.query(queryText, [parseInt(req.query.page)]);
+                queryText = `DROP TABLE "sorted_players";`;
+                await client.query(queryText);
+                await client.query('COMMIT');
+                console.log(sortedPlayers.rows);
+                res.send(sortedPlayers.rows);
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+        })().catch((error) => {
+            console.log('CATCH', error);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 // GET route for specific player info
 router.get('/playerInfo/:id', (req, res) => {
-    console.log('in playerInfo', req.params.id);
-    const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email", "person"."personid" FROM "player_stats"
+    if (req.isAuthenticated()) {
+        console.log('in playerInfo', req.params.id);
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email", "person"."personid" FROM "player_stats"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
                     JOIN "person" ON "person_id" = "person"."personid"
                     WHERE "personid" = $1;`;
-    pool.query(query, [req.params.id]).then((result) => {
-        console.log(result.rows);
-        res.send(result.rows[0]);
-    }).catch((error) => {
-        console.log('ERROR getting players information:', error);
-        res.sendStatus(500);
-    });
+        pool.query(query, [req.params.id]).then((result) => {
+            console.log(result.rows);
+            res.send(result.rows[0]);
+        }).catch((error) => {
+            console.log('ERROR getting players information:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 })
 // GET route for searchin by name
 router.get('/byName', (req, res) => {
-    req.query.name = `%${req.query.name}%`;
-    const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+    if (req.isAuthenticated()) {
+        req.query.name = `%${req.query.name}%`;
+        const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
@@ -121,20 +149,27 @@ router.get('/byName', (req, res) => {
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
                     WHERE "last_name" ILIKE $1 LIMIT 10 OFFSET $2;`;
-    pool.query(query, [req.query.name, req.query.page]).then((result) => {
-        console.log(result.rows);
-        res.send(result.rows);
-    }).catch((error) => {
-        console.log('ERROR searching by name', error);
-        res.sendStatus(500);
-    });
+        pool.query(query, [req.query.name, req.query.page]).then((result) => {
+            console.log(result.rows);
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log('ERROR searching by name', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 });
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
-    const userId = req.user.id;
-    const profile = req.body;
-    console.log('update privacy setting to: ', req.body);
-    const profileQuery = `UPDATE player_stats 
+    if (req.isAuthenticated()) {
+        const userId = req.user.id;
+        const profile = req.body;
+        console.log('update privacy setting to: ', req.body);
+        const profileQuery = `UPDATE player_stats 
                             SET team_id=$1, 
                             school_id=$2,
                             position_id=$3,
@@ -163,90 +198,117 @@ router.put('/updateProfile/:id', (req, res) => {
                             league_id=$26,
                             image_path=$27
                             WHERE person_id=$28;`;
-    pool.query(profileQuery, 
-        [profile.team_id,
-        profile.school,
-        profile.position_id,
-        profile.first_name,
-        profile.last_name,
-        profile.phone_number,
-        profile.birth_date,
-        profile.height,
-        profile.weight,
-        profile.gpa,
-        profile.act_score,
-        profile.school_year,
-        profile.video_link,
-        profile.goals,
-        profile.assists,
-        profile.points,
-        profile.games_played,
-        profile.wins,
-        profile.losses,
-        profile.ties,
-        profile.save_percent,
-        profile.shutouts,
-        profile.goals_against,
-        profile.guardian,
-        profile.player_info,
-        profile.league_id,
-        profile.image_path,
-         userId])
-        .then((result) => {
-            console.log('update result: ', result);
-            res.sendStatus(200);
-        })
-        .catch((error) => {
-            console.log('error updating profile: ', error);
-            res.sendStatus(500);
-        })
+        pool.query(profileQuery,
+            [profile.team_id,
+            profile.school,
+            profile.position_id,
+            profile.first_name,
+            profile.last_name,
+            profile.phone_number,
+            profile.birth_date,
+            profile.height,
+            profile.weight,
+            profile.gpa,
+            profile.act_score,
+            profile.school_year,
+            profile.video_link,
+            profile.goals,
+            profile.assists,
+            profile.points,
+            profile.games_played,
+            profile.wins,
+            profile.losses,
+            profile.ties,
+            profile.save_percent,
+            profile.shutouts,
+            profile.goals_against,
+            profile.guardian,
+            profile.player_info,
+            profile.league_id,
+            profile.image_path,
+                userId])
+            .then((result) => {
+                console.log('update result: ', result);
+                res.sendStatus(200);
+            })
+            .catch((error) => {
+                console.log('error updating profile: ', error);
+                res.sendStatus(500);
+            });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 });
 // PUT route for suspending players
 router.put('/suspend/', (req, res) => {
-    const reason = `${req.body.reasons.reason}, ${req.body.reasons.reasonBody}`
-    const query = `UPDATE "person" SET "status_id" = 2, "status_reason" = $1  WHERE "personid" = $2;`;
-    pool.query(query, [reason, req.body.id]).then(() => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR suspending player:', error);
-        res.sendStatus(500);
-    })
+    if (req.isAuthenticated()) {
+        const reason = `${req.body.reasons.reason}, ${req.body.reasons.reasonBody}`
+        const query = `UPDATE "person" SET "status_id" = 2, "status_reason" = $1  WHERE "personid" = $2;`;
+        pool.query(query, [reason, req.body.id]).then(() => {
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('ERROR suspending player:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 })
 // POST route for creating a player
 router.post('/create', (req, res) => {
-    const query = `INSERT INTO "player_stats" 
+    if (req.isAuthenticated()) {
+        const query = `INSERT INTO "player_stats" 
                     ("person_id", "league_id", "team_id", "school_id", "position_id") 
                     VALUES ($1, 1, 1, 1, 1);`;
-    pool.query(query, [req.body.id]).then((result) => {
-        res.sendStatus(201);
-    }).catch((error) => {
-        console.log('ERROR adding player:', error);
-        res.sendStatus(500);
-    })
+        pool.query(query, [req.body.id]).then((result) => {
+            res.sendStatus(201);
+        }).catch((error) => {
+            console.log('ERROR adding player:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
 });
 // DELETE route for removing players
 router.delete('/delete/:id', (req, res) => {
-    (async () => {
-        const client = await pool.connect();
-        try {
-            let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
-            await client.query(queryText, [req.params.id]);
-            queryText = `DELETE FROM "person" WHERE "personid" = $1 ;`;
-            await client.query(queryText, [req.params.id]);
-            await client.query('COMMIT');
-        }
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            client.release();
-            res.sendStatus(200);
-        }
-    })().catch((error) => {
-        console.log('CATCH', error);
-    });
-}); 
+    if (req.isAuthenticated()) {
+        (async () => {
+            const client = await pool.connect();
+            try {
+                let queryText = `DELETE FROM "player_stats" WHERE "person_id" = $1 ;`;
+                await client.query(queryText, [req.params.id]);
+                queryText = `DELETE FROM "person" WHERE "personid" = $1 ;`;
+                await client.query(queryText, [req.params.id]);
+                await client.query('COMMIT');
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+                res.sendStatus(200);
+            }
+        })().catch((error) => {
+            console.log('CATCH', error);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
+
+});
 //function for determining if player position is an empty string
 areFieldsEmpty = (query) => {
     // sets position to null if passed in an empty string
@@ -294,7 +356,7 @@ areFieldsEmpty = (query) => {
     if (query.minDate === '') {
         query.minDate = null;
     }
-    else{
+    else {
         query.minDate = moment(query.minDate).format('YYYY-MM-DD');
     }
     // sets maxDate to null if passed in an empty string
