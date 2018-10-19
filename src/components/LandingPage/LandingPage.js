@@ -93,7 +93,7 @@ class LandingPage extends Component {
                                 <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Get Noticed</h3>
                                     <img className="guideImg" src="images/recruitment.svg" alt="get-seen-icon" />
-                                    <p>Your profile will be accessible to coaches across the country.</p>
+                                    <p>We work with coaches across the country</p>
                                 </div>
                             </div>
                         </div>
@@ -104,18 +104,11 @@ class LandingPage extends Component {
                                 <img src="images/Chris-Amsden.jpg" alt="placeholder" />
                             </div>
                             <h4>Chris Amsden</h4>
-                            <p>"Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris
-                                nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur. Excepteur sint occaecat cupidatat
-                                non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum."
+                            <p>
+                                St. Peter Highschool
+                            </p>
+                            <p>
+                                Gustavus Adolphus College
                             </p>
                         </div>
                         <div className="testimonialSection">
@@ -123,18 +116,11 @@ class LandingPage extends Component {
                                 <img src="images/Justin-Daly.jpg" alt="placeholder" ></img>
                             </div>
                             <h4>Justin Daly</h4>
-                            <p>"Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris
-                                nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur. Excepteur sint occaecat cupidatat
-                                non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum."
+                            <p>
+                                Delano High School
+                            </p>
+                            <p>
+                                Kenal River Brown Bears
                             </p>
                         </div>
                         <div className="testimonialSection">
@@ -142,18 +128,11 @@ class LandingPage extends Component {
                                 <img src="images/Sean-Lang.jpg" alt="placeholder" ></img>
                             </div>
                             <h4>Sean Lang</h4>
-                            <p>"Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit,
-                                sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris
-                                nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat
-                                nulla pariatur. Excepteur sint occaecat cupidatat
-                                non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum."
+                            <p>
+                                Apple Valley Highschool
+                            </p>
+                            <p>
+                                St. John's University
                             </p>
                         </div>
                     </div>
