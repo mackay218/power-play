@@ -28,13 +28,18 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
 }
 
 .profilePicContainer{
     border: 5px solid var(--red);
-    height: 25vh;
+    height: 35vh;
     width: 20vw;
+    min-width: 250px;
+    margin-right: 50px;
+}
+
+.videoSpacing{
+    margin-bottom: 7px;
 }
 
 .profilePicContainer img {
@@ -42,11 +47,13 @@ body{
     height: 100%;
 }
 
+
 .infoContainer{
     width: 30vw;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .infoContainer h3{
@@ -58,8 +65,8 @@ body{
 .personInfo{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    /* align-items: center; */
 }
 
 .toolbar{
@@ -76,6 +83,13 @@ body{
     font-family: 'Audiowide', sans-serif;
 }
 
+
+.playerBioArrangement{
+    margin-top: 20px;
+    flex-grow: 1;
+    min-width: 250px;
+}
+
 .suspend-form {
     width: 25%;
     height: auto;
@@ -89,4 +103,16 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.videoContainer{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+}
+
+.infoRow{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

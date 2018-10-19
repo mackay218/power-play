@@ -38,35 +38,33 @@ class PlayerProfilePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
-        person_id: this.props.user.id,
-        league_id: null,
-        team_id: null,
-        school_name: null,
-        position_id: null,
-        first_name: null,
-        last_name: null,
-        phone_number: null,
-        birth_date: null,
-        height: null,
-        weight: null,
-        gpa: null,
-        act_score: null,
-        school_year: null,
-        video_link: null,
-        goals: null,
-        assists: null,
-        points: null,
-        games_played: null,
-        wins: null,
-        losses: null,
-        ties: null,
-        save_percent: null,
-        shutouts: null,
-        goals_against: null,
-        guardian: false,
-        player_info: null,
-      
+      person_id: this.props.user.id,
+      league_id: '',
+      team_id: '',
+      school_id: '',
+      position_id: '',
+      first_name: '',
+      last_name: '',
+      phone_number: '',
+      birth_date: '',
+      height: '',
+      weight: '',
+      gpa: '',
+      act_score: '',
+      school_year: '',
+      video_link: '',
+      goals: '',
+      assists: '',
+      points: '',
+      games_played: '',
+      wins: '',
+      losses: '',
+      ties: '',
+      save_percent: '',
+      shutouts: '',
+      goals_against: '',
+      guardian: '',
+      player_info: '',
     }
   }
 
@@ -84,13 +82,13 @@ class PlayerProfilePage extends Component {
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-  
-    if(this.props.player.length > 0 && this.state.position_id === null){
+
+    if (this.props.player.length > 0 && this.state.position_id === null) {
       this.setState({
         person_id: this.props.user.id,
         league_id: this.props.player.league_id,
-        team_name: this.props.player.team_name,
-        school_name: this.props.player.school_name,
+        team_id: this.props.player.team_name,
+        school_id: this.props.player.school_id,
         position_id: this.props.player.position_id,
         first_name: this.props.player.first_name,
         last_name: this.props.player.last_name,
@@ -118,8 +116,6 @@ class PlayerProfilePage extends Component {
 
       });
     }
-   
-  
   }
 
   componentDidUpdate() {
@@ -137,12 +133,7 @@ class PlayerProfilePage extends Component {
   handleProfileChange = (event) => {
     this.setState({
       ...this.state,
-
-      profile: {
-        ...this.state.profile,
-        [event.target.name]: event.target.value,
-      }
-
+      [event.target.name]: event.target.value,
     })
     console.log('this.state.profile:', this.state.profile)
   }
@@ -154,18 +145,50 @@ class PlayerProfilePage extends Component {
   submitPlayerProfile = (event) => {
     event.preventDefault();
     console.log('Player profile submitted.');
-    this.toggleDisplay();
-    console.log('this.state.profile:', this.state.profile)
+    console.log('this.state.profile:', this.state)
 
     axios({
       method: 'PUT',
       url: '/api/players/updateProfile/' + this.props.user.id,
-      data: this.state.profile,
+      data: this.state,
       success: function (response) {
         console.log('update profile response: ', response)
       }
     });
+  }
 
+
+  easyFill = () => {
+    console.log('In easyFill');
+    this.setState({
+      person_id: this.props.user.id,
+      league_id: '5',
+      team_id: '6',
+      school_id: '2',
+      position_id: "3",
+      first_name: "Billy",
+      last_name: "The Goat",
+      phone_number: 6514438876,
+      birth_date: '',
+      height: `6'4''`,
+      weight: '175lb',
+      gpa: '4.0',
+      act_score: 31,
+      school_year: "12",
+      video_link: 'https://www.youtube.com/watch?v=c1iZ_pkOwwU',
+      goals: 12,
+      assists: 15,
+      points: 83,
+      games_played: 4,
+      wins: 2,
+      losses: 2,
+      ties: 0,
+      save_percent: '',
+      shutouts: '',
+      goals_against: '',
+      guardian: true,
+      player_info: 'I am a goat!!',
+    })
   }
 
   render() {
@@ -208,20 +231,41 @@ class PlayerProfilePage extends Component {
         <div>
           {/* <Image className="profilePic" src="https://eadb.org/wp-content/uploads/2015/08/profile-label.jpg" alt="Avatar" /> */}
           <div className="profile-form-container">
-            <h1>Enter Information</h1>
+            <h1 onClick={this.easyFill}>Enter Information</h1>
             <form onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange}>
               <div className="playerFormSection">
                 <TextField type="text" label="First Name" value={this.state.first_name} onChange={this.handleProfileChange} name="first_name" />
                 <TextField type="text" label="Last Name" value={this.state.last_name} onChange={this.handleProfileChange} name="last_name" />
-                <TextField type="text" label="School" value={this.state.school} onChange={this.handleProfileChange} name="school" />
-                <TextField type="text" label="Team" value={this.state.team_name} onChange={this.handleProfileChange} name="team_id" />
-                <TextField type="text" label="Email" />
+                <FormControl>
+                  <InputLabel>School</InputLabel>
+                  <Select value={this.state.school_id} onChange={this.handleProfileChange} name="school_id">
+                    <MenuItem value="2">East Bradleyview High School</MenuItem>
+                    <MenuItem value="3">Huldaport High School</MenuItem>
+                    <MenuItem value="4">Yeseniashire High School</MenuItem>
+                    <MenuItem value="5">Gorczanyport High School</MenuItem>
+                    <MenuItem value="6">South Loren High School</MenuItem>
+                    <MenuItem value="7">Bergnaumburgh High School</MenuItem>
+                    <MenuItem value="8">East Laila High School</MenuItem>
+                    <MenuItem value="9">East Nicholas High School</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Team</InputLabel>
+                  <Select value={this.state.team_id} onChange={this.handleProfileChange} name="team_id" >
+                    <MenuItem value="2">Jacobi Jacks</MenuItem>
+                    <MenuItem value="3">Jast Jousters</MenuItem>
+                    <MenuItem value="4">Fishers</MenuItem>
+                    <MenuItem value="5">Shutout Shutters</MenuItem>
+                    <MenuItem value="6">L.A. Kings</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField type="text" label="Email" value={this.props.user.email} />
                 <TextField type="number" label="Phone Number" value={this.state.phone_number} onChange={this.handleProfileChange} name="phone_number" />
               </div>
               <div className="playerFormSection">
                 <FormControl>
                   <InputLabel>Grade</InputLabel>
-                  <Select value={this.state.grade} onChange={this.handleProfileChange} name="grade">
+                  <Select value={this.state.school_year} onChange={this.handleProfileChange} name="grade">
                     <MenuItem value="Grade">Grade</MenuItem>
                     <MenuItem value="10">10</MenuItem>
                     <MenuItem value="11">11</MenuItem>
@@ -229,7 +273,7 @@ class PlayerProfilePage extends Component {
                     <MenuItem value="Graduate">Graduate</MenuItem>
                   </Select>
                 </FormControl>
-                <TextField type="number" label="GPA" value={this.state.gpa} onChange={this.handleProfileChange} name="gpa" />
+                <TextField type="text" label="GPA" value={this.state.gpa} onChange={this.handleProfileChange} name="gpa" />
                 <TextField type="text" label="Weight" value={this.state.weight} onChange={this.handleProfileChange} name="weight" />
                 <FormControl>
                   <InputLabel>Position</InputLabel>
@@ -269,7 +313,6 @@ class PlayerProfilePage extends Component {
                   <TextField
                     value={this.state.birth_date} onChange={this.handleProfileChange} name="birth_date"
                     type="date"
-                    defaultValue="2017-05-24"
                   />
                 </FormControl>
               </div>
@@ -288,10 +331,10 @@ class PlayerProfilePage extends Component {
                 />
               </div>
               <div>
-                <Button variant="contained" color="secondary" type="submit">Submit</Button>
+                {positionalContent}
               </div>
               <div>
-                {positionalContent}
+                <Button variant="contained" color="secondary" type="submit">Submit</Button>
               </div>
             </form>
             {/* 
@@ -304,30 +347,17 @@ class PlayerProfilePage extends Component {
       );
     }
 
-      return (
-        <div className="mainContainer"
-          style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
-        >
-          <Nav />
-          <div className="pageContainer">
-            {JSON.stringify(this.state)}
-            {content}
-
-
-          </div>
+    return (
+      <div className="mainContainer"
+        style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+      >
+        <Nav />
+        <div className="pageContainer">
+          {content}
         </div>
-      );
-    
+      </div>
+    );
   }
-  //   else {
-  //     return (<div>loading</div>)
-  //   }
-  // }
-
-
-
-
-
 }
 
 // this allows us to use <App /> in index.js

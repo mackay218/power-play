@@ -21,6 +21,7 @@ const mapStateToProps = state => ({
 });
 
 let loadedPlayer = false;
+let playerPositionRender = null;
 
 class PlayerProfileDisplay extends Component {
   
@@ -32,6 +33,7 @@ class PlayerProfileDisplay extends Component {
       this.scrollPosition = window.scrollY
     }
   }
+
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
@@ -97,15 +99,17 @@ class PlayerProfileDisplay extends Component {
     //placeholder profile pic
     let profilePic = (
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
+
         alt="placeholder" />
+
     )
 
     let lastName = (
-      <p>Last Name</p>
+      <h1>Last Name</h1>
     );
 
     let firstName = (
-      <p>First Name</p>
+      <h1>First Name</h1>
     );
 
     let birthDate = (
@@ -113,18 +117,23 @@ class PlayerProfileDisplay extends Component {
     );
 
     let phoneNum = (
-      <p>phone: 555-555-5555</p>
+      <p>Phone: 555-555-5555</p>
     );
 
     let emailAddress = (
-      <p>email: johnDoe@example.com</p>
+      <p>Email: johnDoe@example.com</p>
     )
     let playerBio = (
-      <p>Player Info: I am awesome, pick ME!!!!</p>
+      <p>About me: </p>
     )
 
+    let schoolYear = (
+      <p>School Year:</p>
+    )
+    
+
     let school = null;
-    let schoolYear = null;
+    // let schoolYear = null;
     let gpa = null;
     let actScore = null;
 
@@ -194,18 +203,20 @@ class PlayerProfileDisplay extends Component {
       //if picture link has been provided
       if (playerInfo.image_path) {
         profilePic = (
+
           <img src={playerInfo.image_path} alt="profile pic"/>
+
         );
       }
       //if last name have been provided
       if (playerInfo.last_name) {
         lastName = (
-          <h4>{playerInfo.last_name}</h4>
+          <h1>{playerInfo.last_name}</h1>
         );
       }
       if (playerInfo.first_name) {
         firstName = (
-          <h4>{playerInfo.first_name}</h4>
+          <h1>{playerInfo.first_name}</h1>
         )
       }
       if (playerInfo.birth_date) {
@@ -218,17 +229,17 @@ class PlayerProfileDisplay extends Component {
       }
       if (playerInfo.phone_number) {
         phoneNum = (
-          <p>phone: {playerInfo.phone_number}</p>
+          <p>Phone: {playerInfo.phone_number}</p>
         );
       }
       if (playerInfo.email) {
         emailAddress = (
-          <p>email: {playerInfo.email}</p>
+          <p>Email: {playerInfo.email}</p>
         );
       }
       if (playerInfo.school_name) {
         school = (
-          <p>school: {playerInfo.school_name}</p>
+          <p>School: {playerInfo.school_name}</p>
         );
       }
       if (playerInfo.school_year) {
@@ -251,17 +262,23 @@ class PlayerProfileDisplay extends Component {
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
+
       if (playerInfo.position_id === 2) {
+
         position = (
           <h2>Forward</h2>
         );
       }
+
       else if (playerInfo.position_id === 3) {
+
         position = (
           <h2>Defense</h2>
         );
       }
+
       else if (playerInfo.position_id === 4) {
+
         position = (
           <h2>Goalie</h2>
         );
@@ -352,13 +369,14 @@ class PlayerProfileDisplay extends Component {
       }
 
       let videoPlayer = (
-        <iframe id="player" type="text/html" width="640" height="390"
+
+        <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
           frameborder="0"
           title="defaultVideo"
-          >
-          </iframe>
+        ></iframe>
+
 
       )
 
@@ -371,26 +389,49 @@ class PlayerProfileDisplay extends Component {
         let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
         videoPlayer = (
-          <iframe id="player" type="text/html" width="640" height="390"
+
+          <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
             allowFullScreen="allowFullScreen"
             src={videoUrl}
             frameborder="0"
             title="playerVideo"
-            >
-            </iframe>
+          ></iframe>
         )
 
       }
+      // the following conditionally renders (by either forward, or goalie hockey positions) the stats which are displayed.
+      if (playerInfo.position_id === 1 || playerInfo.position_id === 2) {
+        playerPositionRender = (
+          <div className="personInfo">
+            {goals}
+            {assists}
+            {points}
+            {gamesPlayed}
+          </div>
+        );
+      } else {
+        playerPositionRender = (
+          <div className="personInfo">
+            {savePercent}
+            {wins}
+            {losses}
+            {ties}
+            {shutouts}
+            {goalsAgainst}
+          </div>
+        );
+      }
+
 
 
 
       content = (
         <div className="profileContainer">
-          <div className="infoContainer">
-            <div className="profilePicContainer">
-              {profilePic}
+          <div className="infoRow">
+              <div className="profilePicContainer">
+                {profilePic}
             </div>
-            <div className="personInfo">
+            <div className="personInfo infoContainer">
               {firstName}
               {lastName}
               {birthDate}
@@ -400,30 +441,30 @@ class PlayerProfileDisplay extends Component {
               {schoolYear}
               {gpa}
               {actScore}
-              {playerBio}
+            </div>
+            <div className="personInfo infoContainer">
+              {position}
+              {teamName}
+              {league}
+              {height}
+              {weight}
+
+              {playerPositionRender}
+            </div>
+
+          </div>
+          
+          <div className="infoRow">
+            <div className="videoContainer">
+              {videoPlayer}
               <PlayerProfileDialog />
             </div>
+            <div className="playerBioArrangement">
+              {playerBio}
+            </div>
           </div>
-          <div className="infoContainer">
-            {position}
-            {teamName}
-            {league}
-            {height}
-            {weight}
-            {goals}
-            {assists}
-            {points}
-            {gamesPlayed}
-            {savePercent}
-            {wins}
-            {losses}
-            {ties}
-            {shutouts}
-            {goalsAgainst}
-          </div>
-          <div>
-            {videoPlayer}
-          </div>
+         
+
         </div>
       );
     }
