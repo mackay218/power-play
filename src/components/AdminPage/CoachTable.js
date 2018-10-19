@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import swal from 'sweetalert';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+import BanIcon from '@material-ui/icons/Block';
+import SuspendIcon from '@material-ui/icons/RemoveCircleOutline';
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -145,8 +147,8 @@ class CustomizedTable extends Component {
         return (
             <div>
                 <div className="page-buttons">
-                    <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-                    <Button variant="contained" onClick={this.nextPage}>Next</Button>
+                    <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+                    <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
                 </div>
                 <Paper className={classes.root}>
                     <Table className="center-element">
@@ -155,9 +157,9 @@ class CustomizedTable extends Component {
                                 <CustomTableCell>Name</CustomTableCell>
                                 <CustomTableCell>Email</CustomTableCell>
                                 <CustomTableCell>Status</CustomTableCell>
-                                <CustomTableCell>Delete</CustomTableCell>
                                 <CustomTableCell>Suspend</CustomTableCell>
                                 <CustomTableCell>Ban</CustomTableCell>
+                                <CustomTableCell>Delete</CustomTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -169,9 +171,9 @@ class CustomizedTable extends Component {
                                         </CustomTableCell>
                                         <CustomTableCell>{coach.email}</CustomTableCell>
                                         <CustomTableCell>{coach.status_type}</CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.deleteCoach(coach.id)}><DeleteIcon />Delete</Button></CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.suspendCoach(coach.id)}><DeleteIcon />Suspend</Button></CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" color="secondary" onClick={() => this.banCoach(coach.id)}><DeleteIcon />Ban</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "orange", color: "white"}} onClick={() => this.suspendCoach(coach.personid)}><SuspendIcon /> Suspend</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "black", color: "white"}} onClick={() => this.banCoach(coach.personid)}><BanIcon /> Ban</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "#f01e3c", color: "white"}} onClick={() => this.deleteCoach(coach.personid)}><DeleteIcon /> Delete</Button></CustomTableCell>
                                     </TableRow>
                                 );
                             })}
@@ -179,8 +181,8 @@ class CustomizedTable extends Component {
                     </Table>
                 </Paper>
                 <div className="page-buttons">
-                    <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-                    <Button variant="contained" onClick={this.nextPage}>Next</Button>
+                    <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+                    <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
                 </div>
             </div>
         );

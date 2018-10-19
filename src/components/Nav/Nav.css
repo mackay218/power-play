@@ -11,13 +11,23 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    top: -110px;
+    top: -50px;
 }
 
-.navbar-toggler, .navbar-brand, .collapse{
-    position: relative;
-    top: 55px;
+@media only screen and (orientation: landscape){
+    .navbar-toggler, .navbar-brand, .collapse{
+        position: relative;
+        top: 25px;
+    }
 }
+
+@media only screen and (orientation: portrait){
+    .navbar-brand, .navbar-toggler{
+        position: relative;
+        top: 25px;
+    }
+}
+
 
 
 .nav{

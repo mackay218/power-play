@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import swal from 'sweetalert';
 import './ContactPage.css';
 
 
-class ContactPage extends Component{
-    constructor(props){
+class ContactPage extends Component {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -56,13 +56,14 @@ class ContactPage extends Component{
     submitForm = (event) => {
         event.preventDefault();
 
-        if(this.state.name.length === 0 || this.state.email.length === 0 ||
-            this.state.emailMessage.length === 0){
+        if (this.state.name.length === 0 || this.state.email.length === 0 ||
+            this.state.emailMessage.length === 0) {
             this.setState({
                 message: 'Please fill out all fields.',
             });
+            swal('Please fill out all of the fields' , {icon: 'warning'})
         }
-        else{
+        else {
             axios.post('/api/contact', this.state)
                 .then((response) => {
                     console.log(response);
@@ -73,9 +74,15 @@ class ContactPage extends Component{
                         emailMessage: '',
                         message: '',
                     });
+                    swal(
+                        'Email sent!' , 
+                        {icon:'success'})
                 })
                 .catch((error) => {
                     console.log('error sending message:', error);
+                    swal(
+                        'Unable to complete request.' , 
+                        {icon:'warning'})
                 });
         }
     }
@@ -95,17 +102,17 @@ class ContactPage extends Component{
         return (<span />);
     }
 
-    render(){
+    render() {
 
-        return(
+        return (
             <div className="mainContainer"
                 style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
             >
-                <Nav/>
+                <Nav />
                 <div className="pageContainer">
-                    <h1>Contact</h1>
                     {this.renderAlert()}
                     <form className="contactForm">
+                        <h1>Contact</h1>
                         <TextField
                             type="text"
                             label="Name"
@@ -120,7 +127,7 @@ class ContactPage extends Component{
                             name="email"
                             value={this.state.email}
                             onChange={this.handleInputChangeFor('email')}
-                            style= {{width: 200}}
+                            style={{ width: 200 }}
                         ></TextField>
                         <TextField
                             type="text"
@@ -128,13 +135,18 @@ class ContactPage extends Component{
                             name="message"
                             value={this.state.emailMessage}
                             onChange={this.handleInputChangeFor('emailMessage')}
-                            style= {{width: 400}}
+                            style={{ width: 400 }}
                         ></TextField>
-                        <Button className="contactSend" onClick={this.submitForm}>Send</Button>
+                        <Button
+                            className="contactSend"
+                            onClick={this.submitForm}
+                        >
+                            Send
+                        </Button>
                     </form>
                 </div>
             </div>
-       
+
 
         );
     }

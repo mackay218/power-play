@@ -76,9 +76,13 @@ CREATE TABLE "player_stats" (
     "player_info" VARCHAR(200)
 );
 
-INSERT INTO "position" ("position_name") VALUES ('Forward'),('Defense'),('Goalie');
+INSERT INTO "position" ("position_name") VALUES (null), ('Forward'),('Defense'),('Goalie');
 
-INSERT INTO "league" ("league_name") VALUES ('1A'),('2A'),('3A'),('4A'),('5A'),('6A'),('7A'),('8A'),('1AA'),('2AA'),('3AA'),('4AA'),('5AA'),('6AA'),('7AA'),('8AA');
+INSERT INTO "school" ("school_name") VALUES (null);
+
+INSERT INTO "team" ("team_name") VALUES (null);
+
+INSERT INTO "league" ("league_name") VALUES (null),('1A'),('2A'),('3A'),('4A'),('5A'),('6A'),('7A'),('8A'),('1AA'),('2AA'),('3AA'),('4AA'),('5AA'),('6AA'),('7AA'),('8AA');
 
 INSERT INTO "account_status" ("status_type") VALUES ('active'),('suspended'),('banned'),('pending');
 

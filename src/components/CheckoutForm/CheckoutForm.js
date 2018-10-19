@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import { connect } from 'react-redux';
-import axios from 'axios';
+
 import Button from '@material-ui/core/Button';
 import swal from 'sweetalert';
 import {Link} from 'react-router-dom';
@@ -34,13 +34,14 @@ class CheckoutForm extends Component {
     }
 
     handleSubmit = () => {
+        
         this.props.stripe.createToken({ name: "Name" })
             .then((token) => {
                 console.log('Token in submit function', token);
                 this.props.dispatch({ type: 'CHECKOUT', payload: { token: token.token.id, registerInfo: this.props.registerInfo } });
                 swal('Processing transaction');
             }).catch((error) => {
-                swal('You must enter your credit card information');
+                swal('You must enter your credit card information',{ icon: 'error'});
                 console.log('error', error);
             })
     }

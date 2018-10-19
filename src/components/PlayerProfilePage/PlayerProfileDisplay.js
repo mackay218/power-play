@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 
 import moment from 'moment';
 
-import Button from '@material-ui/core/Button';
+
 
 
 import PlayerProfileDialog from './PlayerProfileDialog';
@@ -24,46 +24,7 @@ let loadedPlayer = false;
 let playerPositionRender = null;
 
 class PlayerProfileDisplay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-      profile:
-      {
-        person_id: this.props.user.id,
-        league_id: null,
-        team_id: null,
-        school: null,
-        position_id: null,
-        first_name: null,
-        last_name: null,
-        phone_number: null,
-        birth_date: null,
-        height: null,
-        weight: null,
-        gpa: null,
-        act_score: null,
-        school_year: null,
-        image_path: null,
-        video_link: null,
-        goals: null,
-        assists: null,
-        points: null,
-        games_played: null,
-        wins: null,
-        losses: null,
-        ties: null,
-        save_percent: null,
-        shutouts: null,
-        goals_against: null,
-        guardian: false,
-        player_info: null,
-      },
-
-      toggleView: false,
-    }
-  }
-
+  
   scrollPosition = 0
 
   componentWillReceiveProps() {
@@ -137,7 +98,7 @@ class PlayerProfileDisplay extends Component {
     //placeholder profile pic
     let profilePic = (
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
-        alt="placeholder image" />
+        alt="placeholder" />
     )
 
     let lastName = (
@@ -238,7 +199,7 @@ class PlayerProfileDisplay extends Component {
       //if picture link has been provided
       if (playerInfo.image_path) {
         profilePic = (
-          <img src={playerInfo.image_path} />
+          <img src={playerInfo.image_path} alt="profile pic"/>
         );
       }
       //if last name have been provided
@@ -295,17 +256,17 @@ class PlayerProfileDisplay extends Component {
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
-      if (playerInfo.position_id === 1) {
+      if (playerInfo.position_id === 2) {
         position = (
           <h2>Forward</h2>
         );
       }
-      else if (playerInfo.position_id === 2) {
+      else if (playerInfo.position_id === 3) {
         position = (
           <h2>Defense</h2>
         );
       }
-      else if (playerInfo.position_id === 3) {
+      else if (playerInfo.position_id === 4) {
         position = (
           <h2>Goalie</h2>
         );
@@ -396,10 +357,13 @@ class PlayerProfileDisplay extends Component {
       }
 
       let videoPlayer = (
-        <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
+        <iframe id="player" type="text/html" width="426" height="260"
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
-          frameborder="0"></iframe>
+          frameborder="0"
+          title="defaultVideo"
+          >
+          </iframe>
 
       )
 
@@ -412,10 +376,13 @@ class PlayerProfileDisplay extends Component {
         let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
         videoPlayer = (
-          <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
+          <iframe id="player" type="text/html" width="426" height="260"
             allowFullScreen="allowFullScreen"
             src={videoUrl}
-            frameborder="0"></iframe>
+            frameborder="0"
+            title="playerVideo"
+            >
+            </iframe>
         )
 
       }

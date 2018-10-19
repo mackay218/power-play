@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
@@ -16,7 +14,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
+import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink} from 'mdbreact';
 
 let mapStateToProps = (state) => ({
   user: state.user,
@@ -87,19 +85,17 @@ class Nav extends Component {
     if (this.props.user.role === "player") {
       content = (
         <Navbar dark expand="md" scrolling className={classes.primary}>
-          <NavbarBrand >
-            <NavLink to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
               </img>
-            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough &&
             <NavbarToggler onClick={this.onClick}>
-              <div class="hamburger hamburger--3dx" id="hamburger" >
-                <span class="hamburger-box">
-                  <span class="hamburger-inner"></span>
+              <div className="hamburger hamburger--3dx" id="hamburger" >
+                <span className="hamburger-box">
+                  <span className="hamburger-inner"></span>
                 </span>
               </div>
             </NavbarToggler>}
@@ -137,19 +133,17 @@ class Nav extends Component {
     else if (this.props.user.role === "coach") {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand >
-            <NavLink to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
               </img>
-            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough &&
             <NavbarToggler onClick={this.onClick}>
-              <div class="hamburger hamburger--3dx" id="hamburger" >
-                <span class="hamburger-box">
-                  <span class="hamburger-inner"></span>
+              <div className="hamburger hamburger--3dx" id="hamburger" >
+                <span className="hamburger-box">
+                  <span className="hamburger-inner"></span>
                 </span>
               </div>
             </NavbarToggler>}
@@ -163,9 +157,6 @@ class Nav extends Component {
               </NavItem>
               <NavItem className={classes.primary}>
                 <NavLink to="/players_page">Player List</NavLink>
-              </NavItem>
-              <NavItem className={classes.primary}>
-                <NavLink to="/suspend_page">Account Options</NavLink>
               </NavItem>
               <NavItem className={classes.primary}>
                 <NavLink to="/terms">Terms</NavLink>
@@ -185,19 +176,17 @@ class Nav extends Component {
     else if (this.props.user.role === "admin") {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand >
-            <NavLink to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
               </img>
-            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough &&
             <NavbarToggler onClick={this.onClick}>
-              <div class="hamburger hamburger--3dx" id="hamburger" >
-                <span class="hamburger-box">
-                  <span class="hamburger-inner"></span>
+              <div className="hamburger hamburger--3dx" id="hamburger" >
+                <span className="hamburger-box">
+                  <span className="hamburger-inner"></span>
                 </span>
               </div>
             </NavbarToggler>}
@@ -236,13 +225,11 @@ class Nav extends Component {
     else {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand >
-            <NavLink to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
               </img>
-            </NavLink>
           </NavbarBrand>
           {!this.state.isWideEnough &&
             <NavbarToggler onClick={this.onClick}>

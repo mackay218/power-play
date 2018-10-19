@@ -14,173 +14,213 @@ const chance = new Chance();
  * GET route template
  */
 router.get('/all', (req, res) => {
-    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
-    pool.query(query).then((result) => {
-        console.log(result.rows);
-        res.send(result.rows);
-    }).catch((error) => {
-        console.log('ERROR getting players:', error);
-        res.sendStatus(500);
-    })
-
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
+        pool.query(query).then((result) => {
+            console.log(result.rows);
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log('ERROR getting players:', error);
+            res.sendStatus(500);
+        })
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 router.get('/paged', (req, res) => {
-    const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10 OFFSET $1;`;
-    pool.query(query, [parseInt(req.query.page)]).then((result) => {
-        res.send(result.rows);
-    }).catch((error) => {
-        console.log('ERROR getting coaches:', error);
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10 OFFSET $1;`;
+        pool.query(query, [parseInt(req.query.page)]).then((result) => {
+            res.send(result.rows);
+        }).catch((error) => {
+            console.log('ERROR getting coaches:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 router.delete('/delete/:id', (req, res) => {
-    const query = `DELETE FROM "person" WHERE "personid" = $1;`;
-    pool.query(query, [req.params.id]).then(() => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR deleting the coach', error);
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        const query = `DELETE FROM "person" WHERE "personid" = $1;`;
+        pool.query(query, [req.params.id]).then(() => {
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('ERROR deleting the coach', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 router.put('/suspend/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 2 WHERE "personid" = $1;`;
-    pool.query(query, [req.params.id]).then(() => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR suspending coach:', error);
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        const query = `UPDATE "person" SET "status_id" = 2 WHERE "personid" = $1;`;
+        pool.query(query, [req.params.id]).then(() => {
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('ERROR suspending coach:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+
+    }
 });
 
 router.put('/ban/:id', (req, res) => {
-    const query = `UPDATE "person" SET "status_id" = 3 WHERE "personid" = $1;`;
-    pool.query(query, [req.params.id]).then(() => {
-        res.sendStatus(200);
-    }).catch((error) => {
-        console.log('ERROR banning coach:', error);
-        res.sendStatus(500);
-    });
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        const query = `UPDATE "person" SET "status_id" = 3 WHERE "personid" = $1;`;
+        pool.query(query, [req.params.id]).then(() => {
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('ERROR banning coach:', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 //function to check if coach's email already in database
 router.post('/checkCoach', (req, res) => {
-    console.log('in checkCoach post')
-    console.log(req.body);
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        console.log('in checkCoach post')
+        console.log(req.body);
 
-    const coachInfo = req.body;
+        const coachInfo = req.body;
 
-    const emailAddress = coachInfo.email;
+        const emailAddress = coachInfo.email;
 
-    const queryText = `SELECT * FROM person WHERE "email" = $1;`;
+        const queryText = `SELECT * FROM person WHERE "email" = $1;`;
 
-    const values = [emailAddress];
+        const values = [emailAddress];
 
-    //status codes reversed on purpose to send an ok if email isn't in database
-    //this will allow the next function to run to send the invite email
-    pool.query(queryText, values)
-        .then((results) => {
-            console.log('results', results.rows);
-            if(results.rows.length === 0){
-                res.sendStatus(201);
-            }
-            else{
-                res.sendStatus(200);
-            }
-        })
-        .catch((error) => {
-            console.log('error finding email:', error);
-            res.sendStatus(500);
-        });
+        //status codes reversed on purpose to send an ok if email isn't in database
+        //this will allow the next function to run to send the invite email
+        pool.query(queryText, values)
+            .then((results) => {
+                console.log('results', results.rows);
+                if (results.rows.length === 0) {
+                    res.sendStatus(201);
+                }
+                else {
+                    res.sendStatus(200);
+                }
+            })
+            .catch((error) => {
+                console.log('error finding email:', error);
+                res.sendStatus(500);
+            });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 //function to add new coach to database
 //only called by Admin
 router.post('/coachInvite', (req, res) => {
-    console.log('in coachInvite post');
-    console.log(req.body);
+    if (req.isAuthenticated() && req.user.role === "admin") {
+        console.log('in coachInvite post');
+        console.log(req.body);
 
-    const coachInfo = req.body;
+        const coachInfo = req.body;
 
-    const coachName = coachInfo.name; // this may change depending on client side route
+        const coachName = coachInfo.name; // this may change depending on client side route
 
-    const emailAddress = coachInfo.email; //this may change depending on client side route
+        const emailAddress = coachInfo.email; //this may change depending on client side route
 
-    //limit inivite code to alphanumeric to avoid url problems
-    let inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
+        //limit inivite code to alphanumeric to avoid url problems
+        let inviteCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
 
-    //create expiration date code for invite
-    let expireDate = new Date();
-    
-    expireDate = moment(expireDate).format('L');
+        //create expiration date code for invite
+        let expireDate = new Date();
 
-    expireDate = expireDate.replace(/\//g, '');
+        expireDate = moment(expireDate).format('L');
 
-    inviteCode = inviteCode + expireDate;
+        expireDate = expireDate.replace(/\//g, '');
 
-    const infoForEmail = {
-        name: coachName,
-        email: emailAddress,
-        inviteCode: inviteCode
-    };
+        inviteCode = inviteCode + expireDate;
 
-    const role = 'coach';
+        const infoForEmail = {
+            name: coachName,
+            email: emailAddress,
+            inviteCode: inviteCode
+        };
 
-    const statusType = 4;
-    const statusReason = 'awaiting response from invite';
+        const role = 'coach';
 
-    console.log(infoForEmail);
+        const statusType = 4;
+        const statusReason = 'awaiting response from invite';
 
-    //ACTIVITY LOG for analytics
-    // const activityType = 'invite sent';
-    // const activityTime = new Date();
+        console.log(infoForEmail);
 
-    (async () => {
+        //ACTIVITY LOG for analytics
+        // const activityType = 'invite sent';
+        // const activityTime = new Date();
 
-        const client = await pool.connect();
+        (async () => {
 
-        try {
-            let queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, status_reason)
+            const client = await pool.connect();
+
+            try {
+                let queryText = `INSERT INTO person(email, role, coach_name, invite, status_id, status_reason)
                             VALUES ($1, $2, $3, $4, $5, $6) RETURNING "personid";`;
 
-            let values = [emailAddress, role, coachName, inviteCode, statusType, statusReason];
+                let values = [emailAddress, role, coachName, inviteCode, statusType, statusReason];
 
-            const personResult = await client.query(queryText, values);
+                const personResult = await client.query(queryText, values);
 
-            let personId = personResult.rows[0].personid;
+                let personId = personResult.rows[0].personid;
 
-            //ACTIVITY LOG will need to be changed to include person id as foreign key
-            // queryText = `INSERT INTO activity_log(time, activity_type)
-            //                 VALUES ($1, $2) RETURNING "id";`;
+                //ACTIVITY LOG will need to be changed to include person id as foreign key
+                // queryText = `INSERT INTO activity_log(time, activity_type)
+                //                 VALUES ($1, $2) RETURNING "id";`;
 
-            // values = [activityTime, activityType];
+                // values = [activityTime, activityType];
 
-            // const activityLogResult = await client.query(queryText, values);
+                // const activityLogResult = await client.query(queryText, values);
 
-            // let activityLogId = activityLogResult.rows[0].id;
+                // let activityLogId = activityLogResult.rows[0].id;
 
-            await sendInviteCode(infoForEmail);
+                await sendInviteCode(infoForEmail);
 
-            await client.query('COMMIT');
+                await client.query('COMMIT');
 
-            res.sendStatus(201);
-        }
-        catch (error) {
-            console.log('ROLLBACK', error);
-            await client.query('ROLLBACK');
-            throw error;
-        } finally {
-            //if creating a coach works call function to send invite
+                res.sendStatus(201);
+            }
+            catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                //if creating a coach works call function to send invite
 
-            client.release();
-        }
+                client.release();
+            }
 
-    })().catch((error) => {
-        console.log('CATCH', error);
-        res.sendStatus(500);
-    });
+        })().catch((error) => {
+            console.log('CATCH', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
+    }
 });
 
 //function to send invite email
