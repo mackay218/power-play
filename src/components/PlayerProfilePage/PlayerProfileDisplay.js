@@ -130,9 +130,6 @@ class PlayerProfileDisplay extends Component {
     let schoolYear = (
       <p>School Year:</p>
     )
-    let playerBio = (
-      <p>Player Info: I am awesome, pick ME!!!!</p>
-    )
 
     let school = null;
     // let schoolYear = null;
@@ -256,7 +253,7 @@ class PlayerProfileDisplay extends Component {
       }
       if (playerInfo.act_score) {
         actScore = (
-          <p>ACT: {playerInfo.act_score}</p>
+          <p>ACT Score: {playerInfo.act_score}</p>
         )
       }
       if (playerInfo.player_info) {
