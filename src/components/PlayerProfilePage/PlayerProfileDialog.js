@@ -61,7 +61,7 @@ class PlayerProfileDialog extends React.Component {
             </Toolbar>
           </AppBar>
           <List>
-          <PlayerProfilePage />
+          <PlayerProfilePage handleClose={this.handleClose}/>
             <Divider />
             
           </List>

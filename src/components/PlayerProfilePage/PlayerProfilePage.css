@@ -22,6 +22,41 @@ body{
     justify-content: space-around;
 }
 
+.info-form {
+    background-color: white;
+    width: 1200px;
+    height: 600px;
+    border-radius: 2px;
+    text-align: center;
+    border-radius: 100px;
+    border: 5px solid #eb1b3b;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.align-left {
+    text-align: left
+}
+
+.fileStackContainer {
+    margin-top: 25px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.submitButton {
+    margin-top: 25px;
+    margin-bottom: 5px;
+    float: right;
+}
+
+.bottom {
+    margin-bottom: 0px;
+}
+
 .profileContainer{
     width: 90%;
     padding: 20px 0 0 0 ;

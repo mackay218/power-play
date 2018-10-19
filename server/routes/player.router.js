@@ -162,9 +162,10 @@ router.get('/byName', (req, res) => {
 });
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() && req.user.role === "player") {
+        console.log(req.body);
         validateInfo(req.body);
-        const userId = req.user.id;
+        console.log(req.body);
         const profile = req.body;
         console.log('update privacy setting to: ', req.body);
         const profileQuery = `UPDATE player_stats 
@@ -196,35 +197,34 @@ router.put('/updateProfile/:id', (req, res) => {
                             league_id=$26,
                             image_path=$27
                             WHERE person_id=$28;`;
-        pool.query(profileQuery,
-            [profile.team_id,
-            profile.school_id,
-            profile.position_id,
-            profile.first_name,
-            profile.last_name,
-            profile.phone_number,
-            profile.birth_date,
-            profile.height,
-            profile.weight,
-            profile.gpa,
-            profile.act_score,
-            profile.school_year,
-            profile.video_link,
-            profile.goals,
-            profile.assists,
-            profile.points,
-            profile.games_played,
-            profile.wins,
-            profile.losses,
-            profile.ties,
-            profile.save_percent,
-            profile.shutouts,
-            profile.goals_against,
-            profile.guardian,
-            profile.player_info,
-            profile.league_id,
-            profile.image_path,
-                userId])
+        pool.query(profileQuery,[profile.team_id,
+                                 profile.school_id,
+                                 profile.position_id,
+                                 profile.first_name,
+                                 profile.last_name,
+                                 profile.phone_number,
+                                 profile.birth_date,
+                                 profile.height,
+                                 profile.weight,
+                                 profile.gpa,
+                                 profile.act_score,
+                                 profile.school_year,
+                                 profile.video_link,
+                                 profile.goals,
+                                 profile.assists,
+                                 profile.points,
+                                 profile.games_played,
+                                 profile.wins,
+                                 profile.losses,
+                                 profile.ties,
+                                 profile.save_percent,
+                                 profile.shutouts,
+                                 profile.goals_against,
+                                 profile.guardian,
+                                 profile.player_info,
+                                 profile.league_id,
+                                 profile.image_path,
+                                 profile.person_id])
             .then((result) => {
                 console.log('update result: ', result);
                 res.sendStatus(200);
