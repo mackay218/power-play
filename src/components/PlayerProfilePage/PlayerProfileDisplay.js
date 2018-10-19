@@ -371,12 +371,8 @@ class PlayerProfileDisplay extends Component {
       }
 
       let videoPlayer = (
-<<<<<<< HEAD
-        <iframe id="player" type="text/html" width="426" height="260"
-=======
 
         <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
->>>>>>> 4256bded935b4445d6b9884504f4c9446590963e
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
           frameborder="0"
@@ -395,12 +391,8 @@ class PlayerProfileDisplay extends Component {
         let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
         videoPlayer = (
-<<<<<<< HEAD
-          <iframe id="player" type="text/html" width="426" height="260"
-=======
 
           <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
->>>>>>> 4256bded935b4445d6b9884504f4c9446590963e
             allowFullScreen="allowFullScreen"
             src={videoUrl}
             frameborder="0"
