@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
         const phoneNumber = faker.phone.phoneNumber();
 
         const profilePic = faker.image.avatar();
-        let birthDate = faker.date.past();
+        let birthDate = faker.date.between('1998-12-31', '2002-12-31');
         birthDate = moment(birthDate).format('L');
         const playerInfo = faker.lorem.sentence();
 
@@ -58,7 +58,7 @@ router.post('/', (req, res) => {
         gpaScore = gpaScore.toFixed(2);
         const actScore = Math.round(Math.random() * (36 - 0) + 0);
 
-        const height = Math.round(Math.random() * (7 - 4) + 4) + "' " + Math.round(Math.random() * (11)) + '"';
+        const height = Math.round(Math.random() * (6 - 5) + 5) + "' " + Math.round(Math.random() * (11)) + '"';
         const weight = Math.round(Math.random() * (300 - 100) + 100);
 
         const positionId = Math.round(Math.random() * (4 - 2) + 2);

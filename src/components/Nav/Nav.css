@@ -11,20 +11,28 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    top: -50px;
+    overflow: hidden;
+    top: -170px;
 }
 
 @media only screen and (orientation: landscape){
     .navbar-toggler, .navbar-brand, .collapse{
         position: relative;
-        top: 25px;
+        top: 80px;
+    }
+}
+
+@media only screen and (orientation: portrait) and (min-width: 690px){
+    .navbar-toggler, .navbar-brand, .collapse{
+        position: relative;
+        top: 80px;
     }
 }
 
 @media only screen and (orientation: portrait){
     .navbar-brand, .navbar-toggler{
         position: relative;
-        top: 25px;
+        top: 80px;
     }
 }
 
@@ -41,6 +49,6 @@
 }
 
 .logo{
-    height: 80px;
-    width: 150px;
+    height: 200px;
+    width: 200px;
 } 
