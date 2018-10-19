@@ -106,7 +106,7 @@ class RegisterPage extends Component {
 
               />
             </div>
-            <div>
+            <div className="stripeForm" >
               <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PK_KEY}>
                 <Elements>
                   <CheckoutForm history={this.props.history} registerUser={this.registerUser} registerInfo={{email: this.state.email, password: this.state.password}}/>
