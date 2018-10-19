@@ -5,6 +5,7 @@ body{
 .register-form {
     background-color: white;
     width: 25%;
+    min-width: 400px;
     height: 400px;
     margin: 20px auto;
     padding: 35px;
@@ -41,4 +42,20 @@ body{
 
 Link{
     color: #000;
+}
+
+.inverseLogo{
+    width: 50vw;
+    position: absolute;
+    left: 0;
+    bottom: -200px;
+}
+
+.stripeForm{
+    margin-top: 20px;
+}
+
+.StripeElement{
+    border-bottom: 1px solid #949494;
+    padding-bottom: 5px;
 }

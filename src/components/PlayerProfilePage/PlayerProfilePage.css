@@ -69,6 +69,11 @@ body{
     /* align-items: center; */
 }
 
+.personInfo p {
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .toolbar{
     display: flex;
     flex-direction: row;

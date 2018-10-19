@@ -459,7 +459,7 @@ class PlayerProfileDisplay extends Component {
               {videoPlayer}
               <PlayerProfileDialog />
             </div>
-            <div className="playerBioArrangement">
+            <div className="personInfo playerBioArrangement">
               {playerBio}
             </div>
           </div>
