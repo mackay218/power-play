@@ -69,6 +69,14 @@ function* getPlayerInfo(action) {
     }
 }
 
+function* suspendPlayer(action) {
+    try {
+        yield call(axios.put, `/api/players/suspend/`, action.payload);
+    } catch (error) {
+        yield put({type: 'PLAYER_ERROR', payload: error});
+    }
+}
+
 function* playerError(action) {
     yield alert('There was an error getting the players!');
     console.log('Player Error:', action.payload);
@@ -83,6 +91,7 @@ function* playerSaga() {
     yield takeLatest('GET_PLAYER_INFO', getPlayerInfo);
     yield takeLatest('GET_CSV_LIST', getCSVList);
     yield takeLatest('SEARCH_BY_NAME', searchByName);
+    yield takeLatest('SUSPEND_PLAYER', suspendPlayer);
 }
 
 export default playerSaga;

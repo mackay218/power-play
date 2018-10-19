@@ -4,27 +4,28 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 
 router.post('/', (req, res) => {
-    console.log('message for contact', req.body);
+    if (req.isAuthenticated()) {
+        console.log('message for contact', req.body);
 
-    const contactObj = req.body
+        const contactObj = req.body
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: process.env.my_gmail_email,
-            clientId: process.env.my_oauth_client_id,
-            clientSecret: process.env.my_oauth_client_secret,
-            refreshToken: process.env.my_oauth_refresh_token,
-            accessToken: process.env.my_oauth_access_token,
-        }
-    });
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                type: 'OAuth2',
+                user: process.env.my_gmail_email,
+                clientId: process.env.my_oauth_client_id,
+                clientSecret: process.env.my_oauth_client_secret,
+                refreshToken: process.env.my_oauth_refresh_token,
+                accessToken: process.env.my_oauth_access_token,
+            }
+        });
 
-    const homePageAnchor = process.env.set_home_page;
+        const homePageAnchor = process.env.set_home_page;
 
-    const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        const emailHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>PPR Hockey Invite</title>
@@ -87,30 +88,36 @@ router.post('/', (req, res) => {
                 </body>
             </html>`;
 
-    const mail = {
-        from: "polarishockey@gmail.com",
-        to: "polarishockey@gmail.com",
-        subject: "Power Play Recruiting registration",
-        text: 'MESSAGE FROM PPR CONTACT PAGE',
-        html: emailHtml
+        const mail = {
+            from: "polarishockey@gmail.com",
+            to: "polarishockey@gmail.com",
+            subject: "Power Play Recruiting registration",
+            text: 'MESSAGE FROM PPR CONTACT PAGE',
+            html: emailHtml
+        }
+
+        transporter.sendMail(mail, function (error, info) {
+            if (error) {
+                console.log('error sending mail:', error);
+            }
+            else {
+                //see https://nodemailer.com/usage
+                console.log("info.messageId: " + info.messageId);
+                console.log("info.envelope: " + info.envelope);
+                console.log("info.accepted: " + info.accepted);
+                console.log("info.rejected: " + info.rejected);
+                console.log("info.pending: " + info.pending);
+                console.log("info.response: " + info.response);
+            }
+            transporter.close();
+        })
+        res.sendStatus(200);
+    }
+    else {
+        console.log('You must be logged in!');
+        res.sendStatus(403);
     }
 
-    transporter.sendMail(mail, function (error, info) {
-        if (error) {
-            console.log('error sending mail:', error);
-        }
-        else {
-            //see https://nodemailer.com/usage
-            console.log("info.messageId: " + info.messageId);
-            console.log("info.envelope: " + info.envelope);
-            console.log("info.accepted: " + info.accepted);
-            console.log("info.rejected: " + info.rejected);
-            console.log("info.pending: " + info.pending);
-            console.log("info.response: " + info.response);
-        }
-        transporter.close();
-    })
-    res.sendStatus(200);
 });
 
 

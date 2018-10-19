@@ -41,14 +41,17 @@ class PlayerDialog extends Component {
     //placeholder profile pic
     let profilePic = (
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
-        alt="placeholder image" />
+        alt="placeholder" />
     )
 
     let videoPlayer = (
-       <iframe id="player" type="text/html" width="640" height="390"
-         src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
-         frameborder="0"></iframe>
-      
+      <iframe id="player" type="text/html" width="426" height="260"
+        allowFullScreen="allowFullScreen"
+        src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+        frameborder="0"
+        title="defaultVideo"
+        >
+      </iframe>
     )
 
     if(this.props.info.video_link){
@@ -60,16 +63,20 @@ class PlayerDialog extends Component {
       let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
       videoPlayer = (
-        <iframe id="player" type="text/html" width="640" height="390"
+        <iframe id="player" type="text/html" width="426" height="260"
+          allowFullScreen="allowFullScreen"
           src={videoUrl}
-          frameborder="0"></iframe>
+          frameborder="0"
+          title="playerVideo"
+          >
+        </iframe>
       )
 
     }
 
     if(this.props.info.image_path){
       profilePic = (
-        <img src={this.props.info.image_path} alt="profile picture"/>
+        <img src={this.props.info.image_path} alt="profile pic"/>
       )
     }
 

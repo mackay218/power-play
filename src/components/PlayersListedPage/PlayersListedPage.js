@@ -91,7 +91,7 @@ class PlayersListedPage extends Component {
     }
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_PLAYERS' });
-    this.props.dispatch({ type: 'GET_CSV_LIST'});
+    this.props.dispatch({ type: 'GET_CSV_LIST' });
 
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
@@ -122,7 +122,7 @@ class PlayersListedPage extends Component {
       ...this.state,
       [event.target.name]: event.target.value,
     });
-    setTimeout(() => this.props.dispatch({type: 'SEARCH_BY_NAME', payload: this.state}), 200);
+    setTimeout(() => this.props.dispatch({ type: 'SEARCH_BY_NAME', payload: this.state }), 200);
   }
 
   sendSortBy = (event) => {
@@ -237,28 +237,44 @@ class PlayersListedPage extends Component {
       )
     }
 
-    if (this.state.position_id === "1" || this.state.position_id === "2") {
+    if (this.state.position_id === "2" || this.state.position_id === "3") {
       formContent = (
         <div className="form-column">
           <h4>Skater Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
             <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
     }
-    else if (this.state.position_id === "3") {
+    else if (this.state.position_id === "4") {
       formContent = (
         <div className="form-column">
           <h4>Goalie Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
             <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }} 
+              onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }} 
+            onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -276,21 +292,23 @@ class PlayersListedPage extends Component {
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
                   <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
-                    <MenuItem value="1">Forward</MenuItem>
-                    <MenuItem value="2">Defense</MenuItem>
-                    <MenuItem value="3">Goalies</MenuItem>
+                    <MenuItem value="2">Forward</MenuItem>
+                    <MenuItem value="3">Defense</MenuItem>
+                    <MenuItem value="4">Goalies</MenuItem>
                   </Select>
                 </FormControl>
               </div>
               {formContent}
             </div>
-            <Button variant="contained" type="submit">Search</Button>
+            <Button variant="contained" color="primary" type="submit">Search</Button>
           </form>
           <h2 className="center-text">Players</h2>
-          <div className="page-buttons">
-            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
+          <div className="center-text">
             <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
-            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+          </div>
+          <div className="page-buttons">
+            <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
           <Paper>
             <Table>
@@ -309,8 +327,8 @@ class PlayersListedPage extends Component {
             </Table>
           </Paper>
           <div className="page-buttons">
-            <Button variant="contained" onClick={this.previousPage}>Previous</Button>
-            <Button variant="contained" onClick={this.nextPage}>Next</Button>
+            <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
+            <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
         </div>
       );
