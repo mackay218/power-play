@@ -6,7 +6,7 @@ import { triggerLogout } from '../../redux/actions/loginActions';
 import './PlayerProfilePage.css';
 
 import axios from 'axios';
-import Grid from '@material-ui/core/Grid';
+//import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';

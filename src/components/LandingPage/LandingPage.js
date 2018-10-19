@@ -83,13 +83,13 @@ class LandingPage extends Component {
                                     <img className="guideImg" src="images/profile.svg" alt="profile-icon" />
                                     <p>Enter your stats.</p>
                                 </div>
-                                <img className="arrow" src="images/right-arrow.svg"></img>
+                                <img className="arrow" src="images/right-arrow.svg" alt="arrow"></img>
                                 <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Showcase Your Talent</h3>
                                     <img className="guideImg" src="images/video-player.svg" alt="video-icon" />
                                     <p>Load a clip of your skills in action.</p>
                                 </div>
-                                <img className="arrow" src="images/right-arrow.svg"></img>
+                                <img className="arrow" src="images/right-arrow.svg" alt="arrow"></img>
                                 <div className="guideSection" onClick={this.toRegister}>
                                     <h3 className="guideHeaders">Get Noticed</h3>
                                     <img className="guideImg" src="images/recruitment.svg" alt="get-seen-icon" />

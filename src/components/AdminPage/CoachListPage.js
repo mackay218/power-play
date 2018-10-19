@@ -8,7 +8,7 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './AdminPage.css';
 import CoachTable from './CoachTable';
-import Button from '@material-ui/core/Button';
+
 
 const mapStateToProps = state => ({
   user: state.user,
