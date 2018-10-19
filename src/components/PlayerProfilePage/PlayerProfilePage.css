@@ -28,7 +28,6 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 
 .profilePicContainer{
@@ -79,4 +78,8 @@ body{
     width:100%;
     text-align: center;
     font-family: 'Audiowide', sans-serif;
+}
+
+.playerBioArrangement{
+    margin-top: 20px;
 }

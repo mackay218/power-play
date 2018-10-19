@@ -448,8 +448,8 @@ class PlayerProfileDisplay extends Component {
         <div className="profileContainer">
           <div className="infoContainer">
             <div className="profilePicContainer">
-                {profilePic}
-              
+              {profilePic}
+
             </div>
           </div>
           <div className="personInfo infoContainer">
@@ -462,7 +462,6 @@ class PlayerProfileDisplay extends Component {
             {schoolYear}
             {gpa}
             {actScore}
-            {playerBio}
           </div>
           <div className="personInfo infoContainer">
             {position}
@@ -476,6 +475,9 @@ class PlayerProfileDisplay extends Component {
             {videoPlayer}
             <PlayerProfileDialog />
           </div>
+            <div className="playerBioArrangement">
+              {playerBio}
+            </div>
         </div>
       );
     }
