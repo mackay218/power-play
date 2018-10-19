@@ -32,13 +32,14 @@ router.get('/all', (req, res) => {
 // GET route for populating CSV file
 router.get('/csvList', (req, res) => {
     if (req.isAuthenticated()) {
-        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name"
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name", "person"."status_id"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
                     JOIN "team" ON "team_id" = "team"."teamid"
                     JOIN "school" ON "school_id" = "school"."schoolid"
+                    WHERE "status_id" = 1
                     ORDER BY "created_on" DESC;`;
         pool.query(query).then((result) => {
             res.send(result.rows)
@@ -76,16 +77,12 @@ router.get('/sorted', (req, res) => {
                             AND "position_id" >= COALESCE($1, 0)
                             AND "position_id" <= COALESCE($1, 10)
                             AND "points" >= COALESCE($2,0)
-                            AND "points" <= COALESCE($3,999999)
-                            AND "wins" >= COALESCE($4,0)
-                            AND "wins" <= COALESCE($5,999999)
-                            AND "birth_date" >= COALESCE(DATE($6), DATE('1998-01-01')) 
-                            AND "birth_date" <= COALESCE(DATE($7), DATE('2018-01-01'));`;
+                            AND "wins" >= COALESCE($3,0)
+                            AND "birth_date" >= COALESCE(DATE($4), DATE('1998-01-01')) 
+                            AND "birth_date" <= COALESCE(DATE($5), DATE('2018-01-01'));`;
                 await client.query(queryText, [req.query.position,
                 req.query.minPoints,
-                req.query.maxPoints,
                 req.query.minWins,
-                req.query.maxWins,
                 req.query.minDate,
                 req.query.maxDate]);
                 queryText = `SELECT * FROM "sorted_players" LIMIT 10 OFFSET $1;`;
@@ -166,6 +163,7 @@ router.get('/byName', (req, res) => {
 // PUT route for updating players
 router.put('/updateProfile/:id', (req, res) => {
     if (req.isAuthenticated()) {
+        validateInfo(req.body);
         const userId = req.user.id;
         const profile = req.body;
         console.log('update privacy setting to: ', req.body);
@@ -200,7 +198,7 @@ router.put('/updateProfile/:id', (req, res) => {
                             WHERE person_id=$28;`;
         pool.query(profileQuery,
             [profile.team_id,
-            profile.school,
+            profile.school_id,
             profile.position_id,
             profile.first_name,
             profile.last_name,
@@ -262,7 +260,6 @@ router.put('/suspend/', (req, res) => {
 })
 // POST route for creating a player
 router.post('/create', (req, res) => {
-    if (req.isAuthenticated()) {
         const query = `INSERT INTO "player_stats" 
                     ("person_id", "league_id", "team_id", "school_id", "position_id") 
                     VALUES ($1, 1, 1, 1, 1);`;
@@ -272,12 +269,6 @@ router.post('/create', (req, res) => {
             console.log('ERROR adding player:', error);
             res.sendStatus(500);
         });
-    }
-    else {
-        console.log('You must be logged in!');
-        res.sendStatus(403);
-    }
-
 });
 // DELETE route for removing players
 router.delete('/delete/:id', (req, res) => {
@@ -309,7 +300,7 @@ router.delete('/delete/:id', (req, res) => {
     }
 
 });
-//function for determining if player position is an empty string
+//function for determining if player fields are empty
 areFieldsEmpty = (query) => {
     // sets position to null if passed in an empty string
     // otherwise changes it to an integer
@@ -327,14 +318,6 @@ areFieldsEmpty = (query) => {
     else {
         query.minPoints = parseInt(query.minPoints);
     }
-    // sets maxPoints to null if passed in an empty string
-    // otherwise changes it to an integer
-    if (query.maxPoints === '') {
-        query.maxPoints = null;
-    }
-    else {
-        query.maxPoints = parseInt(query.maxPoints);
-    }
     // sets minWins to null if passed in an empty string
     // otherwise changes it to an integer
     if (query.minWins === '') {
@@ -342,14 +325,6 @@ areFieldsEmpty = (query) => {
     }
     else {
         query.minWins = parseInt(query.minWins);
-    }
-    // sets maxWins to null if passed in an empty string
-    // otherwise changes it to an integer
-    if (query.maxWins === '') {
-        query.maxWins = null;
-    }
-    else {
-        query.maxWins = parseInt(query.maxWins);
     }
     // sets minDate to null if passed in an empty string
     // otherwise changes it to a Date
@@ -368,5 +343,116 @@ areFieldsEmpty = (query) => {
         query.maxDate = moment(query.maxDate).format('YYYY-MM-DD');
     }
     return query;
+}
+//function for validating that information is the correct type
+validateInfo = (body) => {
+
+    if ( body.league_id === '') {
+        body.league_id = null;
+    }
+    else {
+        body.league_id = parseInt(body.league_id);
+    }
+    if ( body.school_id === '') {
+        body.school_id = null;
+    }
+    else {
+        body.school_id = parseInt(body.school_id);
+    }
+    if ( body.position_id === '') {  
+        body.position_id = null;
+    }
+    else {
+        body.position_id = parseInt(body.position_id);
+    }
+    if ( body.birth_date === '') {
+        body.birth_date = null;
+    }
+    else {
+        body.birth_date = Date(body.birth_date);
+    }
+    if ( body.gpa === '') {
+        body.gpa = null;
+    }
+    else {
+        body.gpa = parseFloat(body.gpa);
+    }
+    if (body.act_score === '') {
+        body.act_score = null;
+    }
+    else {
+        body.act_score = parseInt(body.act_score);
+    }
+    if (body.school_year === '') {
+        body.school_year = null;
+    }
+    else {
+        body.school_year = parseInt(body.school_year);
+    }
+    if (body.goals === '') {
+        body.goals = null;
+    }
+    else {
+        body.goals = parseInt(body.goals);
+    }
+    if ( body.assists === '') {
+        body.assists = null;
+    }
+    else {
+        body.assists = parseInt(body.assists);
+    }
+    if (body.points === '') {
+        body.points = null;
+    }
+    else {
+        body.points = parseInt(body.points);
+    }
+    if (body.games_played === '') {
+        body.games_played = null;
+    }
+    else {
+        body.games_played = parseInt(body.games_played);
+    }if (body.wins === '') {
+        body.wins = null;
+    }
+    else {
+        body.wins = parseInt(body.wins);
+    }
+    if (body.losses === '') {
+        body.losses = null;
+    }
+    else {
+        body.losses = parseInt(body.losses);
+    }
+    if (body.ties === '') {
+        body.ties = null;
+    }
+    else {
+        body.ties = parseInt(body.ties);
+    }
+    if (body.save_percent === '') {
+        body.save_percent = null;
+    }
+    else {
+        body.save_percent = parseInt(body.save_percent);
+    }
+    if (body.shutouts === '') {
+        body.shutouts = null;
+    }
+    else {
+        body.shutouts = parseInt(body.shutouts);
+    }
+    if (body.goals_against === '') {
+        body.goals_against = null;
+    }
+    else {
+        body.goals_against = parseInt(body.goals_against);
+    }
+    if (body.guardian === '') {
+        body.guardian = null;
+    }
+    else {
+        body.guardian = false;
+    }
 }
 module.exports = router;

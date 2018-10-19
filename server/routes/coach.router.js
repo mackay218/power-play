@@ -15,7 +15,7 @@ const chance = new Chance();
  */
 router.get('/all', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
-        const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10;`;
+        const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' ORDER BY "personid" LIMIT 10;`;
         pool.query(query).then((result) => {
             console.log(result.rows);
             res.send(result.rows);

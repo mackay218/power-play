@@ -14,7 +14,6 @@ const chance = new Chance();
 
 //function to send check if user is signed up 
 router.get('/:emailAddress', (req, res) => {
-    if (req.isAuthenticated()) {
         console.log('check for email:', req.params.emailAddress);
 
         const email = req.params.emailAddress;
@@ -37,11 +36,6 @@ router.get('/:emailAddress', (req, res) => {
                 console.log('error finding email:', error);
                 res.sendStatus(404);
             });
-    }
-    else {
-        console.log('You must be logged in!');
-        res.sendStatus(403);
-    }
 });
 
 //function to update invite code in person table of database 

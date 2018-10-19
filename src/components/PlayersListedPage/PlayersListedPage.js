@@ -62,9 +62,7 @@ class PlayersListedPage extends Component {
       playerName: '',
       position_id: '',
       pointsMin: '',
-      pointsMax: '',
       winsMin: '',
-      winsMax: '',
       birthDayMin: '',
       birthDayMax: '',
       page: 0,
@@ -224,12 +222,12 @@ class PlayersListedPage extends Component {
           {this.props.player.map((player) => {
             return (
               <TableRow key={player.id}>
-                <CustomTableCell>{player.first_name} {player.last_name}</CustomTableCell>
+                <CustomTableCell>{player.last_name}, {player.first_name}</CustomTableCell>
                 <CustomTableCell>{player.position_name}</CustomTableCell>
                 <CustomTableCell>{moment(player.birth_date).format('MM/DD/YYYY')}</CustomTableCell>
                 <CustomTableCell>{player.points}</CustomTableCell>
                 <CustomTableCell>{player.wins}</CustomTableCell>
-                <CustomTableCell><PlayerDialog id={player.id} /></CustomTableCell>
+                <CustomTableCell><PlayerDialog id={player.person_id} /></CustomTableCell>
               </TableRow>
             )
           })}
@@ -242,8 +240,7 @@ class PlayersListedPage extends Component {
         <div className="form-column">
           <h4>Skater Options</h4>
           <div className="position-options">
-            <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
-            <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
+            <TextField type="number" onChange={this.handleChange} label="Points Scored" name="pointsMin" />
             <TextField type="date" 
               InputLabelProps={{
                 shrink: true,
@@ -263,8 +260,7 @@ class PlayersListedPage extends Component {
         <div className="form-column">
           <h4>Goalie Options</h4>
           <div className="position-options">
-            <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
-            <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
+            <TextField type="number" onChange={this.handleChange} label="Games Won" name="winsMin" />
             <TextField type="date" 
               InputLabelProps={{
                 shrink: true,

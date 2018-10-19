@@ -6,7 +6,6 @@ const stripe = require("stripe")(process.env.STRIPE_SK_KEY);
 
 // route to send information to stripe for 
 router.post("/", async (req, res) => {
-  if (req.isAuthenticated()) {
     console.log(req.body);
     try {
       let { status } = await stripe.charges.create({
@@ -35,11 +34,6 @@ router.post("/", async (req, res) => {
       }
   
     }
-  }
-  else {
-    console.log('You must be logged in!');
-    res.sendStatus(403);
-  }
 });
 
 
