@@ -34,6 +34,7 @@ class PlayerProfileDisplay extends Component {
     }
   }
 
+
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     const element = ReactDOM.findDOMNode(this);
@@ -98,7 +99,9 @@ class PlayerProfileDisplay extends Component {
     //placeholder profile pic
     let profilePic = (
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
+
         alt="placeholder" />
+
     )
 
     let lastName = (
@@ -126,6 +129,9 @@ class PlayerProfileDisplay extends Component {
 
     let schoolYear = (
       <p>School Year:</p>
+    )
+    let playerBio = (
+      <p>Player Info: I am awesome, pick ME!!!!</p>
     )
 
     let school = null;
@@ -199,7 +205,9 @@ class PlayerProfileDisplay extends Component {
       //if picture link has been provided
       if (playerInfo.image_path) {
         profilePic = (
+
           <img src={playerInfo.image_path} alt="profile pic"/>
+
         );
       }
       //if last name have been provided
@@ -256,17 +264,23 @@ class PlayerProfileDisplay extends Component {
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
+
       if (playerInfo.position_id === 2) {
+
         position = (
           <h2>Forward</h2>
         );
       }
+
       else if (playerInfo.position_id === 3) {
+
         position = (
           <h2>Defense</h2>
         );
       }
+
       else if (playerInfo.position_id === 4) {
+
         position = (
           <h2>Goalie</h2>
         );
@@ -357,13 +371,18 @@ class PlayerProfileDisplay extends Component {
       }
 
       let videoPlayer = (
+<<<<<<< HEAD
         <iframe id="player" type="text/html" width="426" height="260"
+=======
+
+        <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
+>>>>>>> 4256bded935b4445d6b9884504f4c9446590963e
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
           frameborder="0"
           title="defaultVideo"
-          >
-          </iframe>
+        ></iframe>
+
 
       )
 
@@ -376,13 +395,17 @@ class PlayerProfileDisplay extends Component {
         let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
         videoPlayer = (
+<<<<<<< HEAD
           <iframe id="player" type="text/html" width="426" height="260"
+=======
+
+          <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
+>>>>>>> 4256bded935b4445d6b9884504f4c9446590963e
             allowFullScreen="allowFullScreen"
             src={videoUrl}
             frameborder="0"
             title="playerVideo"
-            >
-            </iframe>
+          ></iframe>
         )
 
       }
@@ -411,11 +434,14 @@ class PlayerProfileDisplay extends Component {
 
 
 
+
       content = (
         <div className="profileContainer">
           <div className="infoContainer">
             <div className="profilePicContainer">
               {profilePic}
+
+
 
             </div>
           </div>
@@ -436,6 +462,7 @@ class PlayerProfileDisplay extends Component {
             {league}
             {height}
             {weight}
+
             {playerPositionRender}
           </div>
           <div className="infoContainer">
@@ -445,6 +472,7 @@ class PlayerProfileDisplay extends Component {
             <div className="playerBioArrangement">
               {playerBio}
             </div>
+
         </div>
       );
     }
