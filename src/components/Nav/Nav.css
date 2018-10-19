@@ -1,5 +1,6 @@
 
 *{
+    box-sizing: border-box;
     --red: #eb1b3b;
 }
 
@@ -12,31 +13,29 @@
     flex-direction: row;
     position: relative;
     overflow: hidden;
-    top: -170px;
+    top: -70px;
 }
 
 @media only screen and (orientation: landscape){
     .navbar-toggler, .navbar-brand, .collapse{
         position: relative;
-        top: 80px;
-    }
-}
-
-@media only screen and (orientation: portrait) and (min-width: 690px){
-    .navbar-toggler, .navbar-brand, .collapse{
-        position: relative;
-        top: 80px;
+        top: 40px;
     }
 }
 
 @media only screen and (orientation: portrait){
-    .navbar-brand, .navbar-toggler{
+    .navbar-toggler, .navbar-brand{
         position: relative;
-        top: 80px;
+        top: 40px;
     }
 }
 
-
+@media (min-width: 768px){
+    .collapse{
+        position: relative;
+        top: 40px;
+    }
+}
 
 .nav{
     text-align: right;
@@ -49,6 +48,6 @@
 }
 
 .logo{
-    height: 200px;
+    height: 100px;
     width: 200px;
 } 
