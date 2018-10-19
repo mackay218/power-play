@@ -25,42 +25,7 @@ let loadedPlayer = false;
 class PlayerProfileDisplay extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-      profile:
-      {
-        person_id: this.props.user.id,
-        league_id: null,
-        team_id: null,
-        school: null,
-        position_id: null,
-        first_name: null,
-        last_name: null,
-        phone_number: null,
-        birth_date: null,
-        height: null,
-        weight: null,
-        gpa: null,
-        act_score: null,
-        school_year: null,
-        image_path: null,
-        video_link: null,
-        goals: null,
-        assists: null,
-        points: null,
-        games_played: null,
-        wins: null,
-        losses: null,
-        ties: null,
-        save_percent: null,
-        shutouts: null,
-        goals_against: null,
-        guardian: false,
-        player_info: null,
-      },
-
-      toggleView: false,
-    }
+    
   }
 
   scrollPosition = 0
@@ -290,17 +255,17 @@ class PlayerProfileDisplay extends Component {
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
-      if (playerInfo.position_id === 1) {
+      if (playerInfo.position_id === 2) {
         position = (
           <h2>Forward</h2>
         );
       }
-      else if (playerInfo.position_id === 2) {
+      else if (playerInfo.position_id === 3) {
         position = (
           <h2>Defense</h2>
         );
       }
-      else if (playerInfo.position_id === 3) {
+      else if (playerInfo.position_id === 4) {
         position = (
           <h2>Goalie</h2>
         );

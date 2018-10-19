@@ -5,9 +5,6 @@ import Nav from '../Nav/Nav';
 import swal from 'sweetalert';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
-import TextField from '@material-ui/core/TextField';
-
-
 import './PlayerProfilePage.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';

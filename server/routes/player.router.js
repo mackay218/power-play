@@ -1,6 +1,8 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const moment = require('moment');
+
 // GET route for all players
 router.get('/all', (req, res) => {
     const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
@@ -292,10 +294,16 @@ areFieldsEmpty = (query) => {
     if (query.minDate === '') {
         query.minDate = null;
     }
+    else{
+        query.minDate = moment(query.minDate).format('YYYY-MM-DD');
+    }
     // sets maxDate to null if passed in an empty string
     // otherwise changes it to a Date
     if (query.maxDate === '') {
         query.maxDate = null;
+    }
+    else {
+        query.maxDate = moment(query.maxDate).format('YYYY-MM-DD');
     }
     return query;
 }
