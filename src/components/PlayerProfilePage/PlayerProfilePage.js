@@ -171,7 +171,7 @@ class PlayerProfilePage extends Component {
   render() {
     let content = null;
     let positionalContent = null;
-    if (this.state.position_id === '3') {
+    if (this.state.position_id === '4') {
       positionalContent = (
         <div>
           <div className="playerFormSection">
@@ -188,7 +188,7 @@ class PlayerProfilePage extends Component {
           </div>
         </div>
       )
-    } else if (this.state.position_id === '2' || this.state.position_id === '1') {
+    } else if (this.state.position_id === '3' || this.state.position_id === '2') {
       positionalContent = (
         <div>
           <div className="playerFormSection">
@@ -234,9 +234,9 @@ class PlayerProfilePage extends Component {
                 <FormControl>
                   <InputLabel>Position</InputLabel>
                   <Select value={this.state.position_id} onChange={this.handleProfileChange} name="position_id">
-                    <MenuItem value="1">Forward</MenuItem>
-                    <MenuItem value="2">Defence</MenuItem>
-                    <MenuItem value="3">Goalie</MenuItem>
+                    <MenuItem value="2">Forward</MenuItem>
+                    <MenuItem value="3">Defence</MenuItem>
+                    <MenuItem value="4">Goalie</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -245,22 +245,22 @@ class PlayerProfilePage extends Component {
                 <FormControl>
                   <InputLabel>League</InputLabel>
                   <Select value={this.state.league_id} onChange={this.handleProfileChange} name="league_id">
-                    <MenuItem value="1">1A</MenuItem>
-                    <MenuItem value="2">2A</MenuItem>
-                    <MenuItem value="3">3A</MenuItem>
-                    <MenuItem value="4">4A</MenuItem>
-                    <MenuItem value="5">5A</MenuItem>
-                    <MenuItem value="6">6A</MenuItem>
-                    <MenuItem value="7">7A</MenuItem>
-                    <MenuItem value="8">8A</MenuItem>
-                    <MenuItem value="9">1AA</MenuItem>
-                    <MenuItem value="10">2AA</MenuItem>
-                    <MenuItem value="11">3AA</MenuItem>
-                    <MenuItem value="12">4AA</MenuItem>
-                    <MenuItem value="13">5AA</MenuItem>
-                    <MenuItem value="14">6AA</MenuItem>
-                    <MenuItem value="15">7AA</MenuItem>
-                    <MenuItem value="16">8AA</MenuItem>
+                    <MenuItem value="2">1A</MenuItem>
+                    <MenuItem value="3">2A</MenuItem>
+                    <MenuItem value="4">3A</MenuItem>
+                    <MenuItem value="5">4A</MenuItem>
+                    <MenuItem value="6">5A</MenuItem>
+                    <MenuItem value="7">6A</MenuItem>
+                    <MenuItem value="8">7A</MenuItem>
+                    <MenuItem value="9">8A</MenuItem>
+                    <MenuItem value="10">1AA</MenuItem>
+                    <MenuItem value="11">2AA</MenuItem>
+                    <MenuItem value="12">3AA</MenuItem>
+                    <MenuItem value="13">4AA</MenuItem>
+                    <MenuItem value="14">5AA</MenuItem>
+                    <MenuItem value="15">6AA</MenuItem>
+                    <MenuItem value="16">7AA</MenuItem>
+                    <MenuItem value="17">8AA</MenuItem>
                   </Select>
                 </FormControl>
                 <label>Date Of Birth:</label>

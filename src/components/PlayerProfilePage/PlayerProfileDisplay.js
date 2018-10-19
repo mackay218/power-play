@@ -255,17 +255,17 @@ class PlayerProfileDisplay extends Component {
           <p>Player Info: {playerInfo.player_info}</p>
         )
       }
-      if (playerInfo.position_id === 1) {
+      if (playerInfo.position_id === 2) {
         position = (
           <h2>Forward</h2>
         );
       }
-      else if (playerInfo.position_id === 2) {
+      else if (playerInfo.position_id === 3) {
         position = (
           <h2>Defense</h2>
         );
       }
-      else if (playerInfo.position_id === 3) {
+      else if (playerInfo.position_id === 4) {
         position = (
           <h2>Goalie</h2>
         );

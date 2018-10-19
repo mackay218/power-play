@@ -237,28 +237,44 @@ class PlayersListedPage extends Component {
       )
     }
 
-    if (this.state.position_id === "1" || this.state.position_id === "2") {
+    if (this.state.position_id === "2" || this.state.position_id === "3") {
       formContent = (
         <div className="form-column">
           <h4>Skater Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Points Min" name="pointsMin" />
             <TextField type="number" onChange={this.handleChange} label="Points Max" name="pointsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
     }
-    else if (this.state.position_id === "3") {
+    else if (this.state.position_id === "4") {
       formContent = (
         <div className="form-column">
           <h4>Goalie Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Wins Min" name="winsMin" />
             <TextField type="number" onChange={this.handleChange} label="Wins Max" name="winsMax" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
-            <TextField type="text" onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }} 
+              onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
+            <TextField type="date" 
+              InputLabelProps={{
+                shrink: true,
+              }} 
+            onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -276,9 +292,9 @@ class PlayersListedPage extends Component {
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
                   <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
-                    <MenuItem value="1">Forward</MenuItem>
-                    <MenuItem value="2">Defense</MenuItem>
-                    <MenuItem value="3">Goalies</MenuItem>
+                    <MenuItem value="2">Forward</MenuItem>
+                    <MenuItem value="3">Defense</MenuItem>
+                    <MenuItem value="4">Goalies</MenuItem>
                   </Select>
                 </FormControl>
               </div>
