@@ -85,7 +85,7 @@ class Nav extends Component {
     if (this.props.user.role === "player") {
       content = (
         <Navbar dark expand="md" scrolling className={classes.primary}>
-          <NavbarBrand to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
@@ -133,7 +133,7 @@ class Nav extends Component {
     else if (this.props.user.role === "coach") {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
@@ -176,7 +176,7 @@ class Nav extends Component {
     else if (this.props.user.role === "admin") {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
@@ -225,7 +225,7 @@ class Nav extends Component {
     else {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand to="/landing_page">
+          <NavbarBrand href="/landing_page">
               <img className="logo"
                 src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
                 alt="logo">
