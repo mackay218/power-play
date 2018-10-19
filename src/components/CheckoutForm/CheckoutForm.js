@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import { connect } from 'react-redux';
-import axios from 'axios';
+
 import Button from '@material-ui/core/Button';
 import swal from 'sweetalert';
 import {Link} from 'react-router-dom';

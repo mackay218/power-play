@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 
 import moment from 'moment';
 
-import Button from '@material-ui/core/Button';
+
 
 
 import PlayerProfileDialog from './PlayerProfileDialog';
@@ -23,11 +23,7 @@ const mapStateToProps = state => ({
 let loadedPlayer = false;
 
 class PlayerProfileDisplay extends Component {
-  constructor(props) {
-    super(props);
-    
-  }
-
+  
   scrollPosition = 0
 
   componentWillReceiveProps() {
@@ -101,7 +97,7 @@ class PlayerProfileDisplay extends Component {
     //placeholder profile pic
     let profilePic = (
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
-        alt="placeholder image" />
+        alt="placeholder" />
     )
 
     let lastName = (
@@ -198,7 +194,7 @@ class PlayerProfileDisplay extends Component {
       //if picture link has been provided
       if (playerInfo.image_path) {
         profilePic = (
-          <img src={playerInfo.image_path} />
+          <img src={playerInfo.image_path} alt="profile pic"/>
         );
       }
       //if last name have been provided
@@ -359,7 +355,10 @@ class PlayerProfileDisplay extends Component {
         <iframe id="player" type="text/html" width="640" height="390"
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
-          frameborder="0"></iframe>
+          frameborder="0"
+          title="defaultVideo"
+          >
+          </iframe>
 
       )
 
@@ -375,7 +374,10 @@ class PlayerProfileDisplay extends Component {
           <iframe id="player" type="text/html" width="640" height="390"
             allowFullScreen="allowFullScreen"
             src={videoUrl}
-            frameborder="0"></iframe>
+            frameborder="0"
+            title="playerVideo"
+            >
+            </iframe>
         )
 
       }

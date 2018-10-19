@@ -177,8 +177,19 @@ body{
         width: 80vw;
     }
 
+    .pictureFrame{
+        width: 20vw;
+        height: 20vw;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+        justify-content: center;
+
+    }
+
     .testimonialSection img{
-      
+      height: 100%
     }
 }
 .testimonialContainer{
