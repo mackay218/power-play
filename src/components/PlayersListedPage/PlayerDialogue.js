@@ -142,6 +142,7 @@ class PlayerDialog extends Component {
                   <p>GPA: {this.props.info.gpa}</p>
                   <p>ACT Score: {this.props.info.act_score}</p>
                   <p>School Year: {this.props.info.school_year}</p>
+                  <p>Player Bio: {this.props.info.player_info}</p>
                 </Grid>
                 <Grid className="center" item md={4}>
                   <h3 className="dialog-head center">Contact Info</h3>
