@@ -55,7 +55,7 @@ CREATE TABLE "player_stats" (
     "goals_against"INTEGER DEFAULT 0,
     "guardian" BOOLEAN DEFAULT false,
     "created_on" DATE DEFAULT NOW(),
-    "player_info" VARCHAR(200)
+    "player_info" VARCHAR(1000)
 );
 
 INSERT INTO "position" ("position_name") VALUES (null), ('Forward'),('Defense'),('Goalie');

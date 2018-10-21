@@ -39,7 +39,9 @@ class CheckoutForm extends Component {
             .then((token) => {
                 console.log('Token in submit function', token);
                 this.props.dispatch({ type: 'CHECKOUT', payload: { token: token.token.id, registerInfo: this.props.registerInfo } });
-                swal('Processing transaction');
+                swal('Processing transaction').then(() => {
+                    this.props.history.push('/login');
+                });
             }).catch((error) => {
                 swal('You must enter your credit card information',{ icon: 'error'});
                 console.log('error', error);
