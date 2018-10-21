@@ -124,7 +124,7 @@ class PlayerProfileDisplay extends Component {
       <p>Email: johnDoe@example.com</p>
     )
     let playerBio = (
-      <p>Player Info: I am awesome, pick ME!!!!</p>
+      <p>About me: </p>
     )
 
     let schoolYear = (
@@ -426,41 +426,43 @@ class PlayerProfileDisplay extends Component {
 
       content = (
         <div className="profileContainer">
-          <div className="infoContainer">
-            <div className="profilePicContainer">
-              {profilePic}
-
-
-
+          <div className="infoRow">
+              <div className="profilePicContainer">
+                {profilePic}
             </div>
-          </div>
-          <div className="personInfo infoContainer">
-            {firstName}
-            {lastName}
-            {birthDate}
-            {phoneNum}
-            {emailAddress}
-            {school}
-            {schoolYear}
-            {gpa}
-            {actScore}
-          </div>
-          <div className="personInfo infoContainer">
-            {position}
-            {teamName}
-            {league}
-            {height}
-            {weight}
+            <div className="personInfo infoContainer">
+              {firstName}
+              {lastName}
+              {birthDate}
+              {phoneNum}
+              {emailAddress}
+              {school}
+              {schoolYear}
+              {gpa}
+              {actScore}
+            </div>
+            <div className="personInfo infoContainer">
+              {position}
+              {teamName}
+              {league}
+              {height}
+              {weight}
 
-            {playerPositionRender}
+              {playerPositionRender}
+            </div>
+
           </div>
-          <div className="infoContainer">
-            {videoPlayer}
-            <PlayerProfileDialog />
-          </div>
+          
+          <div className="infoRow">
+            <div className="videoContainer">
+              {videoPlayer}
+              <PlayerProfileDialog />
+            </div>
             <div className="playerBioArrangement">
               {playerBio}
             </div>
+          </div>
+         
 
         </div>
       );
