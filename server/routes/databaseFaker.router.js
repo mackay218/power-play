@@ -84,13 +84,13 @@ router.post('/', (req, res) => {
         const guardian = false;
 
         //if forward or defense
-        if (positionId <= 2) {
+        if (positionId === 3 || positionId === 2) {
             goals = Math.round(Math.random() * (100 - 1) + 1);
             assists = Math.round(Math.random() * (100 - 1) + 1);
             points = Math.round(Math.random() * (150 - 1) + 1);
         }
         //if goalie
-        else if (positionId === 3) {
+        else if (positionId === 4) {
             wins = Math.round(Math.random() * (20 - 1) + 1);
             losses = Math.round(Math.random() * (20 - 1) + 1);
             ties = Math.round(Math.random() * (20 - 1) + 1);
@@ -98,10 +98,8 @@ router.post('/', (req, res) => {
             savePercent = savePercent.toFixed(2);
             gamesPlayed = wins + losses + ties;
             goalsAgainst = Math.round(Math.random() * (30 - 1) + 1);
+            shutOuts = Math.round(Math.random() * (10 - 1) + 1);
         }
-
-        //insert school and teamName into school and team tables and get back id to insert 
-        // into player_stats table
 
         (async () => {
             const client = await pool.connect();
@@ -124,28 +122,13 @@ router.post('/', (req, res) => {
 
                 // let activityLogId = activityLogResult.rows[0].id;
 
-                queryText = `INSERT INTO school(school_name) VALUES ($1) RETURNING "schoolid";`;
-
-                values = [school];
-
-                const schoolResult = await client.query(queryText, values);
-
-                let schoolId = schoolResult.rows[0].schoolid;
-
-                queryText = `INSERT INTO team(team_name) VALUES ($1) RETURNING "teamid";`;
-                values = [teamName];
-
-                const teamResult = await client.query(queryText, values);
-
-                let teamId = teamResult.rows[0].teamid;
-
-                queryText = `INSERT INTO player_stats(person_id, league_id, team_id, school_id, position_id, 
+                queryText = `INSERT INTO player_stats(person_id, league_id, team_name, school_name, position_id, 
                             first_name, last_name, phone_number, birth_date, height, weight, gpa, act_score, 
                             school_year, image_path, video_link, goals, assists, points, games_played, wins, 
                             losses, ties, save_percent, shutouts, goals_against, guardian, created_on, player_info)
                             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18,
                                     $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29);`;
-                values = [personId, leagueId, teamId, schoolId, positionId, firstName, lastName,
+                values = [personId, leagueId, teamName, school, positionId, firstName, lastName,
                     phoneNumber, birthDate, height, weight, gpaScore, actScore, gradeYear, profilePic,
                     videoLink, goals, assists, points, gamesPlayed, wins, losses, ties, savePercent,
                     shutOuts, goalsAgainst, guardian, createdOn, playerInfo];

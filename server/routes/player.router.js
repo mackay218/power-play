@@ -2,18 +2,15 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const moment = require('moment');
-
 // GET route for all players
 router.get('/all', (req, res) => {
     if (req.isAuthenticated()) {
         const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
-                    "team"."team_name","school"."school_name", "person"."personid", "person"."status_id"
+                    "person"."personid", "person"."status_id"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
-                    JOIN "team" ON "team_id" = "team"."teamid"
-                    JOIN "school" ON "school_id" = "school"."schoolid"
                     WHERE "status_id" = 1
                     ORDER BY "created_on" DESC LIMIT 10;`;
         pool.query(query).then((result) => {
@@ -32,13 +29,11 @@ router.get('/all', (req, res) => {
 // GET route for populating CSV file
 router.get('/csvList', (req, res) => {
     if (req.isAuthenticated()) {
-        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name","team"."team_name","school"."school_name", "person"."status_id"
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "person"."status_id"
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
-                    JOIN "team" ON "team_id" = "team"."teamid"
-                    JOIN "school" ON "school_id" = "school"."schoolid"
                     WHERE "status_id" = 1
                     ORDER BY "created_on" DESC;`;
         pool.query(query).then((result) => {
@@ -54,7 +49,6 @@ router.get('/csvList', (req, res) => {
     }
 
 });
-
 // GET route for sorting players
 router.get('/sorted', (req, res) => {
     if (req.isAuthenticated()) {
@@ -66,13 +60,11 @@ router.get('/sorted', (req, res) => {
             try {
                 queryText = `CREATE TEMP TABLE "sorted_players" AS
                             SELECT "player_stats".*, "position"."position_name", "league"."league_name",
-                            "team"."team_name","school"."school_name", "person"."personid", "person"."status_id" 
+                            "person"."personid", "person"."status_id" 
                             FROM "player_stats" 
                             JOIN "person" ON "person_id" = "person"."personid"
                             JOIN "position" ON "position_id" = "position"."positionid"
                             JOIN "league" ON "league_id" = "league"."leagueid"
-                            JOIN "team" ON "team_id" = "team"."teamid"
-                            JOIN "school" ON "school_id" = "school"."schoolid"
                             WHERE "status_id" = 1
                             AND "position_id" >= COALESCE($1, 0)
                             AND "position_id" <= COALESCE($1, 10)
@@ -113,11 +105,9 @@ router.get('/sorted', (req, res) => {
 router.get('/playerInfo/:id', (req, res) => {
     if (req.isAuthenticated()) {
         console.log('in playerInfo', req.params.id);
-        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "team"."team_name", "school"."school_name", "person"."email", "person"."personid" FROM "player_stats"
+        const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "person"."email", "person"."personid" FROM "player_stats"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
-                    JOIN "team" ON "team_id" = "team"."teamid"
-                    JOIN "school" ON "school_id" = "school"."schoolid"
                     JOIN "person" ON "person_id" = "person"."personid"
                     WHERE "personid" = $1;`;
         pool.query(query, [req.params.id]).then((result) => {
@@ -138,13 +128,11 @@ router.get('/playerInfo/:id', (req, res) => {
 router.get('/byName', (req, res) => {
     if (req.isAuthenticated()) {
         req.query.name = `%${req.query.name}%`;
-        const query = `SELECT "player_stats".*, "position".*, "league".*,"team".*,"school".*, "person"."personid" 
+        const query = `SELECT "player_stats".*, "position".*, "league".*, "person"."personid" 
                     FROM "player_stats" 
                     JOIN "person" ON "person_id" = "person"."personid"
                     JOIN "position" ON "position_id" = "position"."positionid"
                     JOIN "league" ON "league_id" = "league"."leagueid"
-                    JOIN "team" ON "team_id" = "team"."teamid"
-                    JOIN "school" ON "school_id" = "school"."schoolid"
                     WHERE "last_name" ILIKE $1 LIMIT 10 OFFSET $2;`;
         pool.query(query, [req.query.name, req.query.page]).then((result) => {
             console.log(result.rows);
@@ -161,7 +149,7 @@ router.get('/byName', (req, res) => {
 
 });
 // PUT route for updating players
-router.put('/updateProfile/:id', (req, res) => {
+router.put('/updateProfile/:id', (req, res) => {    
     if (req.isAuthenticated() && req.user.role === "player") {
         console.log(req.body);
         validateInfo(req.body);
@@ -169,8 +157,8 @@ router.put('/updateProfile/:id', (req, res) => {
         const profile = req.body;
         console.log('update privacy setting to: ', req.body);
         const profileQuery = `UPDATE player_stats 
-                            SET team_id=$1, 
-                            school_id=$2,
+                            SET team_name=$1, 
+                            school_name=$2,
                             position_id=$3,
                             first_name=$4,
                             last_name=$5,
@@ -197,8 +185,8 @@ router.put('/updateProfile/:id', (req, res) => {
                             league_id=$26,
                             image_path=$27
                             WHERE person_id=$28;`;
-        pool.query(profileQuery,[profile.team_id,
-                                 profile.school_id,
+        pool.query(profileQuery,[profile.team_name,
+                                 profile.school_name,
                                  profile.position_id,
                                  profile.first_name,
                                  profile.last_name,
@@ -261,8 +249,8 @@ router.put('/suspend/', (req, res) => {
 // POST route for creating a player
 router.post('/create', (req, res) => {
         const query = `INSERT INTO "player_stats" 
-                    ("person_id", "league_id", "team_id", "school_id", "position_id") 
-                    VALUES ($1, 1, 1, 1, 1);`;
+                    ("person_id", "league_id", "position_id") 
+                    VALUES ($1, 1, 1);`;
         pool.query(query, [req.body.id]).then((result) => {
             res.sendStatus(201);
         }).catch((error) => {
@@ -353,11 +341,8 @@ validateInfo = (body) => {
     else {
         body.league_id = parseInt(body.league_id);
     }
-    if ( body.school_id === '') {
-        body.school_id = null;
-    }
-    else {
-        body.school_id = parseInt(body.school_id);
+    if ( body.school_name === '') {
+        body.school_name = null;
     }
     if ( body.position_id === '') {  
         body.position_id = null;
@@ -453,6 +438,9 @@ validateInfo = (body) => {
     }
     else {
         body.guardian = false;
+    }
+    if (body.team_name === '') {
+        body.team_name = null;
     }
 }
 module.exports = router;

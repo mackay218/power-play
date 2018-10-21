@@ -40,8 +40,8 @@ class PlayerProfilePage extends Component {
     this.state = {
       person_id: this.props.user.id,
       league_id: '',
-      team_id: '',
-      school_id: '',
+      team_name: '',
+      school_name: '',
       position_id: '',
       first_name: '',
       last_name: '',
@@ -100,8 +100,8 @@ class PlayerProfilePage extends Component {
       this.setState({
         person_id: this.props.user.id,
         league_id: this.props.player.league_id,
-        team_id: this.props.player.team_name,
-        school_id: this.props.player.school_id,
+        team_name: this.props.player.team_name,
+        school_name: this.props.player.school_id,
         position_id: this.props.player.position_id,
         first_name: this.props.player.first_name,
         last_name: this.props.player.last_name,
@@ -168,31 +168,31 @@ class PlayerProfilePage extends Component {
     this.setState({
       person_id: this.props.user.id,
       league_id: '5',
-      team_id: '6',
-      school_id: '2',
-      position_id: "3",
-      first_name: "Billy",
-      last_name: "The Goat",
+      team_name: 'The White Hawks',
+      school_name: 'Mount West Tonka',
+      position_id: '4',
+      first_name: 'Billy',
+      last_name: 'Remington',
       phone_number: 6514438876,
       birth_date: '',
       height: `6'4''`,
       weight: '175lb',
       gpa: '4.0',
       act_score: 31,
-      school_year: "12",
+      school_year: '12',
       video_link: 'https://www.youtube.com/watch?v=c1iZ_pkOwwU',
-      goals: 12,
-      assists: 15,
-      points: 83,
+      goals: 0,
+      assists: 0,
+      points: 0,
       games_played: 4,
       wins: 2,
       losses: 2,
       ties: 0,
-      save_percent: '',
-      shutouts: '',
-      goals_against: '',
+      save_percent: '90.1%',
+      shutouts: 4,
+      goals_against: 15,
       guardian: true,
-      player_info: 'I am a goat!!',
+      player_info: 'I\'ve been starting at the goalie position at Mount West Tonka for the last three years, Each year I have been getting better at the position and have been going to Michael Bowman Hockey Camp over the summers. I focus on my academics an equal amount as I focus on my hockey career. I am looking forward to a tryout with you and your team!',
     })
   }
 
@@ -210,7 +210,7 @@ class PlayerProfilePage extends Component {
             <TextField type="number" label="Ties" value={this.state.ties} onChange={this.handleProfileChange} name="ties" />
           </div>
           <div>
-            <TextField type="number" label="Save %" value={this.state.save_percent} onChange={this.handleProfileChange} name="save_percent" />
+            <TextField type="text" label="Save %" value={this.state.save_percent} onChange={this.handleProfileChange} name="save_percent" />
             <TextField type="number" label="Shutouts" value={this.state.shutouts} onChange={this.handleProfileChange} name="shutouts" />
             <TextField type="number" label="Goals Against" value={this.state.goals_against} onChange={this.handleProfileChange} name="goals_against" />
             <TextField type="number" label="Games Played" value={this.state.games_played} onChange={this.handleProfileChange} name="games_played" />
@@ -247,29 +247,8 @@ class PlayerProfilePage extends Component {
                   <div className="playerFormSection">
                     <TextField type="text" label="First Name" value={this.state.first_name} onChange={this.handleProfileChange} name="first_name" />
                     <TextField type="text" label="Last Name" value={this.state.last_name} onChange={this.handleProfileChange} name="last_name" />
-                    <FormControl>
-                      <InputLabel>School</InputLabel>
-                      <Select value={this.state.school_id} onChange={this.handleProfileChange} name="school_id" className="align-left">
-                        <MenuItem value="2">East Bradleyview High School</MenuItem>
-                        <MenuItem value="3">Huldaport High School</MenuItem>
-                        <MenuItem value="4">Yeseniashire High School</MenuItem>
-                        <MenuItem value="5">Gorczanyport High School</MenuItem>
-                        <MenuItem value="6">South Loren High School</MenuItem>
-                        <MenuItem value="7">Bergnaumburgh High School</MenuItem>
-                        <MenuItem value="8">East Laila High School</MenuItem>
-                        <MenuItem value="9">East Nicholas High School</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <InputLabel>Team</InputLabel>
-                      <Select value={this.state.team_id} onChange={this.handleProfileChange} name="team_id" className="align-left">
-                        <MenuItem value="2">Jacobi Jacks</MenuItem>
-                        <MenuItem value="3">Jast Jousters</MenuItem>
-                        <MenuItem value="4">Fishers</MenuItem>
-                        <MenuItem value="5">Shutout Shutters</MenuItem>
-                        <MenuItem value="6">L.A. Kings</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <TextField type="text" label="School" value={this.state.school_name} onChange={this.handleProfileChange} name="school_name" />
+                    <TextField type="text" label="Team" value={this.state.team_name} onChange={this.handleProfileChange} name="team_name" />
                     <TextField type="text" label="Email" value={this.props.user.email} />
                     <TextField type="number" label="Phone Number" value={this.state.phone_number} onChange={this.handleProfileChange} name="phone_number" />
                   </div>
