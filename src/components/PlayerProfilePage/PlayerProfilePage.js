@@ -16,9 +16,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 import ReactFilestack from 'filestack-react';
 
-
-
-
 const mapStateToProps = state => ({
   user: state.user,
   player: state.player,
@@ -164,6 +161,9 @@ class PlayerProfilePage extends Component {
 
 
   easyFill = () => {
+
+
+  
     console.log('In easyFill');
     this.setState({
       person_id: this.props.user.id,
@@ -174,7 +174,7 @@ class PlayerProfilePage extends Component {
       first_name: 'Billy',
       last_name: 'Remington',
       phone_number: 6514438876,
-      birth_date: '',
+      birth_date: '2000-12-12',
       height: `6'4''`,
       weight: '175lb',
       gpa: '4.0',

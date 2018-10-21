@@ -114,6 +114,7 @@ class RegisterPage extends Component {
               </StripeProvider>
             </div>
           </form>
+          <img className="inverseLogo" src="images/largePPRLogo.svg" alt="logo"/>
         </div>
       </div>
     );

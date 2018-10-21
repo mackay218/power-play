@@ -258,7 +258,7 @@ class PlayerProfileDisplay extends Component {
       }
       if (playerInfo.player_info) {
         playerBio = (
-          <p>Player Info: {playerInfo.player_info}</p>
+          <p>About me: <br/>{playerInfo.player_info}</p>
         )
       }
 
@@ -339,31 +339,31 @@ class PlayerProfileDisplay extends Component {
 
       if (playerInfo.wins) {
         wins = (
-          <p>Wins:</p>
+          <p>Wins: {playerInfo.wins}</p>
         )
       }
 
       if (playerInfo.losses) {
         losses = (
-          <p>Losses:</p>
+          <p>Losses: {playerInfo.losses}</p>
         )
       }
 
       if (playerInfo.ties) {
         ties = (
-          <p>Ties:</p>
+          <p>Ties: {playerInfo.ties}</p>
         )
       }
 
       if (playerInfo.shutouts) {
         shutouts = (
-          <p>Shutouts:</p>
+          <p>Shutouts: {playerInfo.shutouts}</p>
         )
       }
 
       if (playerInfo.goals_against) {
         goalsAgainst = (
-          <p>Goals Against:</p>
+          <p>Goals Against: {playerInfo.goals_against}</p>
         )
       }
 
