@@ -379,8 +379,8 @@ class PlayerProfileDisplay extends Component {
 
       )
 
-      if (this.props.player.video_link) {
-        let videoCode = this.props.player.video_link;
+      if (playerInfo.video_link) {
+        let videoCode = playerInfo.video_link;
 
         videoCode = videoCode.split('=');
         videoCode = videoCode[1];
