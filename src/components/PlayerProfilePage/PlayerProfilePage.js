@@ -174,7 +174,7 @@ class PlayerProfilePage extends Component {
       first_name: 'Billy',
       last_name: 'Remington',
       phone_number: 6514438876,
-      birth_date: '',
+      birth_date: '2000-12-12',
       height: `6'4''`,
       weight: '175lb',
       gpa: '4.0',
@@ -184,8 +184,8 @@ class PlayerProfilePage extends Component {
       goals: 0,
       assists: 0,
       points: 0,
-      games_played: 4,
-      wins: 2,
+      games_played: 14,
+      wins: 12,
       losses: 2,
       ties: 0,
       save_percent: '90.1%',
@@ -281,7 +281,7 @@ class PlayerProfilePage extends Component {
                     <TextField label="Video URL" value={this.state.video_link} onChange={this.handleProfileChange} name="video_link" />
                     <FormControl>
                       <InputLabel>League</InputLabel>
-                      <Select value={this.state.league_id} onChange={this.handleProfileChange} name="league_id" className="align-left">
+                      <Select value={this.state.league_id} onChange={this.handleProfileChange} name="league_id" className="align-left" required>
                         <MenuItem value="2">1A</MenuItem>
                         <MenuItem value="3">2A</MenuItem>
                         <MenuItem value="4">3A</MenuItem>

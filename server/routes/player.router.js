@@ -354,7 +354,7 @@ validateInfo = (body) => {
         body.birth_date = null;
     }
     else {
-        body.birth_date = Date(body.birth_date);
+        body.birth_date = moment(body.birth_date).format('YYYY-MM-DD');
     }
     if ( body.gpa === '') {
         body.gpa = null;
