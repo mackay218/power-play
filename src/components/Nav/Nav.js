@@ -87,7 +87,7 @@ class Nav extends Component {
         <Navbar dark expand="md" scrolling className={classes.primary}>
           <NavbarBrand href="/landing_page">
               <img className="logo"
-                src="https://drive.google.com/uc?export=view&id=1k270ptdyB7SabQnO3HHD1DBytIIBQBtQ"
+              src="images/pprLogo.png"
                 alt="logo">
               </img>
           </NavbarBrand>

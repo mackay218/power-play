@@ -91,7 +91,7 @@ router.post('/', (req, res) => {
         }
         //if goalie
         else if (positionId === 4) {
-            wins = Math.round(Math.random() * (20 - 1) + 1);
+            wins = Math.round(Math.random() * (10 - 1) + 1);
             losses = Math.round(Math.random() * (20 - 1) + 1);
             ties = Math.round(Math.random() * (20 - 1) + 1);
             savePercent = Math.random() * (90.00 - 1.00) + 1.00;
