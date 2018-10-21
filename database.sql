@@ -15,27 +15,9 @@ CREATE TABLE "person" (
     "status_reason" VARCHAR(1000)
 );
 
-CREATE TABLE "activity_log" (
-    "id" SERIAL PRIMARY KEY,
-    "person_id" INTEGER REFERENCES "person"(personid),
-    "time" TIMESTAMP DEFAULT NOW(),
-    "activity_type" VARCHAR(200)
-
-);
-
 CREATE TABLE "league" (
     "leagueid" SERIAL PRIMARY KEY,
     "league_name" VARCHAR(200)
-);
-
-CREATE TABLE "team" (
-    "teamid" SERIAL PRIMARY KEY,
-    "team_name" VARCHAR(200)
-);
-
-CREATE TABLE "school" (
-    "schoolid" SERIAL PRIMARY KEY,
-    "school_name" VARCHAR(200)
 );
 
 CREATE TABLE "position" (
@@ -47,8 +29,8 @@ CREATE TABLE "player_stats" (
     "id" SERIAL PRIMARY KEY,
     "person_id" INTEGER REFERENCES "person"(personid),
     "league_id" INTEGER REFERENCES "league"(leagueid),
-    "team_id" INTEGER REFERENCES "team"(teamid),
-    "school_id" INTEGER REFERENCES "school"(schoolid),
+    "team_name" VARCHAR(200),
+    "school_name" VARCHAR(200),
     "position_id" INTEGER REFERENCES "position"(positionid),
     "first_name" VARCHAR(100),
     "last_name" VARCHAR(100),
@@ -77,10 +59,6 @@ CREATE TABLE "player_stats" (
 );
 
 INSERT INTO "position" ("position_name") VALUES (null), ('Forward'),('Defense'),('Goalie');
-
-INSERT INTO "school" ("school_name") VALUES (null);
-
-INSERT INTO "team" ("team_name") VALUES (null);
 
 INSERT INTO "league" ("league_name") VALUES (null),('1A'),('2A'),('3A'),('4A'),('5A'),('6A'),('7A'),('8A'),('1AA'),('2AA'),('3AA'),('4AA'),('5AA'),('6AA'),('7AA'),('8AA');
 
