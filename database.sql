@@ -64,4 +64,6 @@ INSERT INTO "league" ("league_name") VALUES (null),('1A'),('2A'),('3A'),('4A'),(
 
 INSERT INTO "account_status" ("status_type") VALUES ('active'),('suspended'),('banned'),('pending');
 
+-- End database queries
+
 
