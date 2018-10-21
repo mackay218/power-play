@@ -68,7 +68,7 @@ class CheckoutForm extends Component {
         return (
             // text related to payment form and holds stripe card element 
             <div>
-                <h4>Payment Form</h4>
+                <h5>Payment Form</h5>
                 <p>Sign up for a monthly subscription</p>
                 <CardElement />
                 <br />
