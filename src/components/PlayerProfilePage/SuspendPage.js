@@ -51,7 +51,6 @@ class SuspendPage extends Component {
   }
 
   suspendPlayer = (id) => {
-    //TODO: set up delete
     swal({
       title: "Are you sure you want to suspend your account?",
       text: "Once suspended, you will not be able to be seen by coaches!",
@@ -79,7 +78,7 @@ class SuspendPage extends Component {
         <Nav />
         <div className="pageContainer">
 
-          <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
+          <form className="suspend-form">
             <h3>Suspend Account</h3>
             <FormControl >
               <InputLabel>Reason for suspending account</InputLabel>
@@ -93,7 +92,7 @@ class SuspendPage extends Component {
             <label>If other, explain:</label>
             <TextField type="text" label="explanation for suspending account" onChange={this.handleChange} name="reasonBody" />
             <br />
-            <Button variant="contained" color="secondary" type="submit">Suspend Account</Button>
+            <Button variant="contained" color="secondary" onClick={() => this.suspendPlayer(this.props.user.id)}>Suspend Account</Button>
           </form>
         </div>
       </div>

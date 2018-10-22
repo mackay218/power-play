@@ -133,7 +133,7 @@ class PlayerProfilePage extends Component {
       ...this.state,
       [event.target.name]: event.target.value,
     })
-    console.log('this.state.profile:', this.state.profile)
+    console.log('this.state.profile:', this.state)
   }
 
   logout = () => {

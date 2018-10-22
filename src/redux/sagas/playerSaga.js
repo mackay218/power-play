@@ -2,6 +2,7 @@
 
 import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function* getAllPlayers() {
     try {
@@ -78,7 +79,7 @@ function* suspendPlayer(action) {
 }
 
 function* playerError(action) {
-    yield alert('There was an error getting the players!');
+    yield swal('There was an error getting the players!');
     console.log('Player Error:', action.payload);
 }
 

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-
 const nodemailer = require("nodemailer");
-
+ 
+// Router to send an email to an administrator
 router.post('/', (req, res) => {
     if (req.isAuthenticated()) {
         console.log('message for contact', req.body);

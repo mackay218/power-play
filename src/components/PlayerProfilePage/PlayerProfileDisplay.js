@@ -333,7 +333,7 @@ class PlayerProfileDisplay extends Component {
 
       if (playerInfo.save_percent) {
         savePercent = (
-          <p>Save Percent: {playerInfo.save_percent}</p>
+          <p>Save Percent: {playerInfo.save_percent}%</p>
         );
       }
 
@@ -379,8 +379,8 @@ class PlayerProfileDisplay extends Component {
 
       )
 
-      if (this.playerInfo.video_link) {
-        let videoCode = this.playerInfo.video_link;
+      if (playerInfo.video_link) {
+        let videoCode = playerInfo.video_link;
 
         videoCode = videoCode.split('=');
         videoCode = videoCode[1];

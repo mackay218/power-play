@@ -2,6 +2,7 @@
 
 import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function* getAllCoaches() {
     try {
@@ -13,7 +14,7 @@ function* getAllCoaches() {
 }
 
 function* coachError(action) {
-    yield alert('There was an error getting the coaches!');
+    yield swal('There was an error getting the coaches!');
     console.log('Coach Error:', action.payload);
 }
 

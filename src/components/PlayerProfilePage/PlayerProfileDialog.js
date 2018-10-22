@@ -34,7 +34,7 @@ class PlayerProfileDialog extends React.Component {
   };
 
   handleClickOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true});
   };
 
   handleClose = () => {
@@ -44,9 +44,10 @@ class PlayerProfileDialog extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className="align-top">
         <Button variant="contained" color="primary" onClick={this.handleClickOpen}>Edit Profile</Button>
         <Dialog
+          scroll='paper'
           fullScreen
           open={this.state.open}
           onClose={this.handleClose}
