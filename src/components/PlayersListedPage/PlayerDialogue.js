@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 //dialog for forgot password 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
@@ -113,9 +115,9 @@ class PlayerDialog extends Component {
           <div className="dialog">
             <DialogActions>
               {/* Button to close the player dialog */}
-              <Button onClick={this.handleClose} color="primary">
-                Close
-            </Button>
+              <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
             </DialogActions>
             <h2 className="dialog-head center" >{this.props.info.last_name}, {this.props.info.first_name}</h2>
             <div>
