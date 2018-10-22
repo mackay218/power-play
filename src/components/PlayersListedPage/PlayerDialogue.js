@@ -23,14 +23,14 @@ class PlayerDialog extends Component {
       open: false,
     }
   }
-
+  // Funciton for opening the player dialog
   handleClickOpen = (id) => {
     console.log('handleClickOpen', id);
     this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: id });
     this.setState({ open: true });
     //console.log(id, this.state);
   };
-
+  // Function for closing the player dialog
   handleClose = () => {
     this.setState({ open: false });
   };
@@ -43,7 +43,7 @@ class PlayerDialog extends Component {
       <img src="https://eadb.org/wp-content/uploads/2015/08/profile-placeholder.jpg"
         alt="placeholder" />
     )
-
+    // Sets the video settings
     let videoPlayer = (
       <iframe id="player" type="text/html" width="426" height="260"
         allowFullScreen="allowFullScreen"
@@ -53,13 +53,14 @@ class PlayerDialog extends Component {
         >
       </iframe>
     )
-
+    // if the player has uploaded a video, sets the video player to play that video
     if(this.props.info.video_link){
       let videoCode = this.props.info.video_link;
       
       videoCode = videoCode.split('=');
       videoCode = videoCode[1];
 
+      // Injects the players videocode into the url
       let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
       videoPlayer = (
@@ -73,13 +74,13 @@ class PlayerDialog extends Component {
       )
 
     }
-
+    // If the user has uploaded an image, sets the placeholder image to their image
     if(this.props.info.image_path){
       profilePic = (
         <img src={this.props.info.image_path} alt="profile pic"/>
       )
     }
-
+    // Changes information displayed based on hockey postion
     if (this.props.info.position_name === "Forward" || this.props.info.position_name === "Defense") {
       positionInfo = (
         <div>
@@ -104,19 +105,21 @@ class PlayerDialog extends Component {
     }
     return (
       <div>
+        {/* Button to open the player dialog */}
         <Button variant="contained" color="primary" onClick={() => { this.handleClickOpen(this.props.id) }}>View details</Button>
         <Dialog fullScreen open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <Nav />
           <div className="dialog">
             <DialogActions>
+              {/* Button to close the player dialog */}
               <Button onClick={this.handleClose} color="primary">
                 Close
             </Button>
             </DialogActions>
             <h2 className="dialog-head center" >{this.props.info.last_name}, {this.props.info.first_name}</h2>
             <div>
+              {/* Grid container that holds all the player information */}
               <Grid container className="dialog-body" >
-          
                   <div className="profileMedia">
                     <div className="profilePicContainer">
                       {profilePic}

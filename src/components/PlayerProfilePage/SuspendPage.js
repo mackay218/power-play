@@ -34,24 +34,25 @@ class SuspendPage extends Component {
   }
 
   componentDidUpdate() {
+    // Redirects user if they are not logged in
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
     }
   }
-
+  // Function for logging user out of the site
   logout = () => {
     this.props.dispatch(triggerLogout());
   }
-
+  // Function for handling changes in the form
   handleChange = (event) => {
     this.setState({
       ...this.state,
       [event.target.name]: event.target.value,
     })
   }
-
+  // Funciton for suspending the logged in player
+  // may need to add funcitonality to stop stripe payments
   suspendPlayer = (id) => {
-    //TODO: set up delete
     swal({
       title: "Are you sure you want to suspend your account?",
       text: "Once suspended, you will not be able to be seen by coaches!",
@@ -74,13 +75,15 @@ class SuspendPage extends Component {
   render() {
     return (
       <div className="mainContainer"
+        // Sets background image for the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />
         <div className="pageContainer">
 
-          <form onSubmit={() => this.suspendPlayer(this.props.user.id)} className="suspend-form">
+          <form className="suspend-form">
             <h3>Suspend Account</h3>
+            {/* Form to suspend the logged in player */}
             <FormControl >
               <InputLabel>Reason for suspending account</InputLabel>
               <Select value={this.state.reason} onChange={this.handleChange} name="reason">
@@ -93,7 +96,7 @@ class SuspendPage extends Component {
             <label>If other, explain:</label>
             <TextField type="text" label="explanation for suspending account" onChange={this.handleChange} name="reasonBody" />
             <br />
-            <Button variant="contained" color="secondary" type="submit">Suspend Account</Button>
+            <Button variant="contained" color="secondary" onClick={() => this.suspendPlayer(this.props.user.id)}>Suspend Account</Button>
           </form>
         </div>
       </div>

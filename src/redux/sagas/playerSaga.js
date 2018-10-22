@@ -2,7 +2,8 @@
 
 import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-
+import swal from 'sweetalert';
+// Saga for getting all players
 function* getAllPlayers() {
     try {
         const allPlayers = yield call(axios.get, '/api/players/all');
@@ -11,7 +12,7 @@ function* getAllPlayers() {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for creating a player
 function* createPlayer(action) {
     try {
         yield call(axios.post, '/api/players/create', { id: action.payload});
@@ -19,7 +20,7 @@ function* createPlayer(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for removing a player from the database
 function* deletePlayer(action) {
     try {
         yield call(axios.delete, `/api/players/delete/${action.payload}`);
@@ -28,7 +29,7 @@ function* deletePlayer(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for sorting players by stats
 function* sortPlayerBy(action) {
     try {
         console.log(action.payload);
@@ -38,7 +39,7 @@ function* sortPlayerBy(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for getting players to populate the CSV file
 function* getCSVList() {
     try {
         const csvList = yield call(axios.get, '/api/players/csvList');
@@ -47,7 +48,7 @@ function* getCSVList() {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for searching by name
 function* searchByName(action) {
     try {
         console.log(action.payload);
@@ -57,7 +58,7 @@ function* searchByName(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga for getting a specific players information
 function* getPlayerInfo(action) {
     try {
         const playerInfo = yield call(axios.get, `/api/players/playerInfo/${action.payload}`);
@@ -68,7 +69,7 @@ function* getPlayerInfo(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga to suspend a player
 function* suspendPlayer(action) {
     try {
         yield call(axios.put, `/api/players/suspend/`, action.payload);
@@ -76,9 +77,9 @@ function* suspendPlayer(action) {
         yield put({type: 'PLAYER_ERROR', payload: error});
     }
 }
-
+// Saga to be triggered when a player error is thrown
 function* playerError(action) {
-    yield alert('There was an error getting the players!');
+    yield swal('There was an error getting the players!');
     console.log('Player Error:', action.payload);
 }
 

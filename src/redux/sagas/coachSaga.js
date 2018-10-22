@@ -2,7 +2,9 @@
 
 import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import swal from 'sweetalert';
 
+// Saga for getting all the coaches from the database
 function* getAllCoaches() {
     try {
         const allCoaches = yield call(axios.get, '/api/coaches/all');
@@ -11,12 +13,12 @@ function* getAllCoaches() {
         yield put({type: 'COACH_ERROR', payload: error});
     }
 }
-
+// Saga that is triggered when an error is thrown
 function* coachError(action) {
-    yield alert('There was an error getting the coaches!');
+    yield swal('There was an error getting the coaches!');
     console.log('Coach Error:', action.payload);
 }
-
+// Saga to remove a coach from the database
 function* deleteCoach(action) {
     try {
         yield call(axios.delete, `api/coaches/delete/${action.payload}`);
@@ -25,7 +27,7 @@ function* deleteCoach(action) {
         yield put({type: 'COACH_ERROR', payload: error});
     }
 }
-
+// Saga to suspend a coach
 function* suspendCoach(action) {
     try {
         yield call(axios.put, `api/coaches/suspend/${action.payload}`);
@@ -34,7 +36,7 @@ function* suspendCoach(action) {
         yield put({type: 'COACH_ERROR', payload: error});
     }
 }
-
+// Saga to change coach table pages 
 function* pageCoaches(action) {
     try {
         console.log(action);
@@ -44,7 +46,7 @@ function* pageCoaches(action) {
         yield put({type: 'COACH_ERROR', payload: error});
     }
 }
-
+// Saga to ban a coach
 function* banCoach(action) {
     try {
         yield call(axios.put, `api/coaches/ban/${action.payload}`);

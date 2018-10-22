@@ -20,6 +20,7 @@ class CoachListPage extends Component {
 
   scrollPosition = 0
 
+  // Resets the page position when changing pages
   componentWillReceiveProps() {
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
@@ -31,6 +32,7 @@ class CoachListPage extends Component {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
     this.props.dispatch({ type: 'GET_ALL_COACHES' });
 
+    // Resets the page position when changing pages
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
       window.scrollTo(0, this.scrollPosition)
@@ -48,12 +50,13 @@ class CoachListPage extends Component {
       this.props.history.push('/players_page');
     }
 
+    // Resets the page position when changing pages
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
       window.scrollTo(0, this.scrollPosition)
     }
   }
-
+  // Function to log the user out of the site
   logout = () => {
     this.props.dispatch(triggerLogout());
   }
@@ -65,6 +68,7 @@ class CoachListPage extends Component {
       content = (
         <div className="center-text">
           <h1>Coaches</h1>
+          {/* Renders the list of coaches */}
           <CoachTable />
         </div>
       );
@@ -72,6 +76,7 @@ class CoachListPage extends Component {
 
     return (
       <div className="mainContainer"
+        // Sets the background image of the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />

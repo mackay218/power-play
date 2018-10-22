@@ -10,9 +10,7 @@ const moment = require('moment');
 const Chance = require('chance');
 const chance = new Chance();
 
-/**
- * GET route template
- */
+// Route to get all coaches form the database
 router.get('/all', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
         const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' ORDER BY "personid" LIMIT 10;`;
@@ -29,7 +27,7 @@ router.get('/all', (req, res) => {
         res.sendStatus(403);
     }
 });
-
+// Route to page through coaches on the coaches list page
 router.get('/paged', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
         const query = `SELECT "person"."personid", "email", "coach_name", "status_type" FROM "person" JOIN "account_status" ON "status_id" = "account_status"."id" WHERE "role" = 'coach' LIMIT 10 OFFSET $1;`;
@@ -45,7 +43,7 @@ router.get('/paged', (req, res) => {
         res.sendStatus(403);
     }
 });
-
+// Route to remove coaches from the database
 router.delete('/delete/:id', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
         const query = `DELETE FROM "person" WHERE "personid" = $1;`;
@@ -61,7 +59,7 @@ router.delete('/delete/:id', (req, res) => {
         res.sendStatus(403);
     }
 });
-
+// Router to suspend a coach
 router.put('/suspend/:id', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
         const query = `UPDATE "person" SET "status_id" = 2 WHERE "personid" = $1;`;
@@ -76,7 +74,7 @@ router.put('/suspend/:id', (req, res) => {
 
     }
 });
-
+// Router to ban a coach
 router.put('/ban/:id', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
         const query = `UPDATE "person" SET "status_id" = 3 WHERE "personid" = $1;`;
@@ -92,7 +90,6 @@ router.put('/ban/:id', (req, res) => {
         res.sendStatus(403);
     }
 });
-
 //function to check if coach's email already in database
 router.post('/checkCoach', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
@@ -129,7 +126,6 @@ router.post('/checkCoach', (req, res) => {
         res.sendStatus(403);
     }
 });
-
 //function to add new coach to database
 //only called by Admin
 router.post('/coachInvite', (req, res) => {
@@ -222,7 +218,6 @@ router.post('/coachInvite', (req, res) => {
         res.sendStatus(403);
     }
 });
-
 //function to send invite email
 sendInviteCode = (infoForEmail) => {
 
