@@ -17,12 +17,13 @@ router.get('/:emailAddress', (req, res) => {
         console.log('check for email:', req.params.emailAddress);
 
         const email = req.params.emailAddress;
+        console.log('email', email);
 
         const queryText = `SELECT "personid" FROM person WHERE "email" = $1;`;
 
         pool.query(queryText, [email])
             .then((results) => {
-                console.log(results.rows.length);
+                console.log('results', results.rows.length);
                 if (results.rows.length >= 1) {
                     //call function to send email
                     resetPersonInviteCode(email);
@@ -42,8 +43,7 @@ router.get('/:emailAddress', (req, res) => {
 //and log activity 
 //and change account status to pending until password is reset
 resetPersonInviteCode = (email) => {
-    if (req.isAuthenticated()) {
-        console.log(' in resetPersonInviteCode');
+  
 
         //limit inivite code to alphanumeric to avoid url problems
         let resetPasswordCode = chance.string({ pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' });
@@ -109,17 +109,11 @@ resetPersonInviteCode = (email) => {
             console.log('CATCH', error);
 
         });
-    }
-    else {
-        console.log('You must be logged in!');
-        res.sendStatus(403);
-    }
-
 }
 
 //function to send email with password reset link
 sendPasswordResetEmail = (infoForEmail) => {
-    if (req.isAuthenticated()) {
+
         console.log('in sendPasswordResetEmail')
         console.log(infoForEmail);
 
@@ -235,11 +229,7 @@ sendPasswordResetEmail = (infoForEmail) => {
             }
             transporter.close();
         });
-    }
-    else {
-        console.log('You must be logged in!');
-        res.sendStatus(403);
-    }
+   
 }
 
 //post route for new password / resetting password
