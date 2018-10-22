@@ -89,7 +89,7 @@ class RegisterPage extends Component {
           {/* Renders an alert if there is an error */}
           {this.renderAlert()}
           {/* Form for collecting information to register a player */}
-          <form onSubmit={this.registerUser} className="register-form">
+          <form className="register-form">
             <h1>Sign Up</h1>
             <div>
               <TextField

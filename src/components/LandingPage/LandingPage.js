@@ -55,7 +55,7 @@ class LandingPage extends Component {
             <div className="mainContainer"
                 // Sets the background image of the site
                 style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
-            >   
+            >
                 {/* renders the navigation bar */}
                 <Nav />
                 <div className="pageContainer">
@@ -93,6 +93,9 @@ class LandingPage extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <h1 className="center-text paddingTop">Players we have helped!!</h1>
+                    <br />
                     <div className="testimonialContainer">
                         {/* Container for player testimonials */}
                         <div className="testimonialSection">

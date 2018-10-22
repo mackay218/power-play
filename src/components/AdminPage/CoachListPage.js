@@ -8,6 +8,8 @@ import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import './AdminPage.css';
 import CoachTable from './CoachTable';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 
 const mapStateToProps = state => ({
@@ -17,6 +19,13 @@ const mapStateToProps = state => ({
 
 
 class CoachListPage extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      coachName: '',
+    }
+  }
 
   scrollPosition = 0
 
@@ -61,13 +70,32 @@ class CoachListPage extends Component {
     this.props.dispatch(triggerLogout());
   }
 
+  handleNameChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    })
+  }
+
+  searchCoaches = (event) => {
+    event.preventDefault();
+    this.props.dispatch({ type: 'SEARCH_COACHES', payload: this.state.coachName });
+  }
+
   render() {
     let content = null;
 
     if (this.props.user.email) {
       content = (
         <div className="center-text">
-          <h1>Coaches</h1>
+          <div>
+            <form onSubmit={this.searchCoaches} className="coach-search">
+              <h2>Search Coaches</h2>
+              <TextField type="text" label="Coaches Name" value={this.state.coachName} onChange={this.handleNameChange} name="coachName" />
+              <br />
+              <Button variant="contained" color="primary" type="submit">Search</Button>
+            </form>
+          </div>
           {/* Renders the list of coaches */}
           <CoachTable />
         </div>

@@ -43,6 +43,18 @@ router.get('/paged', (req, res) => {
         res.sendStatus(403);
     }
 });
+// Route to search coaches by name
+router.get('/search', (req, res) => {
+    req.query.name = `%${req.query.name}%`
+    const query = `SELECT "person"."coach_name", "person"."email", "account_status"."status_type" FROM "person"
+                   JOIN "account_status" ON "account_status"."id" = "status_id" WHERE "coach_name" ILIKE $1 LIMIT 10;`;
+    pool.query(query, [req.query.name]).then((result) => {
+        res.send(result.rows)
+    }).catch((error) => {
+        console.log('ERROR searching coaches:', error);
+        res.sendStatus(500);
+    })
+})
 // Route to remove coaches from the database
 router.delete('/delete/:id', (req, res) => {
     if (req.isAuthenticated() && req.user.role === "admin") {
