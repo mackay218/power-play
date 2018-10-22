@@ -379,8 +379,10 @@ class PlayerProfileDisplay extends Component {
 
       )
 
+
       if (playerInfo.video_link) {
         let videoCode = playerInfo.video_link;
+
 
         videoCode = videoCode.split('=');
         videoCode = videoCode[1];
