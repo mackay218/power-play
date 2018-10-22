@@ -112,3 +112,10 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.left p{
+    position: relative;
+    left: 60px;
+
+    font-weight: bold;
+}

@@ -3,6 +3,7 @@ body{
 }
 
 .register-form {
+    z-index: 2;
     background-color: white;
     width: 25%;
     min-width: 400px;
@@ -62,7 +63,8 @@ Link{
 
 .inverseLogo{
     position: absolute;
-    bottom: 50px;
-    left: -100px;
+    bottom: 2vh;
+    left: -20px;
     width: 800px;
+    z-index: 1;
 }

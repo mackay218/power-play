@@ -47,7 +47,7 @@ class PlayerDialog extends Component {
     let videoPlayer = (
       <iframe id="player" type="text/html" width="426" height="260"
         allowFullScreen="allowFullScreen"
-        src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+        src="http://www.youtube.com/embed/a8rRW5Ugg0I?enablejsapi=1&origin=http://example.com"
         frameBorder="0"
         title="defaultVideo"
         >
@@ -126,14 +126,14 @@ class PlayerDialog extends Component {
                     </div>
                   </div>
              
-                <Grid className="center" item md={4}>
+                <Grid className="left" item md={4}>
                   <h3 className="dialog-head center">Position Info</h3>
                   <p>Position: {this.props.info.position_name}</p>
                   <p>League: {this.props.info.league_name}</p>
                   <p>Team: {this.props.info.team_name}</p>
                   {positionInfo}
                 </Grid>
-                <Grid className="center" item md={4}>
+                <Grid className="left" item md={4}>
                   <h3 className="dialog-head">Personal Info</h3>
                   <p>Birthdate: {moment(this.props.info.birth_date).format('MM/DD/YYYY')}</p>
                   <p>School: {this.props.info.school_name}</p>
@@ -144,7 +144,7 @@ class PlayerDialog extends Component {
                   <p>School Year: {this.props.info.school_year}</p>
                   <p>Player Bio: {this.props.info.player_info}</p>
                 </Grid>
-                <Grid className="center" item md={4}>
+                <Grid className="left" item md={4}>
                   <h3 className="dialog-head center">Contact Info</h3>
                   <p>Email: {this.props.info.email}</p>
                   <p>Phone#: {this.props.info.phone_number}</p>
