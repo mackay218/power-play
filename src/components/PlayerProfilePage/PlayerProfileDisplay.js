@@ -262,21 +262,21 @@ class PlayerProfileDisplay extends Component {
         )
       }
 
-      if (playerInfo.position_id === 2) {
+      if (playerInfo.position_id === "2") {
 
         position = (
           <h2>Forward</h2>
         );
       }
 
-      else if (playerInfo.position_id === 3) {
+      else if (playerInfo.position_id === "3") {
 
         position = (
           <h2>Defense</h2>
         );
       }
 
-      else if (playerInfo.position_id === 4) {
+      else if (playerInfo.position_id === "4") {
 
         position = (
           <h2>Goalie</h2>
@@ -401,7 +401,7 @@ class PlayerProfileDisplay extends Component {
 
       }
       // the following conditionally renders (by either forward, or goalie hockey positions) the stats which are displayed.
-      if (playerInfo.position_id === 1 || playerInfo.position_id === 2) {
+      if (playerInfo.position_id === "2" || playerInfo.position_id === "3") {
         playerPositionRender = (
           <div className="personInfo">
             {goals}
