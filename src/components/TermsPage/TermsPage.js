@@ -16,15 +16,10 @@ class TermsPage extends Component {
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
   }
 
-  componentDidUpdate() {
-    // if (!this.props.user.isLoading && this.props.user.email === null) {
-    //   this.props.history.push('home');
-    // }
-  }
-
   // post routes for calling mock data generator
   //DELETE BEFORE FINAL BUILD
 
+  // Function to populate database with fake players
   handlePlayerClick = () => {
     axios.post('/api/databaseFaker', this.state)
       .then((response) => {
@@ -34,7 +29,7 @@ class TermsPage extends Component {
         console.log('error running mock data maker:', error);
       });
   }
-
+  // Function to populate the database with fake coaches
   handleCoachClick = () => {
     axios.post('api/databaseFaker/coaches', this.state)
       .then((response) => {
@@ -50,7 +45,6 @@ class TermsPage extends Component {
   render() {
     let content = null;
 
-    // if (this.props.user.email) {
       content = (
         <div>
           <p>
@@ -58,6 +52,7 @@ class TermsPage extends Component {
           </p>
 
           {/* buttons for generating mock data  DELETE BEFORE FINAL BUILD*/}
+          {/* Replace with actual terms and conditions once */}
           <button type="button" onClick={this.handlePlayerClick}>Mock Players</button>
           <button type="button" onClick={this.handleCoachClick}>Mock Coaches</button>
           {/* ******************* */}

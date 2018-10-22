@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { LOGIN_ACTIONS } from '../actions/loginActions';
-
+// Message that is displayed when there is an error during login
 const message = (state = '', action) => {
   switch (action.type) {
     case LOGIN_ACTIONS.CLEAR_LOGIN_ERROR:
@@ -15,7 +15,7 @@ const message = (state = '', action) => {
       return state;
   }
 };
-
+// reducer to check if the player is being loaded
 const isLoading = (state = false, action) => {
   switch (action.type) {
     case LOGIN_ACTIONS.REQUEST_START:

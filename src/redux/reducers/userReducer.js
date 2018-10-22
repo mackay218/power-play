@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { USER_ACTIONS } from '../actions/userActions';
-
+// Reducer to hold the users id
 const id = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
@@ -11,7 +11,7 @@ const id = (state = null, action) => {
       return state;
   }
 };
-
+// Reducer to hold the users email
 const email = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
@@ -22,7 +22,7 @@ const email = (state = null, action) => {
       return state;
   }
 };
-
+// Reducer to hold the users role
 const role = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
@@ -33,7 +33,7 @@ const role = (state = null, action) => {
       return state;
   }
 };
-
+// Reducer to hold the users status type
 const statusType = (state = null, action) => {
   switch (action.type) {
     case USER_ACTIONS.SET_USER:
@@ -44,8 +44,7 @@ const statusType = (state = null, action) => {
       return state;
   }
 }
-
-
+// Reducer to check if the user is loading
 const isLoading = (state = false, action) => {
   switch (action.type) {
     case USER_ACTIONS.REQUEST_START:

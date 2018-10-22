@@ -35,7 +35,7 @@ const options = {
 
 class PlayerProfilePage extends Component {
  
-  //Function to Get Image 
+  //Function to get image from filestack 
   getImage = (result) => {
     console.log('filestack submitted', result.filesUploaded);
     swal('Image added!');
@@ -52,6 +52,7 @@ class PlayerProfilePage extends Component {
   }
 
   componentDidUpdate() {
+    // If statement to redirect users to their respective main pages
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
     }
@@ -62,32 +63,31 @@ class PlayerProfilePage extends Component {
       this.props.history.push('/admin_page');
     }
   }
-
+  // Function for handling changes in player info form
   handleProfileChange = (event) => {
-    
     const action = {type: 'SET_PLAYER_INFO', payload:{
       ...this.props.player.playerInfo,
       [event.target.name]: event.target.value,
     }}
-
     this.props.dispatch(action);
   }
-
+  // Function for loggin the user out of the site
   logout = () => {
     this.props.dispatch(triggerLogout());
   }
-
+  // Function to update the players information
   submitPlayerProfile = (event) => {
     event.preventDefault();
     console.log('Player profile submitted.');
     console.log('this.state.profile:', this.state)
-
+    // Sends information to update the player
     axios({
       method: 'PUT',
       url: '/api/players/updateProfile/' + this.props.user.id,
       data: this.props.player.playerInfo,
     }).then(() => {
-      swal('Your profile was updated!')
+      swal('Your profile was updated!');
+      // Gets the updated information to display on the profile page
       this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id });
       this.props.handleClose();
     }).catch((error) => {
@@ -96,11 +96,9 @@ class PlayerProfilePage extends Component {
     });
   }
 
-
+  // Function used in presentation to fill out the player info form quickly
+  // Should be deleted before sent to production
   easyFill = () => {
-
-
-  
     console.log('In easyFill');
     this.setState({
       person_id: this.props.user.id,
@@ -140,6 +138,7 @@ class PlayerProfilePage extends Component {
     let content = null;
     let positionalContent = null;
     if (playerInfo.position_id === '4') {
+      //Sets additional inputs if the player selects goalie as their position
       positionalContent = (
         <div className="align-left">
           <div>
@@ -158,6 +157,7 @@ class PlayerProfilePage extends Component {
         </div>
       )
     } else if (playerInfo.position_id === '3' || playerInfo.position_id === '2') {
+      //Sets additional inputs if the player selects forward or defense as their position
       positionalContent = (
         <div className="align-left">
           <div>
@@ -178,8 +178,10 @@ class PlayerProfilePage extends Component {
         <div>
           {/* <Image className="profilePic" src="https://eadb.org/wp-content/uploads/2015/08/profile-label.jpg" alt="Avatar" /> */}
           <div>
+            {/* On click to run the easy fill function (onClick should be removed before being sent to production) */}
             <h1 onClick={this.easyFill} className="center-text">Enter Information</h1>
             <br />
+            {/* Form for updating player information */}
             <form onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange} className="info-form">
               <Grid container>
                 <Grid item md={1}></Grid>
@@ -241,7 +243,6 @@ class PlayerProfilePage extends Component {
                       </Select>
                     </FormControl>
                     <label>Date Of Birth:</label>
-                    {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
                     <FormControl>
                       <TextField
                         value={playerInfo.birth_date} onChange={this.handleProfileChange} name="birth_date"
@@ -253,9 +254,9 @@ class PlayerProfilePage extends Component {
                     <label>Notes:</label>
                     <TextField value={playerInfo.player_info} onChange={this.handleProfileChange} name="player_info" />
                   </div>
-                  {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
                   <br />
                   <div>
+                    {/* Changes inputs based on position chosen, if none are chosen nothing is displayed here. */}
                     {positionalContent}
                   </div>
                   <div className="fileStackContainer">
@@ -286,6 +287,7 @@ class PlayerProfilePage extends Component {
 
     return (
       <div className="mainContainer"
+        // Sets background image for the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />

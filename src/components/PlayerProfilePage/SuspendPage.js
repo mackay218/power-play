@@ -34,22 +34,24 @@ class SuspendPage extends Component {
   }
 
   componentDidUpdate() {
+    // Redirects user if they are not logged in
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
     }
   }
-
+  // Function for logging user out of the site
   logout = () => {
     this.props.dispatch(triggerLogout());
   }
-
+  // Function for handling changes in the form
   handleChange = (event) => {
     this.setState({
       ...this.state,
       [event.target.name]: event.target.value,
     })
   }
-
+  // Funciton for suspending the logged in player
+  // may need to add funcitonality to stop stripe payments
   suspendPlayer = (id) => {
     swal({
       title: "Are you sure you want to suspend your account?",
@@ -73,6 +75,7 @@ class SuspendPage extends Component {
   render() {
     return (
       <div className="mainContainer"
+        // Sets background image for the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />
@@ -80,6 +83,7 @@ class SuspendPage extends Component {
 
           <form className="suspend-form">
             <h3>Suspend Account</h3>
+            {/* Form to suspend the logged in player */}
             <FormControl >
               <InputLabel>Reason for suspending account</InputLabel>
               <Select value={this.state.reason} onChange={this.handleChange} name="reason">

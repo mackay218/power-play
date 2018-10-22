@@ -18,7 +18,7 @@ class RegisterPage extends Component {
       message: '',
     };
   }
-
+  // Funciton for registering a user (only registers a player)
   registerUser = (event) => {
     event.preventDefault();
 
@@ -56,13 +56,13 @@ class RegisterPage extends Component {
     }
   } // end registerUser
 
-
+  // Function for handling changes in the registration form
   handleInputChangeFor = propertyName => (event) => {
     this.setState({
       [propertyName]: event.target.value,
     });
   }
-
+  // Function for changing the alert based on the error that is thrown
   renderAlert() {
     if (this.state.message !== '') {
       return (
@@ -80,11 +80,15 @@ class RegisterPage extends Component {
   render() {
     return (
       <div className="mainContainer" 
+      // Sets the background image of the site
       style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
+        {/* Renders the Navigation bar */}
         <Nav />
         <div className="pageContainer center-text">
+          {/* Renders an alert if there is an error */}
           {this.renderAlert()}
+          {/* Form for collecting information to register a player */}
           <form onSubmit={this.registerUser} className="register-form">
             <h1>Sign Up</h1>
             <div>
@@ -107,6 +111,7 @@ class RegisterPage extends Component {
               />
             </div>
             <div className="stripeForm" >
+              {/* Components required for stripe form to appear */}
               <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PK_KEY}>
                 <Elements>
                   <CheckoutForm history={this.props.history} registerUser={this.registerUser} registerInfo={{email: this.state.email, password: this.state.password}}/>
