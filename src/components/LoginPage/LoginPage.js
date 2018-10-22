@@ -150,6 +150,7 @@ class LoginPage extends Component {
             </div>
             <ForgotPasswordDialog />
           </form>
+          <img className="inverseLogo" src="images/largePPRLogo.svg" alt="logo" />
         </div>
       </div>
     );
