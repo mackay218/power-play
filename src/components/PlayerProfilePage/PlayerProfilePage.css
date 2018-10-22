@@ -66,11 +66,15 @@ body{
 }
 
 .profilePicContainer{
-    border: 5px solid var(--red);
-    height: 35vh;
+    
+    height: 40vh;
     width: 20vw;
     min-width: 250px;
     margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .videoSpacing{
@@ -78,8 +82,9 @@ body{
 }
 
 .profilePicContainer img {
+    border: 5px solid var(--red);
     width: 100%;
-    height: 100%;
+    height: 80%;
 }
 
 .align-top {

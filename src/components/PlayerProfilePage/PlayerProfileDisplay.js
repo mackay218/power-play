@@ -431,6 +431,7 @@ class PlayerProfileDisplay extends Component {
           <div className="infoRow">
               <div className="profilePicContainer">
                 {profilePic}
+              <PlayerProfileDialog />
             </div>
             <div className="personInfo infoContainer">
               {firstName}
@@ -458,7 +459,7 @@ class PlayerProfileDisplay extends Component {
           <div className="infoRow">
             <div className="videoContainer">
               {videoPlayer}
-              <PlayerProfileDialog />
+              
             </div>
             <div className="personInfo playerBioArrangement">
               {playerBio}
