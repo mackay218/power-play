@@ -63,8 +63,8 @@ Link{
 
 .inverseLogo{
     position: absolute;
-    bottom: 2vh;
+    bottom: 10vh;
     left: -20px;
-    width: 800px;
+    width: 38vw;
     z-index: 1;
 }

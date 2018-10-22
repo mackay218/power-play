@@ -146,6 +146,7 @@ class AdminPage extends Component {
             <br />
             <Button variant="contained" type="submit">Add Coach</Button>
           </form>
+          <img className="inverseLogo" src="images/largePPRLogo.svg" alt="logo" />
         </div>
       );
     }

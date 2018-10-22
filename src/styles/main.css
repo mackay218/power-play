@@ -138,3 +138,11 @@ li a:hover {
 .payButton:hover {
     background-color: #eb1b3b;
 }
+
+.inverseLogo{
+    position: absolute;
+    bottom: 10vh;
+    left: -20px;
+    width: 38vw;
+    z-index: 1;
+}
