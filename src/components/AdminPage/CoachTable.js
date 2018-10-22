@@ -19,6 +19,7 @@ const mapStateToProps = state => ({
     coach: state.coach.coach,
 });
 
+// custom styling of table data
 const CustomTableCell = withStyles(theme => ({
     head: {
         fontSize: 20,
@@ -28,7 +29,7 @@ const CustomTableCell = withStyles(theme => ({
         fontSize: 14,
     },
 }))(TableCell);
-
+// custom styles of entire table
 const styles = theme => ({
     root: {
         width: '100%',
@@ -59,8 +60,8 @@ class CustomizedTable extends Component {
         }
     }
 
+    // Function for removing a coach from the database
     deleteCoach = (id) => {
-        //TODO: set up delete
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able undo this action!",
@@ -82,8 +83,8 @@ class CustomizedTable extends Component {
             }
         })
     }
+    // Function for suspending a coach
     suspendCoach = (id) => {
-        //TODO: set up delete
         swal({
             title: "Are you sure you want to suspend this coach?",
             text: "Once suspended, they will not be able view players!",
@@ -102,8 +103,8 @@ class CustomizedTable extends Component {
             }
         })
     }
+    // Funciton for banning a coach
     banCoach = (id) => {
-        //TODO: set up delete
         swal({
             title: "Are you sure?",
             text: "Once banned, they will not be able to log in!",
@@ -123,22 +124,23 @@ class CustomizedTable extends Component {
         })
     }
 
+    // Function for going to the previous table page
     previousPage = () => {
         if (this.state.page > 0) {
-          this.setState({
-            ...this.state,
-            page: (this.state.page - 10),
-          });
+            this.setState({
+                ...this.state,
+                page: (this.state.page - 10),
+            });
         }
         setTimeout(() => this.props.dispatch({ type: 'PAGE_COACHES', payload: this.state }), 200);
-      }
-    
+    }
+    // Function for going to the next table page
     nextPage = () => {
-      this.setState({
-        ...this.state,
-        page: (this.state.page + 10),
-      });
-      setTimeout(() => this.props.dispatch({ type: 'PAGE_COACHES', payload: this.state }), 200);
+        this.setState({
+            ...this.state,
+            page: (this.state.page + 10),
+        });
+        setTimeout(() => this.props.dispatch({ type: 'PAGE_COACHES', payload: this.state }), 200);
     }
 
     render() {
@@ -147,6 +149,7 @@ class CustomizedTable extends Component {
         return (
             <div>
                 <div className="page-buttons">
+                    {/* Buttons for changing table pages */}
                     <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
                     <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
                 </div>
@@ -163,6 +166,7 @@ class CustomizedTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {/* Loops over all of the coaches to create a table row with their data */}
                             {this.props.coach.map(coach => {
                                 return (
                                     <TableRow className={classes.row} key={coach.personid}>
@@ -171,9 +175,10 @@ class CustomizedTable extends Component {
                                         </CustomTableCell>
                                         <CustomTableCell>{coach.email}</CustomTableCell>
                                         <CustomTableCell>{coach.status_type}</CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "orange", color: "white"}} onClick={() => this.suspendCoach(coach.personid)}><SuspendIcon /> Suspend</Button></CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "black", color: "white"}} onClick={() => this.banCoach(coach.personid)}><BanIcon /> Ban</Button></CustomTableCell>
-                                        <CustomTableCell><Button variant="outlined" style={{backgroundColor: "#f01e3c", color: "white"}} onClick={() => this.deleteCoach(coach.personid)}><DeleteIcon /> Delete</Button></CustomTableCell>
+                                        {/* Buttons for suspending, banning, and deleting coaches */}
+                                        <CustomTableCell><Button variant="outlined" style={{ backgroundColor: "orange", color: "white" }} onClick={() => this.suspendCoach(coach.personid)}><SuspendIcon /> Suspend</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" style={{ backgroundColor: "black", color: "white" }} onClick={() => this.banCoach(coach.personid)}><BanIcon /> Ban</Button></CustomTableCell>
+                                        <CustomTableCell><Button variant="outlined" style={{ backgroundColor: "#f01e3c", color: "white" }} onClick={() => this.deleteCoach(coach.personid)}><DeleteIcon /> Delete</Button></CustomTableCell>
                                     </TableRow>
                                 );
                             })}
@@ -181,6 +186,7 @@ class CustomizedTable extends Component {
                     </Table>
                 </Paper>
                 <div className="page-buttons">
+                    {/* Buttons for changing table pages */}
                     <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
                     <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
                 </div>

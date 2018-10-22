@@ -2,7 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const moment = require('moment');
-// GET route for all players
+// Route for getting all players from the database
 router.get('/all', (req, res) => {
     if (req.isAuthenticated()) {
         const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name",
@@ -26,7 +26,7 @@ router.get('/all', (req, res) => {
     }
 
 });
-// GET route for populating CSV file
+// Route for populating CSV file
 router.get('/csvList', (req, res) => {
     if (req.isAuthenticated()) {
         const query = `SELECT "player_stats".*, "position"."position_name", "league"."league_name", "person"."status_id"
@@ -49,7 +49,7 @@ router.get('/csvList', (req, res) => {
     }
 
 });
-// GET route for sorting players
+// Route for sorting players
 router.get('/sorted', (req, res) => {
     if (req.isAuthenticated()) {
         (async () => {
@@ -101,7 +101,7 @@ router.get('/sorted', (req, res) => {
         res.sendStatus(403);
     }
 });
-// GET route for specific player info
+// Route for getting a specific player from the database
 router.get('/playerInfo/:id', (req, res) => {
     if (req.isAuthenticated()) {
         console.log('in playerInfo', req.params.id);
@@ -124,7 +124,7 @@ router.get('/playerInfo/:id', (req, res) => {
     }
 
 })
-// GET route for searchin by name
+// Route for searching players by name
 router.get('/byName', (req, res) => {
     if (req.isAuthenticated()) {
         req.query.name = `%${req.query.name}%`;
@@ -148,7 +148,7 @@ router.get('/byName', (req, res) => {
     }
 
 });
-// PUT route for updating players
+// Route for updating a player's information
 router.put('/updateProfile/:id', (req, res) => {    
     if (req.isAuthenticated() && req.user.role === "player") {
         console.log(req.body);
@@ -228,7 +228,7 @@ router.put('/updateProfile/:id', (req, res) => {
     }
 
 });
-// PUT route for suspending players
+// Route for suspending players
 router.put('/suspend/', (req, res) => {
     if (req.isAuthenticated()) {
         const reason = `${req.body.reasons.reason}, ${req.body.reasons.reasonBody}`
@@ -246,7 +246,7 @@ router.put('/suspend/', (req, res) => {
     }
 
 })
-// POST route for creating a player
+// Route for creating a player
 router.post('/create', (req, res) => {
         const query = `INSERT INTO "player_stats" 
                     ("person_id", "league_id", "position_id") 
@@ -258,7 +258,7 @@ router.post('/create', (req, res) => {
             res.sendStatus(500);
         });
 });
-// DELETE route for removing players
+// Route for removing players from the database
 router.delete('/delete/:id', (req, res) => {
     if (req.isAuthenticated()) {
         (async () => {
@@ -288,7 +288,8 @@ router.delete('/delete/:id', (req, res) => {
     }
 
 });
-//function for determining if player fields are empty
+// Function for checking player fields 
+// and setting the fields to null if they are empty
 areFieldsEmpty = (query) => {
     // sets position to null if passed in an empty string
     // otherwise changes it to an integer
@@ -332,7 +333,7 @@ areFieldsEmpty = (query) => {
     }
     return query;
 }
-//function for validating that information is the correct type
+//function for validating that information is of the correct data type
 validateInfo = (body) => {
 
     if ( body.league_id === '') {

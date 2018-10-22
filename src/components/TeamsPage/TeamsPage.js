@@ -48,13 +48,15 @@ class TeamsPage extends Component{
 
         return(
             <div className="mainContainer"
+                // Sets background image of the site
                 style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
-
-            >
+            >   
+                {/* Renders the navigation bar */}
                 <Nav/>
                 <div className="pageContainer">
                     <h1>Teams</h1>
                     <div className="divisionsContainer">
+                        {/* Container to hold the lists of hockey teams available */}
                         <div className="leagueDivision D1">
                             <h2>College D1</h2>
                             <ul>

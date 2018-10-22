@@ -24,20 +24,21 @@ class ContactPage extends Component {
 
     scrollPosition = 0
 
+    // Resets page position when changing pages
     componentWillReceiveProps() {
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
             this.scrollPosition = window.scrollY
         }
     }
-
+    // Resets page position when changing pages
     componentDidMount() {
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
             window.scrollTo(0, this.scrollPosition)
         }
     }
-
+    // Resets page position when changing pages
     componentDidUpdate() {
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
@@ -106,11 +107,13 @@ class ContactPage extends Component {
 
         return (
             <div className="mainContainer"
+                // Sets background image of the site
                 style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
             >
                 <Nav />
                 <div className="pageContainer">
                     {this.renderAlert()}
+                    {/* Form for contacting an administrator */}
                     <form className="contactForm">
                         <h1>Contact</h1>
                         <TextField

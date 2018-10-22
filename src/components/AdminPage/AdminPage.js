@@ -11,6 +11,7 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import './AdminPage.css';
 import TextField from '@material-ui/core/TextField';
+import swal from 'sweetalert';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -28,6 +29,7 @@ class AdminPage extends Component {
 
   scrollPosition = 0
 
+   // resets the page position when changing pages
   componentWillReceiveProps() {
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
@@ -37,7 +39,8 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    
+
+     // resets the page position when changing pages
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
       window.scrollTo(0, this.scrollPosition)
@@ -55,16 +58,19 @@ class AdminPage extends Component {
       this.props.history.push('/players_page');
     }
 
+     // resets the page position when changing pages
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
       window.scrollTo(0, this.scrollPosition)
     }
   }
 
+  // function for logging a user out of the site 
   logout = () => {
     this.props.dispatch(triggerLogout());
   }
 
+  // function to handle imput changes
   handleChange = (event) => {
     this.setState({
       ...this.state,
@@ -76,12 +82,11 @@ class AdminPage extends Component {
   submitCoach = (event) => {
     event.preventDefault();
     console.log('Coach submitted');
-
     axios.post('/api/coaches/checkCoach', this.state)
       .then((response) => {
         console.log('response', response.status);
         if(response.status === 200){
-          alert('An invite was already sent to this email');
+          swal('An invite was already sent to this email');
           this.setState({
             name: '',
             email: '',
@@ -94,7 +99,7 @@ class AdminPage extends Component {
       })
       .catch((error) => {
         console.log('error checking coach:', error)
-        alert('error checking coach');
+        swal('error checking coach');
       });
   }
 
@@ -103,12 +108,12 @@ class AdminPage extends Component {
     axios.post('/api/coaches/coachInvite', this.state)
       .then((response) => {
         console.log('email invite sent to: ', this.state.email);
-        alert('email invite sent');
+        swal('email invite sent');
 
       })
       .catch((error) => {
         console.log('error sending invite: ', error);
-        alert('error sending invite email');
+        swal('error sending invite email');
       });
 
     this.setState({
@@ -117,10 +122,11 @@ class AdminPage extends Component {
     });
   }
 
+  // function to send the user to the coaches list page
   sendToCoaches = () => {
     this.props.history.push('/admin_coach_list_page')
   }
-
+  // function to send the user to the player list page
   sendToPlayers = () => {
     this.props.history.push('/players_page');
   }
@@ -132,6 +138,7 @@ class AdminPage extends Component {
       content = (
         <div className="adminPageContainer">
           <h1 className="center-text">Add Coaches</h1>
+          {/* Form for adding coaches to the site */}
           <form className="coach-form" onSubmit={this.submitCoach}>
             <TextField label="name" type="text" onChange={this.handleChange} value={this.state.name} name="name" />
             <br />
@@ -145,6 +152,7 @@ class AdminPage extends Component {
 
     return (
       <div className="mainContainer"
+        // Sets the background image of the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />

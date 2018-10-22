@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import moment from 'moment';
-
+// Reducer to hold information of all players
 const player = (state = [], action) => {
     switch (action.type) {
         case 'SET_ALL_PLAYERS':
@@ -11,7 +11,7 @@ const player = (state = [], action) => {
             return state;
     }
 }
-
+// Reducer to hold information of specific players
 const playerInfo = (state = [], action) => {
     switch (action.type) {
         case 'SET_PLAYER_INFO':
@@ -34,7 +34,7 @@ const playerInfo = (state = [], action) => {
             return state;
     }
 }
-
+// Reducer to hold the list of all players to be downloaded as a CSV file
 const csvList = (state = [], action) => {
     switch (action.type) {
         case 'SET_CSV_LIST':

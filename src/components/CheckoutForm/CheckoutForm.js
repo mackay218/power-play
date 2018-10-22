@@ -15,16 +15,6 @@ class CheckoutForm extends Component {
         super(props);
         this.state = { complete: false };
     }
-    // sends token to the server 
-    // async submit(ev) {
-    //     
-    //     let response = await fetch("/charge", {
-    //         method: "POST",
-    //         body: token.id
-    //     });
-    //     if (response.ok) console.log("Purchase Complete!")
-    //     
-    // }
 
     componentDidUpdate() {
         if (this.state.complete === false && this.props.registered === true)
@@ -33,13 +23,13 @@ class CheckoutForm extends Component {
             })
     }
 
+    // Function to handle Stripe registration
     handleSubmit = () => {
-        
         this.props.stripe.createToken({ name: "Name" })
             .then((token) => {
                 console.log('Token in submit function', token);
                 this.props.dispatch({ type: 'CHECKOUT', payload: { token: token.token.id, registerInfo: this.props.registerInfo } });
-                swal('Processing transaction').then(() => {
+                swal('Purchase Complete').then(() => {
                     this.props.history.push('/login');
                 });
             }).catch((error) => {
@@ -48,6 +38,7 @@ class CheckoutForm extends Component {
             })
     }
 
+    // Resets state and sends the user to the login page
     toLogIn = () => {
         this.setState({
             complete: false,
@@ -57,24 +48,19 @@ class CheckoutForm extends Component {
     }
 
     render() {
-        let toLogInButton = null
-        if (this.state.complete === false) {
-            toLogInButton = <Link style={{color:"#eb1b3b"}} to="/login">Cancel</Link>
-        }
-        else if (this.state.complete === true) {
-            toLogInButton = <Button variant="contained" color="primary" onClick={this.toLogIn}>Log In</Button>
-        }
-        if (this.state.complete === true) return <div><h1>Purchase Complete</h1> {toLogInButton}</div>;
         return (
             // text related to payment form and holds stripe card element 
             <div>
                 <h5>Payment Form</h5>
                 <p>Sign up for a monthly subscription</p>
+                {/* Form for entering credit card information (provided by 'react-stripe-element') */}
                 <CardElement />
                 <br />
+                {/* Button to trigger registration */}
                 <Button variant="contained" color="primary" onClick={this.handleSubmit}>Register ($29.95/Month)</Button>
                 <div>
-                    {toLogInButton}
+                {/* Link to send the ser to the log in [page] */}
+                <Link style={{color:"#eb1b3b"}} to="/login">Cancel</Link>
                 </div>
             </div>
         );

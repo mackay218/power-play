@@ -1,5 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function* checkout(action) {
     try {
@@ -13,7 +14,7 @@ function* checkout(action) {
 }
 
 function* registerError(action) {
-    yield alert('There was an error registering new user!');
+    yield swal('There was an error registering new user!');
     console.log('register Error:', action.payload);
 }
 

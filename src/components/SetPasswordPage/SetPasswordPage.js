@@ -34,7 +34,7 @@ class SetPasswordPage extends Component {
     }
 
     scrollPosition = 0
-
+    // Resets page position when changing pages
     componentWillReceiveProps() {
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
@@ -43,10 +43,11 @@ class SetPasswordPage extends Component {
     }
 
     componentDidMount() {
+        // Function to get invitation code to send with reset email
         this.getInviteCode();
 
         setTimeout(console.log('state', this.state), 1000);
-
+        // Resets page position when changing pages
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
             window.scrollTo(0, this.scrollPosition)
@@ -54,6 +55,7 @@ class SetPasswordPage extends Component {
     }
 
     componentDidUpdate() {
+        // Resets page position when changing pages
         const element = ReactDOM.findDOMNode(this);
         if (element != null) {
             window.scrollTo(0, this.scrollPosition)
@@ -106,13 +108,13 @@ class SetPasswordPage extends Component {
             });
         }
     }
-
+    // Function for handling changes in the inputs
     handleInputChangeFor = propertyName => (event) => {
         this.setState({
             [propertyName]: event.target.value,
         });
     }
-
+    // Function to set new password 
     setPassword = (event) => {
         console.log('in setPassword');
 
@@ -175,7 +177,8 @@ class SetPasswordPage extends Component {
     render() {
 
         let passwordForm = null;
-
+        // Checks to see if invitation code is expired, if not renders the reset form
+        // Otherwise renders an error
         if (this.state.expired === false && this.state.inviteCode) {
             passwordForm = (
                 <form class="setPasswordForm" >

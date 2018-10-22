@@ -333,7 +333,7 @@ class PlayerProfileDisplay extends Component {
 
       if (playerInfo.save_percent) {
         savePercent = (
-          <p>Save Percent: {playerInfo.save_percent}</p>
+          <p>Save Percent: {playerInfo.save_percent}%</p>
         );
       }
 
