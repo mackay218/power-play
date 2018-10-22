@@ -24,7 +24,7 @@ let loadedPlayer = false;
 let playerPositionRender = null;
 
 class PlayerProfileDisplay extends Component {
-  
+
   scrollPosition = 0
 
   componentWillReceiveProps() {
@@ -41,16 +41,22 @@ class PlayerProfileDisplay extends Component {
     if (element != null) {
       window.scrollTo(0, this.scrollPosition)
     }
+    // Done loading the user, the user exists and the player info hasn't been loaded
+    if (!this.props.user.isLoading && this.props.user.email !== null && !loadedPlayer) {
+      loadedPlayer = true;
+      this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
+    }
+    if (this.props.user.role === 'coach') {
+      this.props.history.push('/players_page');
+    }
+    if (this.props.user.role === 'admin') {
+      this.props.history.push('/admin_page');
+    }
   }
 
   componentDidUpdate() {
     if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('landing_page');
-    }
-    // Done loading the user, the user exists and the player info hasn't been loaded
-    if (!this.props.user.isLoading && this.props.user.email !== null && !loadedPlayer) {
-      loadedPlayer = true;
-      this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id })
     }
     const element = ReactDOM.findDOMNode(this);
     if (element != null) {
@@ -203,7 +209,7 @@ class PlayerProfileDisplay extends Component {
       if (playerInfo.image_path) {
         profilePic = (
 
-          <img src={playerInfo.image_path} alt="profile pic"/>
+          <img src={playerInfo.image_path} alt="profile pic" />
 
         );
       }
@@ -258,7 +264,7 @@ class PlayerProfileDisplay extends Component {
       }
       if (playerInfo.player_info) {
         playerBio = (
-          <p>About me: <br/>{playerInfo.player_info}</p>
+          <p>About me: <br />{playerInfo.player_info}</p>
         )
       }
 
@@ -455,7 +461,7 @@ class PlayerProfileDisplay extends Component {
             </div>
 
           </div>
-          
+
           <div className="infoRow">
             <div className="videoContainer">
               {videoPlayer}
@@ -465,7 +471,7 @@ class PlayerProfileDisplay extends Component {
               {playerBio}
             </div>
           </div>
-         
+
 
         </div>
       );

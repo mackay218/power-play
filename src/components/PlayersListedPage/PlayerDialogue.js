@@ -35,6 +35,7 @@ class PlayerDialog extends Component {
   // Function for closing the player dialog
   handleClose = () => {
     this.setState({ open: false });
+    this.props.dispatch({type: 'RESET_PLAYER_INFO'});
   };
 
   render() {

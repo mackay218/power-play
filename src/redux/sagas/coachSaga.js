@@ -56,6 +56,16 @@ function* banCoach(action) {
     }
 }
 
+function* searchCoaches(action) {
+    try {
+        const coachByName = yield call(axios.get, `api/coaches/search?name=${action.payload}`);
+        yield console.log(coachByName);
+        yield put({type: 'SET_ALL_COACHES', payload: coachByName.data});
+    } catch (error) {
+        yield put({type: 'COACH_ERROR', payload: error});
+    }
+}
+
 function* coachSaga() {
     yield takeLatest('GET_ALL_COACHES', getAllCoaches);
     yield takeLatest('COACH_ERROR', coachError);
@@ -63,6 +73,7 @@ function* coachSaga() {
     yield takeLatest('SUSPEND_COACH', suspendCoach);
     yield takeLatest('BAN_COACH', banCoach);
     yield takeLatest('PAGE_COACHES', pageCoaches);
+    yield takeLatest('SEARCH_COACHES', searchCoaches);
 }
 
 export default coachSaga;

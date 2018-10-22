@@ -15,7 +15,6 @@ const player = (state = [], action) => {
 const playerInfo = (state = [], action) => {
     switch (action.type) {
         case 'SET_PLAYER_INFO':
-
             if(typeof(action.payload.school_year) === 'number'){
                 action.payload.school_year = action.payload.school_year.toString();
             }
@@ -28,8 +27,9 @@ const playerInfo = (state = [], action) => {
             if(typeof(action.payload.league_id) === 'number'){
                 action.payload.league_id = action.payload.league_id.toString();
             }
-
             return action.payload;
+        case 'RESET_PLAYER_INFO':
+            return [];
         default: 
             return state;
     }
