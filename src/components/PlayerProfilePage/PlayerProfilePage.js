@@ -39,11 +39,14 @@ class PlayerProfilePage extends Component {
   getImage = (result) => {
     console.log('filestack submitted', result.filesUploaded);
     swal('Image added!');
-    this.setState({
-      ...this.state,
-      image_path: result.filesUploaded[0].url
-    })
-    console.log(this.state.image_path);
+    
+    const action = {
+      type: 'SET_PLAYER_INFO', payload: {
+        ...this.props.player.playerInfo,
+        image_path: result.filesUploaded[0].url,
+      }
+    }
+    this.props.dispatch(action);
   }
 
 
