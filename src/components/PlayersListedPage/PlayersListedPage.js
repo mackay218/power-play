@@ -22,6 +22,7 @@ import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import PlayerDialog from './PlayerDialogue';
 import { CSVLink, } from 'react-csv';
+import SuspendIcon from '@material-ui/icons/RemoveCircleOutline';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -154,6 +155,30 @@ class PlayersListedPage extends Component {
       }
     })
   }
+  // Function for suspending a player
+  suspendPlayer = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once suspended, they will not appear in searches!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willSuspend) => {
+      if (willSuspend) {
+        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: {id: id, reasons: { reason: 'Coach suspended', reasonBody: '' }}});
+        swal('The player was suspended', {
+          icon: 'success'
+        }).then(() => {
+          this.props.dispatch({type: 'GET_ALL_PLAYERS'})
+        });
+      }
+      else {
+        swal('The player was not suspended', {
+          dangerMode: true,
+        });
+      }
+    })
+  }
   // Function for returning to the previous table page
   previousPage = () => {
     if (this.state.page > 0) {
@@ -208,6 +233,9 @@ class PlayersListedPage extends Component {
                 <CustomTableCell>{player.points}</CustomTableCell>
                 <CustomTableCell>{player.wins}</CustomTableCell>
                 <CustomTableCell><PlayerDialog id={player.person_id} /></CustomTableCell>
+                <CustomTableCell>
+                  <Button variant="contained" style={{backgroundColor: "orange", color: "white"}} onClick={() => this.suspendPlayer(player.person_id)}><SuspendIcon /> Suspend</Button>
+                </CustomTableCell>
                 <CustomTableCell>
                   <Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button>
                 </CustomTableCell>
