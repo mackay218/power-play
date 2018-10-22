@@ -44,7 +44,7 @@ class PlayerProfileDialog extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className="dialogContainer">
         <Button variant="contained" color="primary" onClick={this.handleClickOpen}>Edit Profile</Button>
         <Dialog
           fullScreen

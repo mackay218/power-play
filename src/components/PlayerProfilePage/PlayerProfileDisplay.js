@@ -372,7 +372,7 @@ class PlayerProfileDisplay extends Component {
         <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
           allowFullScreen="allowFullScreen"
           src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
-          frameborder="0"
+          frameBorder="0"
           title="defaultVideo"
         ></iframe>
 
@@ -392,7 +392,7 @@ class PlayerProfileDisplay extends Component {
           <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
             allowFullScreen="allowFullScreen"
             src={videoUrl}
-            frameborder="0"
+            frameBorder="0"
             title="playerVideo"
           ></iframe>
         )

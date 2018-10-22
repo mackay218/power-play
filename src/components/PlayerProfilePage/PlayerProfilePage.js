@@ -21,6 +21,8 @@ const mapStateToProps = state => ({
   player: state.player,
 });
 
+
+
 //USED FOR FILESTACK -- 
 const options = {
   accept: 'image/*',
@@ -32,40 +34,7 @@ const options = {
 
 
 class PlayerProfilePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      person_id: this.props.user.id,
-      league_id: '',
-      team_name: '',
-      school_name: '',
-      position_id: '',
-      first_name: '',
-      last_name: '',
-      phone_number: '',
-      birth_date: '',
-      height: '',
-      weight: '',
-      gpa: '',
-      act_score: '',
-      school_year: '',
-      video_link: '',
-      goals: '',
-      assists: '',
-      points: '',
-      games_played: '',
-      wins: '',
-      losses: '',
-      ties: '',
-      save_percent: '',
-      shutouts: '',
-      goals_against: '',
-      guardian: '',
-      player_info: '',
-      image_path: '',
-    }
-  }
-
+ 
   //Function to Get Image 
   getImage = (result) => {
     console.log('filestack submitted', result.filesUploaded);
@@ -92,48 +61,16 @@ class PlayerProfilePage extends Component {
     if (!this.props.user.isLoading && this.props.user.role === "admin") {
       this.props.history.push('/admin_page');
     }
-    if (this.props.player.length > 0 && this.state.position_id === '') {
-      console.log('HELLO');
-      this.setState({
-        person_id: this.props.user.id,
-        league_id: this.props.player.league_id,
-        team_name: this.props.player.team_name,
-        school_name: this.props.player.school_id,
-        position_id: this.props.player.position_id,
-        first_name: this.props.player.first_name,
-        last_name: this.props.player.last_name,
-        phone_number: this.props.player.phone_number,
-        birth_date: this.props.player.birth_date,
-        height: this.props.player.height,
-        weight: this.props.player.weight,
-        gpa: this.props.player.gpa,
-        act_score: this.props.player.act_score,
-        school_year: this.props.player.school_year,
-        video_link: this.props.player.video_link,
-        image_path: this.props.player.image_path,
-        goals: this.props.player.goals,
-        assists: this.props.player.assists,
-        points: this.props.player.points,
-        games_played: this.props.player.games_played,
-        wins: this.props.player.wins,
-        losses: this.props.player.losses,
-        ties: this.props.player.ties,
-        save_percent: this.props.player.save_percent,
-        shutouts: this.props.player.shutouts,
-        goals_against: this.props.player.goals_against,
-        guardian: false,
-        player_info: this.props.player.player_info,
-
-      });
-    }
   }
 
   handleProfileChange = (event) => {
-    this.setState({
-      ...this.state,
+    
+    const action = {type: 'SET_PLAYER_INFO', payload:{
+      ...this.props.player.playerInfo,
       [event.target.name]: event.target.value,
-    })
-    console.log('this.state.profile:', this.state.profile)
+    }}
+
+    this.props.dispatch(action);
   }
 
   logout = () => {
@@ -148,7 +85,7 @@ class PlayerProfilePage extends Component {
     axios({
       method: 'PUT',
       url: '/api/players/updateProfile/' + this.props.user.id,
-      data: this.state,
+      data: this.props.player.playerInfo,
     }).then(() => {
       swal('Your profile was updated!')
       this.props.dispatch({ type: 'GET_PLAYER_INFO', payload: this.props.user.id });
@@ -197,38 +134,41 @@ class PlayerProfilePage extends Component {
   }
 
   render() {
+
+    let playerInfo = this.props.player.playerInfo;
+
     let content = null;
     let positionalContent = null;
-    if (this.state.position_id === '4') {
+    if (playerInfo.position_id === '4') {
       positionalContent = (
         <div className="align-left">
           <div>
             <label>Goalie Options:</label>
             <br />
-            <TextField type="number" label="Wins" value={this.state.wins} onChange={this.handleProfileChange} name="wins" />
-            <TextField type="number" label="Losses" value={this.state.losses} onChange={this.handleProfileChange} name="losses" />
-            <TextField type="number" label="Ties" value={this.state.ties} onChange={this.handleProfileChange} name="ties" />
+            <TextField type="number" label="Wins" value={playerInfo.wins} onChange={this.handleProfileChange} name="wins" />
+            <TextField type="number" label="Losses" value={playerInfo.losses} onChange={this.handleProfileChange} name="losses" />
+            <TextField type="number" label="Ties" value={playerInfo.ties} onChange={this.handleProfileChange} name="ties" />
           </div>
           <div>
-            <TextField type="text" label="Save %" value={this.state.save_percent} onChange={this.handleProfileChange} name="save_percent" />
-            <TextField type="number" label="Shutouts" value={this.state.shutouts} onChange={this.handleProfileChange} name="shutouts" />
-            <TextField type="number" label="Goals Against" value={this.state.goals_against} onChange={this.handleProfileChange} name="goals_against" />
-            <TextField type="number" label="Games Played" value={this.state.games_played} onChange={this.handleProfileChange} name="games_played" />
+            <TextField type="text" label="Save %" value={playerInfo.save_percent} onChange={this.handleProfileChange} name="save_percent" />
+            <TextField type="number" label="Shutouts" value={playerInfo.shutouts} onChange={this.handleProfileChange} name="shutouts" />
+            <TextField type="number" label="Goals Against" value={playerInfo.goals_against} onChange={this.handleProfileChange} name="goals_against" />
+            <TextField type="number" label="Games Played" value={playerInfo.games_played} onChange={this.handleProfileChange} name="games_played" />
           </div>
         </div>
       )
-    } else if (this.state.position_id === '3' || this.state.position_id === '2') {
+    } else if (playerInfo.position_id === '3' || playerInfo.position_id === '2') {
       positionalContent = (
         <div className="align-left">
           <div>
             <label>Skater Options:</label>
             <br />
-            <TextField type="number" label="Goals" value={this.state.goals} onChange={this.handleProfileChange} name="goals" />
-            <TextField type="number" label="Assists" value={this.state.assists} onChange={this.handleProfileChange} name="assists" />
-            <TextField type="number" label="Points" value={this.state.points} onChange={this.handleProfileChange} name="points" />
+            <TextField type="number" label="Goals" value={playerInfo.goals} onChange={this.handleProfileChange} name="goals" />
+            <TextField type="number" label="Assists" value={playerInfo.assists} onChange={this.handleProfileChange} name="assists" />
+            <TextField type="number" label="Points" value={playerInfo.points} onChange={this.handleProfileChange} name="points" />
           </div>
           <div>
-            <TextField type="number" label="Games Played" value={this.state.games_played} onChange={this.handleProfileChange} name="games_played" />
+            <TextField type="number" label="Games Played" value={playerInfo.games_played} onChange={this.handleProfileChange} name="games_played" />
           </div>
         </div>
       )
@@ -245,29 +185,29 @@ class PlayerProfilePage extends Component {
                 <Grid item md={1}></Grid>
                 <Grid item md={4}>
                   <div className="playerFormSection">
-                    <TextField type="text" label="First Name" value={this.state.first_name} onChange={this.handleProfileChange} name="first_name" />
-                    <TextField type="text" label="Last Name" value={this.state.last_name} onChange={this.handleProfileChange} name="last_name" />
-                    <TextField type="text" label="School" value={this.state.school_name} onChange={this.handleProfileChange} name="school_name" />
-                    <TextField type="text" label="Team" value={this.state.team_name} onChange={this.handleProfileChange} name="team_name" />
-                    <TextField type="text" label="Email" value={this.props.user.email} />
-                    <TextField type="number" label="Phone Number" value={this.state.phone_number} onChange={this.handleProfileChange} name="phone_number" />
+                    <TextField type="text" label="First Name" value={playerInfo.first_name} onChange={this.handleProfileChange} name="first_name" />
+                    <TextField type="text" label="Last Name" value={playerInfo.last_name} onChange={this.handleProfileChange} name="last_name" />
+                    <TextField type="text" label="School" value={playerInfo.school_name} onChange={this.handleProfileChange} name="school_name" />
+                    <TextField type="text" label="Team" value={playerInfo.team_name} onChange={this.handleProfileChange} name="team_name" />
+                    <TextField type="text" label="Email" value={playerInfo.email} />
+                    <TextField type="number" label="Phone Number" value={playerInfo.phone_number} onChange={this.handleProfileChange} name="phone_number" />
                   </div>
                   <div className="playerFormSection">
                     <FormControl>
                       <InputLabel>Grade</InputLabel>
-                      <Select value={this.state.school_year} onChange={this.handleProfileChange} name="school_year" className="align-left">
+                      <Select value={playerInfo.school_year} onChange={this.handleProfileChange} name="school_year" className="align-left">
                         <MenuItem value="10">10</MenuItem>
                         <MenuItem value="11">11</MenuItem>
                         <MenuItem value="12">12</MenuItem>
                         <MenuItem value="13">Graduate</MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField type="text" label="GPA" value={this.state.gpa} onChange={this.handleProfileChange} name="gpa" />
-                    <TextField type="text" label="Weight" value={this.state.weight} onChange={this.handleProfileChange} name="weight" />
-                    <TextField type="text" label="Height" value={this.state.height} onChange={this.handleProfileChange} name="height" />
+                    <TextField type="text" label="GPA" value={playerInfo.gpa} onChange={this.handleProfileChange} name="gpa" />
+                    <TextField type="text" label="Weight" value={playerInfo.weight} onChange={this.handleProfileChange} name="weight" />
+                    <TextField type="text" label="Height" value={playerInfo.height} onChange={this.handleProfileChange} name="height" />
                     <FormControl>
                       <InputLabel>Position</InputLabel>
-                      <Select value={this.state.position_id} onChange={this.handleProfileChange} name="position_id" className="align-left">
+                      <Select value={playerInfo.position_id} onChange={this.handleProfileChange} name="position_id" className="align-left">
                         <MenuItem value="2">Forward</MenuItem>
                         <MenuItem value="3">Defence</MenuItem>
                         <MenuItem value="4">Goalie</MenuItem>
@@ -278,10 +218,10 @@ class PlayerProfilePage extends Component {
                 <Grid item md={1}></Grid>
                 <Grid item md={4}>
                   <div className="playerFormSection">
-                    <TextField label="Video URL" value={this.state.video_link} onChange={this.handleProfileChange} name="video_link" />
+                    <TextField label="Video URL" value={playerInfo.video_link} onChange={this.handleProfileChange} name="video_link" />
                     <FormControl>
                       <InputLabel>League</InputLabel>
-                      <Select value={this.state.league_id} onChange={this.handleProfileChange} name="league_id" className="align-left" required>
+                      <Select value={playerInfo.league_id} onChange={this.handleProfileChange} name="league_id" className="align-left" required>
                         <MenuItem value="2">1A</MenuItem>
                         <MenuItem value="3">2A</MenuItem>
                         <MenuItem value="4">3A</MenuItem>
@@ -304,14 +244,14 @@ class PlayerProfilePage extends Component {
                     {/* (WE WILL REPLACE THIS DROP-DOWN WITH A UI-MATERIALS CALENDAR) */}
                     <FormControl>
                       <TextField
-                        value={this.state.birth_date} onChange={this.handleProfileChange} name="birth_date"
+                        value={playerInfo.birth_date} onChange={this.handleProfileChange} name="birth_date"
                         type="date"
                       />
                     </FormControl>
                   </div>
                   <div className="playerFormSection">
                     <label>Notes:</label>
-                    <TextField value={this.state.player_info} onChange={this.handleProfileChange} name="player_info" />
+                    <TextField value={playerInfo.player_info} onChange={this.handleProfileChange} name="player_info" />
                   </div>
                   {/* we can implempent an image hosting API for client drag/drop HERE \/ */}
                   <br />
