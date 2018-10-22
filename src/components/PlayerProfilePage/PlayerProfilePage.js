@@ -39,11 +39,14 @@ class PlayerProfilePage extends Component {
   getImage = (result) => {
     console.log('filestack submitted', result.filesUploaded);
     swal('Image added!');
-    this.setState({
-      ...this.state,
-      image_path: result.filesUploaded[0].url
-    })
-    console.log(this.state.image_path);
+    
+    const action = {
+      type: 'SET_PLAYER_INFO', payload: {
+        ...this.props.player.playerInfo,
+        image_path: result.filesUploaded[0].url,
+      }
+    }
+    this.props.dispatch(action);
   }
 
 
@@ -100,7 +103,7 @@ class PlayerProfilePage extends Component {
   // Should be deleted before sent to production
   easyFill = () => {
     console.log('In easyFill');
-    this.setState({
+    let body = {
       person_id: this.props.user.id,
       league_id: '5',
       team_name: 'The White Hawks',
@@ -128,7 +131,12 @@ class PlayerProfilePage extends Component {
       goals_against: 15,
       guardian: true,
       player_info: 'I\'ve been starting at the goalie position at Mount West Tonka for the last three years, Each year I have been getting better at the position and have been going to Michael Bowman Hockey Camp over the summers. I focus on my academics an equal amount as I focus on my hockey career. I am looking forward to a tryout with you and your team!',
-    })
+      email: this.props.user.email,
+    };
+
+    const action = { type: 'SET_PLAYER_INFO', payload: body };
+
+    this.props.dispatch(action);
   }
 
   render() {
@@ -191,7 +199,8 @@ class PlayerProfilePage extends Component {
                     <TextField type="text" label="Last Name" value={playerInfo.last_name} onChange={this.handleProfileChange} name="last_name" />
                     <TextField type="text" label="School" value={playerInfo.school_name} onChange={this.handleProfileChange} name="school_name" />
                     <TextField type="text" label="Team" value={playerInfo.team_name} onChange={this.handleProfileChange} name="team_name" />
-                    <TextField type="text" label="Email" value={playerInfo.email} />
+                    {/* CAN ADD EMAIL EDITING IN LATER */}
+                    {/* <TextField type="text" label="Email" value={this.props.user.email} name="email"/> */}
                     <TextField type="number" label="Phone Number" value={playerInfo.phone_number} onChange={this.handleProfileChange} name="phone_number" />
                   </div>
                   <div className="playerFormSection">
