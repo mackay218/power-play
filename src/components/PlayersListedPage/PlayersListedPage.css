@@ -106,3 +106,16 @@
     flex-direction: row;
     justify-content: space-around;
 }
+
+.videoContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.left p{
+    position: relative;
+    left: 60px;
+
+    font-weight: bold;
+}

@@ -67,7 +67,7 @@ router.post('/', (req, res) => {
         const teamName = faker.company.companyName();
         const school = faker.address.city() + ' High School';
 
-        const videoLink = 'https://www.youtube.com/watch?v=dwDpSKDyKRU';
+        const videoLink = 'https://www.youtube.com/watch?v=a8rRW5Ugg0I';
 
         let goals = 0;
         let assists = 0;

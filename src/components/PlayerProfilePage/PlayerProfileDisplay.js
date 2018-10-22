@@ -377,7 +377,7 @@ class PlayerProfileDisplay extends Component {
 
         <iframe className="videoSpacing" id="player" type="text/html" width="426" height="260"
           allowFullScreen="allowFullScreen"
-          src="http://www.youtube.com/embed/dwDpSKDyKRU?enablejsapi=1&origin=http://example.com"
+          src="http://www.youtube.com/embed/a8rRW5Ugg0I?enablejsapi=1&origin=http://example.com"
           frameBorder="0"
           title="defaultVideo"
         ></iframe>
