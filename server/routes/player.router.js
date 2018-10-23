@@ -249,8 +249,10 @@ router.put('/suspend/', (req, res) => {
 // Route for creating a player
 router.post('/create', (req, res) => {
         const query = `INSERT INTO "player_stats" 
-                    ("person_id", "league_id", "position_id") 
-                    VALUES ($1, 1, 1);`;
+                    ("person_id", "league_id", "position_id","team_name","school_name","first_name","last_name",
+                    "phone_number","birth_date","height","weight","gpa","act_score","school_year","video_link","goals","assists",
+                    "points","games_played","wins","losses","ties","save_percent","shutouts","goals_against","guardian","player_info") 
+                    VALUES ($1, 1, 1, '', '', '', '', '', NOW(), '', '', 0.0, 1, 12, '', 0, 0, 0, 0, 0, 0, 0, '', 0, 0, false, '');`;
         pool.query(query, [req.body.id]).then((result) => {
             res.sendStatus(201);
         }).catch((error) => {

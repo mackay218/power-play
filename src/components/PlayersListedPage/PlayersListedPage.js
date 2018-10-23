@@ -165,11 +165,11 @@ class PlayersListedPage extends Component {
       dangerMode: true,
     }).then((willSuspend) => {
       if (willSuspend) {
-        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: {id: id, reasons: { reason: 'Coach suspended', reasonBody: '' }}});
+        this.props.dispatch({ type: 'SUSPEND_PLAYER', payload: { id: id, reasons: { reason: 'Coach suspended', reasonBody: '' } } });
         swal('The player was suspended', {
           icon: 'success'
         }).then(() => {
-          this.props.dispatch({type: 'GET_ALL_PLAYERS'})
+          this.props.dispatch({ type: 'GET_ALL_PLAYERS' })
         });
       }
       else {
@@ -217,11 +217,13 @@ class PlayersListedPage extends Component {
     let content = null;
     let formContent = null;
     let deleteHeader = null;
+    let suspendHeader = null;
     let playerMap = null;
     const csvData = this.props.csv;
     // Changes the map function to have a delete button if the user is and administrator
     if (this.props.user.role === "admin" && this.props.player) {
       deleteHeader = <CustomTableCell>Delete</CustomTableCell>;
+      suspendHeader = <CustomTableCell>Suspend</CustomTableCell>;
       playerMap = (
         <TableBody>
           {this.props.player.map((player) => {
@@ -234,7 +236,7 @@ class PlayersListedPage extends Component {
                 <CustomTableCell>{player.wins}</CustomTableCell>
                 <CustomTableCell><PlayerDialog id={player.person_id} /></CustomTableCell>
                 <CustomTableCell>
-                  <Button variant="contained" style={{backgroundColor: "orange", color: "white"}} onClick={() => this.suspendPlayer(player.person_id)}><SuspendIcon /> Suspend</Button>
+                  <Button variant="contained" style={{ backgroundColor: "orange", color: "white" }} onClick={() => this.suspendPlayer(player.person_id)}><SuspendIcon /> Suspend</Button>
                 </CustomTableCell>
                 <CustomTableCell>
                   <Button variant="contained" color="secondary" onClick={() => this.deletePlayer(player.person_id)}><DeleteIcon />Delete</Button>
@@ -271,7 +273,7 @@ class PlayersListedPage extends Component {
           <h4>Skater Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Points Scored" name="pointsMin" />
-            <TextField type="date" 
+            <TextField type="date"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -291,16 +293,16 @@ class PlayersListedPage extends Component {
           <h4>Goalie Options</h4>
           <div className="position-options">
             <TextField type="number" onChange={this.handleChange} label="Games Won" name="winsMin" />
-            <TextField type="date" 
+            <TextField type="date"
               InputLabelProps={{
                 shrink: true,
-              }} 
+              }}
               onChange={this.handleChange} label="Birthdate Min" name="birthDayMin" />
-            <TextField type="date" 
+            <TextField type="date"
               InputLabelProps={{
                 shrink: true,
-              }} 
-            onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
+              }}
+              onChange={this.handleChange} label="Birthdate Max" name="birthDayMax" />
           </div>
         </div>
       )
@@ -337,7 +339,7 @@ class PlayersListedPage extends Component {
             <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
           </div>
           <div className="page-buttons">
-          {/* Buttons for changing the table page */}
+            {/* Buttons for changing the table page */}
             <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
             <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
@@ -352,6 +354,7 @@ class PlayersListedPage extends Component {
                   <CustomTableCell>Wins</CustomTableCell>
                   <CustomTableCell>Player Details</CustomTableCell>
                   {/* Only renders if the user is an administrator */}
+                  {suspendHeader}
                   {deleteHeader}
                 </TableRow>
               </TableHead>
@@ -360,7 +363,7 @@ class PlayersListedPage extends Component {
             </Table>
           </Paper>
           <div className="page-buttons">
-          {/* Buttons for changing table pages */}
+            {/* Buttons for changing table pages */}
             <Button variant="contained" color="primary" onClick={this.previousPage}>Previous</Button>
             <Button variant="contained" color="primary" onClick={this.nextPage}>Next</Button>
           </div>
@@ -375,7 +378,7 @@ class PlayersListedPage extends Component {
 
     return (
       <div className="mainContainer"
-      // Sets the background image of the site
+        // Sets the background image of the site
         style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
       >
         <Nav />
