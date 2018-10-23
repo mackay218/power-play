@@ -120,7 +120,7 @@ class PlayerProfilePage extends Component {
       gpa: '4.0',
       act_score: 31,
       school_year: '12',
-      video_link: 'https://www.youtube.com/watch?v=c1iZ_pkOwwU',
+      video_link: 'https://www.youtube.com/watch?v=naUgrBOozsk',
       goals: 0,
       assists: 0,
       points: 0,
