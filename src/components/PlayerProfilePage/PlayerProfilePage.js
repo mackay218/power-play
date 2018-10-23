@@ -52,6 +52,8 @@ class PlayerProfilePage extends Component {
 
   componentDidMount() {
     this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+
+    
   }
 
   componentDidUpdate() {
@@ -118,7 +120,7 @@ class PlayerProfilePage extends Component {
       gpa: '4.0',
       act_score: 31,
       school_year: '12',
-      video_link: 'https://www.youtube.com/watch?v=SN7Xd6_OtM8',
+      video_link: 'https://www.youtube.com/watch?v=c1iZ_pkOwwU',
       goals: 0,
       assists: 0,
       points: 0,
