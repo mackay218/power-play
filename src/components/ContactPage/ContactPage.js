@@ -141,6 +141,8 @@ class ContactPage extends Component {
                             style={{ width: 400 }}
                         ></TextField>
                         <Button
+                            variant="contained"
+                            color="primary"
                             className="contactSend"
                             onClick={this.submitForm}
                         >

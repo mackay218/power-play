@@ -144,7 +144,9 @@ class AdminPage extends Component {
             <br />
             <TextField className="coachFormInput" label="email" type="text" onChange={this.handleChange} value={this.state.email} name="email" required/>
             <br />
-            <Button variant="contained" type="submit">Add Coach</Button>
+            <Button variant="contained" 
+              color="primary"type="submit">Add Coach
+            </Button>
           </form>
           <img className="inverseLogo" src="images/largePPRLogo.svg" alt="logo" />
         </div>
