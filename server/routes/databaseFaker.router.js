@@ -157,7 +157,9 @@ router.post('/coaches', (req, res) => {
     for (let i = 0; i < 300; i++) {
         
         //account status_type
-        const statusType = Math.round(Math.random() * (4 - 1) + 1);
+        //CHANGED FOR PRESENTATION SO ONLY ACTIVE COACHES
+        //const statusType = Math.round(Math.random() * (4 - 1) + 1);
+        const statusType = 1;
 
         let statusReason = null;
  
