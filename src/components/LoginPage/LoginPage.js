@@ -117,18 +117,17 @@ class LoginPage extends Component {
           {this.renderAlert()}
           <form className="loginForm" onSubmit={this.login}>
             <h1>Login</h1>
-            <div className="formInputs">
-              <div>
+            <div className="loginFormInputs">
                 <TextField 
+                  className="loginInput"
                   type="email"
                   name="email"
                   label="Email"
                   value={this.state.email}
                   onChange={this.handleInputChangeFor('email')}
                 />
-              </div>
-              <div>
                 <TextField 
+                  className="loginInput"
                   type="password"
                   name="password"
                   label="password"
@@ -136,15 +135,18 @@ class LoginPage extends Component {
                   onChange={this.handleInputChangeFor('password')}
 
                 />
-              </div>
             </div>
             <div className="btnContainer">
               <Button
+                variant="contained"
+                color="primary"
                 type="submit"
                 name="submit"
                 value="Log In"
               >Log In</Button>
               <Button 
+                variant="contained"
+                color="primary"
                 type="button"
                 onClick={this.handleRegister}>Register</Button>
             </div>

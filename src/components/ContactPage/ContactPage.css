@@ -11,6 +11,7 @@
     width: 500px;
 }
 
-.contactSend{
+.contactForm button{
+    margin: 10px;
     width: 100px;
 }

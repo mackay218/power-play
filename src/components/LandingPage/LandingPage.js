@@ -145,8 +145,8 @@ class LandingPage extends Component {
                             <span><b style={{ fontSize: '20px' }}>Logan Sharp(Vice President), Mike Bowman (President), and Austin Hill(Chief Operating Officer)</b>
                                 <br />are the founders of Power Play Recruiting, a revolutionary online scouting service that helps
                             <br />connect coaches to hockey players. With over 60 years of experience playing, coaching, and
-                            <br />scouting at all levels of hockey - from youth ti professional, we have been furthering hockey
-                            <br />players careers at all levels for many years, through our large and trusted network of coaches
+                            <br />scouting at all levels of hockey - from youth to professional, we have been furthering hockey
+                            <br />player's careers at all levels for many years, through our large and trusted network of coaches
                             <br />and hockey insiders. We look forward to the opportunity to serve and assist in your hockey journey!</span>
                         </div>
                     </div>

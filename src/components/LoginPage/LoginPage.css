@@ -5,6 +5,8 @@ body{
 
 
 .loginForm{
+    width: 30vw;
+    min-width: 300px;
     height: 350px;
     background-color: #fff;
     border: 5px solid var(--red);
@@ -15,18 +17,28 @@ body{
     align-items: center;
 }
 
-.formInputs{
+.loginFormInputs{
+    width: 90%;
     display: flex;
     flex-direction: column;
-    justify-content: right;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginInput{
+    width: 80%;
 }
 
 .btnContainer{
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.btnContainer button{
+    margin: 10px;
 }
 
 .cancelBtn{

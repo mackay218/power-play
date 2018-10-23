@@ -201,17 +201,24 @@ class SetPasswordPage extends Component {
                             onChange={this.handleInputChangeFor('confirmPassword')}
                         />
                     </div>
-                    <Button onClick={this.setPassword}>Submit</Button>
+                    <Button variant="contained"
+                        color="primary"
+                        onClick={this.setPassword}>Submit
+                    </Button>
                 </form>
             )
         }
 
         return (
-            <div className="mainContainer">
+            <div className="mainContainer"
+                style={{ backgroundImage: 'url("./images/ice-background.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no repeat' }}
+                >
                 <Nav />
                 <div className="pageContainer">
                     {this.renderAlert()}
                     {passwordForm}
+                    <img className="inverseLogo" src="images/largePPRLogo.svg" alt="logo" />
+
                 </div>
             </div>
         )
