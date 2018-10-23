@@ -127,11 +127,12 @@ class PlayersListedPage extends Component {
   // Function for handling filtering by stats
   sendSortBy = (event) => {
     event.preventDefault();
+    
+    this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state });
     this.setState({
       ...this.state,
       page: 0,
     });
-    this.props.dispatch({ type: 'SORT_PLAYER_BY', payload: this.state });
   }
   // Function for removing a player from the site
   deletePlayer = (id) => {
@@ -336,7 +337,11 @@ class PlayersListedPage extends Component {
           <h2 className="center-text">Players</h2>
           <div className="center-text">
             {/* Link for downloading a csv file of the players list */}
-            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">Download Players</CSVLink>
+            <CSVLink data={csvData} className="color-red" seperator={","} filename={"hockey-players.csv"} target="_blank">
+              <Button variant="contained"
+                color="primary">Download Players
+              </Button>
+            </CSVLink>
           </div>
           <div className="page-buttons">
             {/* Buttons for changing the table page */}
