@@ -79,7 +79,7 @@ Player Profile page. When a player logs in they are redirected here to a profile
 
 ### Coach
 
-![Screen Shot](public/images/appScreenShots/coachPlayerList.png)
+![Screen Shot](public/images/appScreenShots/coachPlayerListPage.png)
 
 When a Coach Logs in they are redirected here. This page is also navigated to by clicking 'Player List' in the navigation menu. The page contains a form to search and filter/sort the list of players by categories such as position, birthdate, and hockey statitics such a goals scored. The 'search' button carrys out the search. The 'download' players button downloads a csv containing the players list to the users computer. The 'previous' and 'next' buttons show the user another set of players. The 'view details' buttons in each row 
 of the table open a dialog containing more information about the corresponding player.
@@ -88,11 +88,19 @@ of the table open a dialog containing more information about the corresponding p
 
 A full page dialog showing more details about a player.
 
+<<<<<<< HEAD
+### Admin
+
+![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
+
+Admin view of the list of coaches. Admin can suspend, delete, or ban accounts. 
+=======
 ![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
 
 Admin view of the list of coaches. Admin can suspend delete or ban accounts. 
 
 
+>>>>>>> master
 
 
 ## Production Build
