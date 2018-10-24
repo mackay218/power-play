@@ -60,7 +60,7 @@ router.get('/sorted', (req, res) => {
             try {
                 queryText = `CREATE TEMP TABLE "sorted_players" AS
                             SELECT "player_stats".*, "position"."position_name", "league"."league_name",
-                            "person"."personid", "person"."status_id" 
+                            "person"."personid", "person"."status_id"
                             FROM "player_stats" 
                             JOIN "person" ON "person_id" = "person"."personid"
                             JOIN "position" ON "position_id" = "position"."positionid"

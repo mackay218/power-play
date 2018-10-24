@@ -116,6 +116,15 @@ class PlayersListedPage extends Component {
       [event.target.name]: event.target.value,
     })
   }
+  // Handle Change for position drop down (resets stat search)
+  handlePositionChange = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+      winsMin: '',
+      pointsMin: '',
+    })
+  }
   // Function for handling searching by name
   handleNameChange = (event) => {
     this.setState({
@@ -273,7 +282,7 @@ class PlayersListedPage extends Component {
         <div className="form-column">
           <h4>Skater Options</h4>
           <div className="position-options">
-            <TextField type="number" onChange={this.handleChange} label="Points Scored" name="pointsMin" />
+            <TextField type="number" value={this.state.pointsMin} onChange={this.handleChange} label="Points Scored" name="pointsMin" />
             <TextField type="date"
               InputLabelProps={{
                 shrink: true,
@@ -293,7 +302,7 @@ class PlayersListedPage extends Component {
         <div className="form-column">
           <h4>Goalie Options</h4>
           <div className="position-options">
-            <TextField type="number" onChange={this.handleChange} label="Games Won" name="winsMin" />
+            <TextField type="number" value={this.state.winsMin} onChange={this.handleChange} label="Games Won" name="winsMin" />
             <TextField type="date"
               InputLabelProps={{
                 shrink: true,
@@ -314,6 +323,7 @@ class PlayersListedPage extends Component {
         <div>
           {/* Form for searching by name/stats */}
           <form className="search-form" onSubmit={this.sendSortBy}>
+            {JSON.stringify(this.state)}
             <div className="form-column">
               <h3>Search Players By:</h3>
               <div className="form-container">
@@ -321,7 +331,7 @@ class PlayersListedPage extends Component {
                 <div className="or"><p>or</p></div>
                 <FormControl className="input-width">
                   <InputLabel>Position</InputLabel>
-                  <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handleChange} name="position_id">
+                  <Select value={this.state.position_id} inputProps={{ id: 'position-simple' }} onChange={this.handlePositionChange} name="position_id">
                     <MenuItem value="2">Forward</MenuItem>
                     <MenuItem value="3">Defense</MenuItem>
                     <MenuItem value="4">Goalies</MenuItem>
