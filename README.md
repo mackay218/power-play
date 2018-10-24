@@ -88,9 +88,11 @@ of the table open a dialog containing more information about the corresponding p
 
 A full page dialog showing more details about a player.
 
+### Admin
+
 ![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
 
-Admin view of the list of coaches. Admin can suspend delete or ban accounts. 
+Admin view of the list of coaches. Admin can suspend, delete, or ban accounts. 
 
 
 ## Production Build
