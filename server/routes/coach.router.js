@@ -46,7 +46,7 @@ router.get('/paged', (req, res) => {
 // Route to search coaches by name
 router.get('/search', (req, res) => {
     req.query.name = `%${req.query.name}%`
-    const query = `SELECT "person"."coach_name", "person"."email", "account_status"."status_type" FROM "person"
+    const query = `SELECT "person"."coach_name", "person"."email", "person"."personid", "account_status"."status_type" FROM "person"
                    JOIN "account_status" ON "account_status"."id" = "status_id" WHERE "coach_name" ILIKE $1 LIMIT 10;`;
     pool.query(query, [req.query.name]).then((result) => {
         res.send(result.rows)
