@@ -79,7 +79,7 @@ Player Profile page. When a player logs in they are redirected here to a profile
 
 ### Coach
 
-![Screen Shot](public/images/appScreenShots/coachPlayerList.png)
+![Screen Shot](public/images/appScreenShots/coachPlayerListPage.png)
 
 When a Coach Logs in they are redirected here. This page is also navigated to by clicking 'Player List' in the navigation menu. The page contains a form to search and filter/sort the list of players by categories such as position, birthdate, and hockey statitics such a goals scored. The 'search' button carrys out the search. The 'download' players button downloads a csv containing the players list to the users computer. The 'previous' and 'next' buttons show the user another set of players. The 'view details' buttons in each row 
 of the table open a dialog containing more information about the corresponding player.
@@ -91,24 +91,6 @@ A full page dialog showing more details about a player.
 ![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
 
 Admin view of the list of coaches. Admin can suspend delete or ban accounts. 
-
-
-
-
-
-
-
-
-
-## Debugging
-
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run dev:client`. Start the debugging server by selecting the Debug button.
-
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
-
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
-
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
 
 
 ## Production Build
