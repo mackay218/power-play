@@ -71,29 +71,11 @@ Home page of the application with the mission statement, simple instructions, pl
 
 Sign Up page of the application where a user can sign up with an email and password and submit payment with a credit card via Stripe.
 
-![Screen Shot](public/images/appScreenShots/loginPage.png)
-
-Login page where a user(player, coach, or admin) can log in.  Register button brings user to the Sign Up page,  Forgot password opens a dialog for the user to enter their email address to start the process or resetting their password.
-
-![Screen Shot](public/images/appScreenShots/forgotPasswordView.png)
-
-Forgot password dialog.
-
 ### Player
 
 ![Screen Shot](public/images/appScreenShots/playerProfilePage.png)
 
 Player Profile page. When a player logs in they are redirected here to a profile with a placeholder pic and empty info. User can also navigate here but clicking 'Profile' in the navigation menu. The user can click the 'edit profile' button to open a dialog containg a form to add or edit their information. 
-
-![Screen Shot](public/images/appScreenShots/editProfileDialogForm.png)
-
-Edit Profile full page dialog. The 'x' in the upper right will close the dialog. The 'upload and image' button opens a FileStack dialog to upload a profile picture. The 'submit' button send the information to the database and closes the dialog.
-
-![Screen Shot](public/images/appScreenShots/editProfileDialogForm.png)
-
-![Screen Shot](public/images/appScreenShots/playerSuspendAccountPage.png)
-
-Account Options Page. Contains a form to suspend the account and stop payments if the player wants to stop using the application for some time or has committed to a team.
 
 ### Coach
 
@@ -106,13 +88,10 @@ of the table open a dialog containing more information about the corresponding p
 
 A full page dialog showing more details about a player.
 
-![Screen Shot](public/images/appScreenShots/addCoachesPage.png)
+![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
 
-Add Coaches page. When an Admin logs in they are redirected here. The page contains a form to send invite emails to coaches by entering the coach's name email address and clicking the blue'Add Coach' button. This page can also be navigated to by clicking 'Add Coaches' in the navigation menu. 
+Admin view of the list of coaches. Admin can suspend delete or ban accounts. 
 
-![Screen Shot](public/images/appScreenShots/adminPlayerListPage.png)
-
-Admin Player List page. Navigate here by clicking 'Player List' in the navigation menu.
 
 
 

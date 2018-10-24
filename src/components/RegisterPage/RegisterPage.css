@@ -61,10 +61,3 @@ Link{
     padding-bottom: 5px;
 }
 
-.inverseLogo{
-    position: absolute;
-    bottom: 10vh;
-    left: -20px;
-    width: 38vw;
-    z-index: 1;
-}
