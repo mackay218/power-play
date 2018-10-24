@@ -96,11 +96,11 @@ class PlayerDialog extends Component {
     else if (this.props.info.position_name === "Goalie") {
       positionInfo = (
         <div>
+          <p>Save Percent: {this.props.info.save_percent}</p>
           <p>Games_played: {this.props.info.games_played}</p>
           <p>Wins: {this.props.info.wins}</p>
           <p>Losses: {this.props.info.losses}</p>
           <p>Ties: {this.props.info.ties}</p>
-          <p>Save Percent: {this.props.info.save_percent}</p>
           <p>Shutouts: {this.props.info.shutouts}</p>
           <p>Goals Against: {this.props.info.goals_against}</p>
         </div>
