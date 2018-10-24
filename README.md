@@ -23,12 +23,103 @@ If you would like to name your database something else, you will need to change 
 * Create a `.env` file at the root of the project and paste this line into the file:
     ```
     SERVER_SESSION_SECRET=**secret goes here**
+
+    my_gmail_email = ** admin or site email goes here **
+
+    my_oauth_client_id = ** google oauth2 client id goes here **
+
+    my_oauth_client_secret = ** google oauth2 client secret goes here **
+
+    my_oauth_refresh_token = ** google oauth2 refresh token goes here **
+
+    my_oauth_access_token = ** google oauth2 access token goes here **
+
+    set_password_page = ** url for website ending with /#/set_password/ goes here **
+
+    set_home_page = ** url for home page of website goes here **
+
+    REACT_APP_STRIPE_PK_KEY = ** stripe publishing key goes here **
+
+    STRIPE_SK_KEY = ** stripe secret key goes here **
     ```
     While you're in the `.env` file, replace `**secret goes here**` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
+
+    Replace `** google oauth2 ... goes here **' with keys from google apis oauth settings for using Node Mailer to send email invites and reset password emails. 
+
+    Replace `** admin or site email goes here **` with email address website or admin. Email invites or reset password emails sent out will see this email address as from this sender/email address.
+
+    Replace `** url for website ending with /#/set_password/ goes here **` with the url of the website e.g.  `https://www.pprhockey.com/#/set_password/`.
+
+    Replace `** url for home page of website goes here **` with the url of the website
+        e.g. `https://www.pprhockey.com`.
+
+    Replace `** stripe publishing key goes here **` and `** stripe secret key goes here **` with the correct keys for the stripe api to enable payments.
+
+
+
 * Start postgres if not running already by using `brew services start postgresql`
 * Run `npm run server`
 * Run `npm run client`
 * Navigate to `localhost:3000`
+
+## Screen Shots
+![Screen Shot](public/images/appScreenShots/landingPage.png)
+
+Home page of the application with the mission statement, simple instructions, player/user testimonials and information about the founders. Navigation to sign up to be a user, log in as an existing user, view terms, or a list of teams that have coaches who use the application.
+
+![Screen Shot](public/images/appScreenShots/signUpPage.png)
+
+Sign Up page of the application where a user can sign up with an email and password and submit payment with a credit card via Stripe.
+
+![Screen Shot](public/images/appScreenShots/loginPage.png)
+
+Login page where a user(player, coach, or admin) can log in.  Register button brings user to the Sign Up page,  Forgot password opens a dialog for the user to enter their email address to start the process or resetting their password.
+
+![Screen Shot](public/images/appScreenShots/forgotPasswordView.png)
+
+Forgot password dialog.
+
+### Player
+
+![Screen Shot](public/images/appScreenShots/playerProfilePage.png)
+
+Player Profile page. When a player logs in they are redirected here to a profile with a placeholder pic and empty info. User can also navigate here but clicking 'Profile' in the navigation menu. The user can click the 'edit profile' button to open a dialog containg a form to add or edit their information. 
+
+![Screen Shot](public/images/appScreenShots/editProfileDialogForm.png)
+
+Edit Profile full page dialog. The 'x' in the upper right will close the dialog. The 'upload and image' button opens a FileStack dialog to upload a profile picture. The 'submit' button send the information to the database and closes the dialog.
+
+![Screen Shot](public/images/appScreenShots/editProfileDialogForm.png)
+
+![Screen Shot](public/images/appScreenShots/playerSuspendAccountPage.png)
+
+Account Options Page. Contains a form to suspend the account and stop payments if the player wants to stop using the application for some time or has committed to a team.
+
+### Coach
+
+![Screen Shot](public/images/appScreenShots/coachPlayerList.png)
+
+When a Coach Logs in they are redirected here. This page is also navigated to by clicking 'Player List' in the navigation menu. The page contains a form to search and filter/sort the list of players by categories such as position, birthdate, and hockey statitics such a goals scored. The 'search' button carrys out the search. The 'download' players button downloads a csv containing the players list to the users computer. The 'previous' and 'next' buttons show the user another set of players. The 'view details' buttons in each row 
+of the table open a dialog containing more information about the corresponding player.
+
+![Screen Shot](public/images/appScreenShots/coachViewPlayerDetails.png)
+
+A full page dialog showing more details about a player.
+
+![Screen Shot](public/images/appScreenShots/addCoachesPage.png)
+
+Add Coaches page. When an Admin logs in they are redirected here. The page contains a form to send invite emails to coaches by entering the coach's name email address and clicking the blue'Add Coach' button. This page can also be navigated to by clicking 'Add Coaches' in the navigation menu. 
+
+![Screen Shot](public/images/appScreenShots/adminPlayerListPage.png)
+
+Admin Player List page. Navigate here by clicking 'Player List' in the navigation menu.
+
+
+
+
+
+
+
 
 ## Debugging
 
