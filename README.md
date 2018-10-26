@@ -20,7 +20,7 @@ If you would like to name your database something else, you will need to change 
 ## Development Setup Instructions
 
 * Run `npm install`
-* Create a `.env` file at the root of the project and paste this line into the file:
+* Create a `.env` file at the root of the project and paste these lines into the file:
     ```
     SERVER_SESSION_SECRET=**secret goes here**
 
@@ -88,19 +88,11 @@ of the table open a dialog containing more information about the corresponding p
 
 A full page dialog showing more details about a player.
 
-<<<<<<< HEAD
 ### Admin
 
 ![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
 
 Admin view of the list of coaches. Admin can suspend, delete, or ban accounts. 
-=======
-![Screen Shot](public/images/appScreenShots/adminCoachListPage.png)
-
-Admin view of the list of coaches. Admin can suspend delete or ban accounts. 
-
-
->>>>>>> master
 
 
 ## Production Build

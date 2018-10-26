@@ -323,7 +323,7 @@ class PlayersListedPage extends Component {
         <div>
           {/* Form for searching by name/stats */}
           <form className="search-form" onSubmit={this.sendSortBy}>
-            {JSON.stringify(this.state)}
+            {/* {JSON.stringify(this.state)} */}
             <div className="form-column">
               <h3>Search Players By:</h3>
               <div className="form-container">
