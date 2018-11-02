@@ -110,7 +110,7 @@ class PlayerDialog extends Component {
       <div>
         {/* Button to open the player dialog */}
         <Button variant="contained" color="primary" onClick={() => { this.handleClickOpen(this.props.id) }}>View details</Button>
-        <Dialog fullScreen open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+        <Dialog fullScreen open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" scroll='paper'>
           <Nav />
           <div className="dialog">
             <DialogActions>

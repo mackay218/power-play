@@ -320,7 +320,7 @@ class PlayersListedPage extends Component {
 
     if (this.props.user.email && this.props.player) {
       content = (
-        <div>
+        <div class="pageContent" >
           {/* Form for searching by name/stats */}
           <form className="search-form" onSubmit={this.sendSortBy}>
             {/* {JSON.stringify(this.state)} */}

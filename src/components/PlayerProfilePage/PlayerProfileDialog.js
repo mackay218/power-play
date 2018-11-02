@@ -3,17 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-
-import CloseIcon from '@material-ui/icons/Close';
+import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import PlayerProfilePage from './PlayerProfilePage';
 
+import './PlayerProfilePage.css';
 
 const styles = {
   appBar: {
@@ -21,6 +15,9 @@ const styles = {
   },
   flex: {
     flex: 1,
+  },
+  dialogContent: {
+    padding: 0,
   },
 };
 
@@ -52,20 +49,11 @@ class PlayerProfileDialog extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
           TransitionComponent={Transition}
+          className="dialogContainer"
         >
-          <AppBar className={classes.appBar}>
-            <Toolbar className="toolbar">
-              <h1>Player Details</h1>
-              <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <List>
-          <PlayerProfilePage handleClose={this.handleClose}/>
-            <Divider />
-            
-          </List>
+          <DialogContent className={this.props.classes.dialogContent} >
+              <PlayerProfilePage handleClose={this.handleClose} />
+          </DialogContent>
         </Dialog>
       </div>
     );

@@ -2,13 +2,7 @@ body{
     --red: #eb1b3b;
 }
 
-.profile-form-container form {
-    width: 90%;
-    height: 500px;
-    margin: 20px auto;
-    padding: 25px;
-    border-radius: 2px;
-}
+
 
 .profile-form-container{
     width: 100vw;
@@ -38,7 +32,7 @@ body{
 }
 
 .align-left {
-    text-align: left
+    text-align: left;
 }
 
 .fileStackContainer {
@@ -87,10 +81,6 @@ body{
     height: 80%;
 }
 
-.align-top {
-    
-}
-
 .infoContainer{
     width: 30vw;
     min-width: 250px;
@@ -115,20 +105,6 @@ body{
 .personInfo p {
     font-weight: bold;
     font-size: 20px;
-}
-
-.toolbar{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    background-color: var(--red);
-    height: 100px;
-}
-
-.toolbar h1{
-    width:100%;
-    text-align: center;
-    font-family: 'Audiowide', sans-serif;
 }
 
 
@@ -164,5 +140,18 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.dialogContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.closeBtn{
+    position: relative;
+    left: 85vw;
+    bottom: 8vh;
+    width: 50px;
 }
 

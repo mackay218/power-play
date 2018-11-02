@@ -234,7 +234,6 @@ sendPasswordResetEmail = (infoForEmail) => {
 
 //post route for new password / resetting password
 router.put('/setPassword', (req, res) => {
-    if (req.isAuthenticated()) {
         console.log('in set setPassword put route');
         console.log('password info:', req.body);
         const passwordInfo = req.body;
@@ -297,11 +296,8 @@ router.put('/setPassword', (req, res) => {
             console.log('CATCH', error);
             res.sendStatus(500);
         });
-    }
-    else {
-        console.log('You must be logged in!');
-        res.sendStatus(403);
-    }
+    
+   
 });
 
 module.exports = router;

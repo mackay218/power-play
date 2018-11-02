@@ -13,6 +13,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import ReactFilestack from 'filestack-react';
 
@@ -101,46 +103,6 @@ class PlayerProfilePage extends Component {
     });
   }
 
-  // Function used in presentation to fill out the player info form quickly
-  // Should be deleted before sent to production
-  easyFill = () => {
-    console.log('In easyFill');
-    let body = {
-      person_id: this.props.user.id,
-      league_id: '5',
-      team_name: 'The White Hawks',
-      school_name: 'Mount West Tonka',
-      position_id: '4',
-      first_name: 'Billy',
-      last_name: 'Remington',
-      phone_number: 6514438876,
-      birth_date: '2000-12-12',
-      height: `6'4''`,
-      weight: '175lb',
-      gpa: '4.0',
-      act_score: 31,
-      school_year: '12',
-      video_link: 'https://www.youtube.com/watch?v=naUgrBOozsk',
-      goals: 0,
-      assists: 0,
-      points: 0,
-      games_played: 14,
-      wins: 12,
-      losses: 2,
-      ties: 0,
-      save_percent: '90.1%',
-      shutouts: 4,
-      goals_against: 15,
-      guardian: true,
-      player_info: 'I\'ve been starting at the goalie position at Mount West Tonka for the last three years, Each year I have been getting better at the position and have been going to Michael Bowman Hockey Camp over the summers. I focus on my academics an equal amount as I focus on my hockey career. I am looking forward to a tryout with you and your team!',
-      email: this.props.user.email,
-    };
-
-    const action = { type: 'SET_PLAYER_INFO', payload: body };
-
-    this.props.dispatch(action);
-  }
-
   render() {
 
     let playerInfo = this.props.player.playerInfo;
@@ -185,12 +147,15 @@ class PlayerProfilePage extends Component {
     }
     if (this.props.user.email) {
       content = (
-        <div>
+        <div className="editInfoContainer">
           {/* <Image className="profilePic" src="https://eadb.org/wp-content/uploads/2015/08/profile-label.jpg" alt="Avatar" /> */}
-          <div>
+          <div className="editInfoContainer">
             {/* On click to run the easy fill function (onClick should be removed before being sent to production) */}
-            <h1 onClick={this.easyFill} className="center-text">Enter Information</h1>
-            <br />
+            <h1 className="center-text">Enter Information 
+              <div className="closeBtn">
+              <IconButton onClick={this.props.handleClose}><CloseIcon /></IconButton>
+            </div>
+            </h1>
             {/* Form for updating player information */}
             <form onSubmit={this.submitPlayerProfile} onChange={this.handleProfileChange} className="info-form">
               <Grid container>
@@ -281,6 +246,7 @@ class PlayerProfilePage extends Component {
                   </div>
                   <div className="submitButton">
                     <Button variant="contained" color="secondary" type="submit">Submit</Button>
+                    
                   </div>
                 </Grid>
                 <Grid item md={1}></Grid>
