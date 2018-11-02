@@ -10,7 +10,7 @@ const pool = require('../modules/pool');
 router.post('/', (req, res) => {
     console.log('trying to generate mock player data');
 
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 10; i++) {
 
         //account status_type
         const statusType = Math.round(Math.random() * (4 - 1) + 1);
@@ -154,7 +154,7 @@ router.post('/', (req, res) => {
 
 router.post('/coaches', (req, res) => {
 
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 5; i++) {
         
         //account status_type
         //CHANGED FOR PRESENTATION SO ONLY ACTIVE COACHES
