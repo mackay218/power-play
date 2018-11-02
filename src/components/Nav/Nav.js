@@ -225,7 +225,7 @@ class Nav extends Component {
     else {
       content = (
         <Navbar dark expand="md" scrolling>
-          <NavbarBrand href="/landing_page">
+          <NavbarBrand href="/#/landing_page">
               <img className="logo"
                 src="images/pprLogo.png"
                 alt="logo">
