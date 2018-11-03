@@ -50,7 +50,7 @@ class PlayerDialog extends Component {
     let videoPlayer = (
       <iframe id="player" type="text/html" width="426" height="260"
         allowFullScreen="allowFullScreen"
-        src="http://www.youtube.com/embed/a8rRW5Ugg0I?enablejsapi=1&origin=http://example.com"
+        src="https://www.youtube.com/embed/a8rRW5Ugg0I?enablejsapi=1&origin=http://example.com"
         frameBorder="0"
         title="defaultVideo"
         >
@@ -64,7 +64,7 @@ class PlayerDialog extends Component {
       videoCode = videoCode[1];
 
       // Injects the players videocode into the url
-      let videoUrl = `http://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
+      let videoUrl = `https://www.youtube.com/embed/${videoCode}?enablejsapi=1&origin=http://example.com`;
 
       videoPlayer = (
         <iframe id="player" type="text/html" width="426" height="260"
