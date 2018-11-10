@@ -69,9 +69,10 @@ body{
 
 .guideContainer{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     height: 50%;
-    width: 85vw;
+    width: 100vw;
+    
 }
 
 @media only screen and (orientation: landscape){
@@ -97,7 +98,7 @@ body{
     }
 
     .arrow{
-        width: 20vw;
+        width: 10vw;
     }
 }
 
