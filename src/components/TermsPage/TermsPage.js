@@ -53,8 +53,8 @@ class TermsPage extends Component {
 
           {/* buttons for generating mock data  DELETE BEFORE FINAL BUILD*/}
           {/* Replace with actual terms and conditions once */}
-          <button type="button" onClick={this.handlePlayerClick}>Mock Players</button>
-          <button type="button" onClick={this.handleCoachClick}>Mock Coaches</button>
+          <button type="button" onClick={this.handlePlayerClick} disabled>Mock Players</button>
+          <button type="button" onClick={this.handleCoachClick} disabled>Mock Coaches</button>
           {/* ******************* */}
 
         </div>
