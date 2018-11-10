@@ -7,6 +7,7 @@ const moment = require('moment');
 
 const pool = require('../modules/pool');
 
+//generate fake players
 router.post('/', (req, res) => {
     console.log('trying to generate mock player data');
 
@@ -152,6 +153,7 @@ router.post('/', (req, res) => {
     res.sendStatus(201);
 });
 
+//generate fake coaches
 router.post('/coaches', (req, res) => {
 
     for (let i = 0; i < 5; i++) {
