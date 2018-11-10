@@ -88,9 +88,9 @@ router.post('/', (req, res) => {
             </html>`;
 
         const mail = {
-            from: "polarishockey@gmail.com",
-            to: "polarishockey@gmail.com",
-            subject: "Power Play Recruiting registration",
+            from: "pprhockeydemo@gmail.com",
+            to: "pprhockeydemo@gmail.com",
+            subject: "Power Play Recruiting Contact",
             text: 'MESSAGE FROM PPR CONTACT PAGE',
             html: emailHtml
         }

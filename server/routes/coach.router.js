@@ -329,7 +329,7 @@ sendInviteCode = (infoForEmail) => {
 
 
     const mail = {
-        from: "polarishockey@gmail.com",
+        from: "pprhockeydemo@gmail.com",
         to: infoForEmail.email,
         subject: "Power Play Recruiting registration",
         text: 'We invite you so join us' + infoForEmail.name,
